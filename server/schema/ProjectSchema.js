@@ -25,6 +25,11 @@ const ProjectSchema = new Schema({
     completiondate: {
         type: Date,
 
+    },
+    userid: {
+        type: String,
+        // ref: 'User',
+        // required: true
     }
 }, {
     timestamps: true

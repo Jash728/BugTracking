@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const projectController = require('../controller/ProjectController')
 
-router.get('/project', projectController.getProjectData)
+router.get('/project/all/:id', projectController.getProjectData)
 router.post('/project', projectController.addProject)
 router.get('/project/:id', projectController.getProjectById)
 router.put('/project/:id', projectController.updateProject)

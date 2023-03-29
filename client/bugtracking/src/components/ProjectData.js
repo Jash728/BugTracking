@@ -16,6 +16,7 @@ function ProjectData(props) {
   const [modal, setModal] = useState(false);
   const [data, setData] = useState({});
   const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("jash")
   
   // const { register, handleSubmit, reset,setValue } = useForm();
   // console.log(data)
@@ -43,7 +44,7 @@ function ProjectData(props) {
   };
 
   const handleUpdate = (event) => {
-    console.log("event + ", data);
+    // console.log("event + ", data);
     fetch(`http://localhost:4000/project/project/${data._id}`, {
       method: "PUT",
       headers: {
@@ -66,9 +67,9 @@ function ProjectData(props) {
 
   useEffect(() => {
     // setTitle("Jas")
-
+    props.getData();
     console.log("data is", data);
-  }, [data]);
+  }, [data, modal]);
 
   const handleInputChange = (event) => {
     // console.log("event", event.target)
@@ -83,7 +84,10 @@ function ProjectData(props) {
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
 
-  const openModal1 = () => {
+  const openModal1 = (data) => {
+    // setDesc(props.)
+    // console.log("Modal " , data)
+    setDesc(data)
     setShowModal1(true);
   };
 
@@ -136,22 +140,30 @@ function ProjectData(props) {
                   </thead>
                   <tbody>
                     {projects.map?.((project) => (
+                      
                       <tr>
                         <td>
                           <div className="d-flex px-1">
                             <div>
+                            {console.log("Project is" , project)}
                               <img
                                 src="../assets/img/small-logos/logo-asana.svg"
                                 className="avatar avatar-sm rounded-circle me-2"
                                 alt="spotify"
                               />
                             </div>
-                            <Modal isOpen={showModal1} onRequestClose={closeModal1}>
-                              <ModalHeader onClick={closeModal1}>
+                            <Modal  isOpen={showModal1}>
+                                <ModalHeader onClick={closeModal1}>
                                   Description
                                 </ModalHeader>
+                                {console.log("eshaan is : ", desc)}
+                                <ModalBody>
+                                {/* {project.description} */}
+                                {console.log("jash is : ", project)}
+ <p style={{marginTop:"20px" , marginLeft:"20px", fontSize:"20px"}}>-- {desc}</p>
+                                </ModalBody>
 
-                                <p style={{marginTop:"20px" , marginLeft:"20px", fontSize:"20px"}}>-- {project.description}</p>
+                               
                                 {/* <button on?Click={closeModal1}>Close Modal 1</button> */}
                             </Modal>
 
@@ -167,7 +179,7 @@ function ProjectData(props) {
                                     border: "none",
                                     marginTop: "10px",
                                   }}
-                                  onClick={openModal1}
+                                  onClick={() => openModal1(project.description?project.description:"not found")}
                                 >
                                   {project.title}
                                 </button>

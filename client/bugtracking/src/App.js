@@ -29,9 +29,11 @@ function App() {
         <Route path="/userreg" element={<UserReg />} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/devdashboard" element={<DevDashboard/>}/>
+        <Route path="/logout" element={<UserLogin/>}/>
       </Routes>
     </div>
   );
 }
+
 
 export default App;

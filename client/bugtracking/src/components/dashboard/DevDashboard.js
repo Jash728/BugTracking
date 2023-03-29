@@ -8,6 +8,7 @@ import { Form, Row, Col } from "react-bootstrap";
 import { get, set, useForm } from "react-hook-form";
 import ProjectData from "../ProjectData";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import { useNavigate } from "react-router-dom";
 
 const DevDashboard = () => {
   const [user, setuser] = useState("");
@@ -15,14 +16,18 @@ const DevDashboard = () => {
   const [modal, setModal] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedData, setSelectedData] = useState({});
-
+  var navigate = useNavigate()
   const [projects, setProjects] = useState([]);
 
+
+
   const getData = () => {
-    fetch("http://localhost:4000/project/project", {
+    let id = localStorage.getItem("_id")
+    fetch(`http://localhost:4000/project/project/all/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+    
       },
     })
       .then((resp) => resp.json())
@@ -47,6 +52,9 @@ const DevDashboard = () => {
       });
   };
   const submit = (data) => {
+    var id = localStorage.getItem("_id");
+    data.userid = id;
+    console.log(data)
     axios
       .post("http://localhost:4000/project/project", data)
       .then((res) => {
@@ -57,6 +65,7 @@ const DevDashboard = () => {
         console.log(err);
       });
     reset();
+    getData();
     setModal(false)
   };
   // useEffect(() => {
@@ -85,6 +94,16 @@ const DevDashboard = () => {
     }
   };
 
+
+  const logout = (e)=>{
+    e.preventDefault();
+    console.log("Jash")
+    localStorage.clear();
+    setuser("")
+    setProjects("")
+    navigate("/login")
+    
+  }
   return (
     <body
       className="g-sidenav-show   overflow-hidden bg-gray-200"
@@ -175,6 +194,7 @@ const DevDashboard = () => {
                 <span className="nav-link-text ms-1">Sign Up</span>
               </a>
             </li>
+            
           </ul>
         </div>
       </aside>
@@ -332,7 +352,14 @@ const DevDashboard = () => {
             ></span>
           </li>
         </div>
-
+        <li className="nav-item">
+              <a className="nav-link text-white " href="/logout">
+                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i className="material-icons opacity-10">assignment</i>
+                </div>
+                <button className="nav-link-text ms-1" onClick={(e)=>logout(e)}>Logout</button>
+              </a>
+            </li>
         {/* End Navbar */}
       </main>
     </body>

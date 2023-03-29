@@ -1,26 +1,51 @@
 const projectSchema = require("../schema/ProjectSchema")
 
-const getProjectData = (req, res) => {
-    projectSchema.find((err, data) => {
-        if (err) {
-            res.status(404).json({
-                message: "error in fetching data"
-            })
-        } else {
-            res.status(200).json({
-                message: "data fetched successfully",
-                data: data
-            })
-        }
 
-    })
+//const coursesChosen = async (req, res) => {
+// let data = await CourseModel.find({studentRollNum : studentRollNumber})
+// return res.status(200).json(data)
+// }
+
+
+const getProjectData = async(req, res) => {
+    let id = req.params.id
+    console.log("data is", req.params)
+    try {
+        let data = await projectSchema.find({ userid: id })
+            // console.log(data)
+        res.status(200).json({
+            message: "data fetched successfully",
+            data: data
+        })
+    } catch (err) {
+        res.status(404).json({
+            message: "error in fetching data"
+        })
+    }
+
+    // projectSchema.find((err, data) => {
+    //     if (err) {
+    //         res.status(404).json({
+    //             message: "error in fetching data"
+    //         })
+    //     } else {
+    //         res.status(200).json({
+    //             message: "data fetched successfully",
+    //             data: data
+    //         })
+    //     }
+
+    // })
 
 }
 
+
+
 const addProject = (req, res) => {
 
-
+    console.log(req.body)
     const project = new projectSchema(req.body)
+
     project.save((err, data) => {
         if (err) {
             res.status(500).json({
@@ -40,6 +65,7 @@ const addProject = (req, res) => {
 const getProjectById = (req, res) => {
 
     var id = req.params.id
+
 
     projectSchema.findById(id, (err, data) => {
         if (err) {
