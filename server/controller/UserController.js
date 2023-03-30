@@ -1,6 +1,7 @@
 const userSchema = require('../schema/UserSchema');
-const bcrypt = require("bcryptjs")
-    // const jwt = require('jsonwebtoken')
+// const bcrypt = require("bcryptjs")
+const encrypt = require('../utils/encrypt');
+// const jwt = require('jsonwebtoken')
 
 
 const getUserDataWithRole = (req, res) => {
@@ -67,10 +68,38 @@ const getUserData = (req, res) => {
 
 // }
 
-const addUser = (req, res) => {
+// const addUser = (req, res) => {
 
 
-    const user = new userSchema(req.body)
+//     const user = new userSchema(req.body)
+//     user.save((err, data) => {
+//         if (err) {
+//             res.status(500).json({
+//                 message: "error in adding user",
+//             })
+//         } else {
+//             res.status(201).json({
+//                 message: "user added successfully",
+//                 data: data
+//             })
+//         }
+
+//     })
+
+// }
+
+const addUser = async(req, res) => {
+
+    const hash = await encrypt.encryptPassword(req.body.password)
+    console.log(hash)
+    const userData = {
+        firstname: req.body.firstname,
+        email: req.body.email,
+        role: req.body.role,
+        password: hash
+    }
+
+    const user = new userSchema(userData)
     user.save((err, data) => {
         if (err) {
             res.status(500).json({
@@ -86,7 +115,6 @@ const addUser = (req, res) => {
     })
 
 }
-
 
 
 
@@ -112,58 +140,97 @@ const deleteUser = (req, res) => {
 }
 
 
+// const loginUser = async(req, res) => {
+
+//     // let token;
+//     var email = req.body.email
+//     var password = req.body.password
+
+//     if (email != undefined && password != undefined && email != "" && password != "") {
+//         userSchema.find({ email: email }).populate('role').exec((err, data) => {
+//             if (err) {
+//                 res.status(500).json({
+//                     message: "error while fetching user"
+//                 })
+//             } else {
+//                 if (data != undefined && data != null && data.length > 0) {
+//                     const hashedPassword = data[0].password;
+//                     // token = await data[0].generateAuthToken();
+//                     // console.log(token)
+
+//                     bcrypt.compare(password, hashedPassword, function(err, isMatch) {
+//                         if (isMatch) {
+//                             // token = data[0].generateAuthToken().then((res) => console.log(res));
+//                             // console.log(token)
+//                             // res.cookie("localhost", token, {
+//                             //     expires: new Date(Date.now() + 25892000000),
+//                             //     httpOnly: true
+//                             // });
+
+
+//                             res.status(200).json({
+//                                 message: "user found",
+//                                 data: data
+//                             })
+//                         } else {
+//                             res.status(404).json({
+//                                 message: "incorrect password"
+//                             })
+//                         }
+//                     });
+//                 } else {
+//                     res.status(404).json({
+//                         message: "user not found"
+//                     })
+//                 }
+//             }
+//         })
+
+
+//     } else {
+//         res.status(404).json({
+//             message: "email and password both are required"
+//         })
+//     }
+// }
+
+
 const loginUser = async(req, res) => {
+    userSchema.findOne({ email: req.body.email }).populate('role').exec(async(err, data) => {
+        if (err) {
+            res.status(500).json({
+                message: "error in fetching data",
+                err: err
+            })
+        } else {
 
-    // let token;
-    var email = req.body.email
-    var password = req.body.password
+            console.log("data is", data)
+            if (data !== null || data !== undefined) {
 
-    if (email != undefined && password != undefined && email != "" && password != "") {
-        userSchema.find({ email: email }).populate('role').exec((err, data) => {
-            if (err) {
-                res.status(500).json({
-                    message: "error while fetching user"
-                })
-            } else {
-                if (data != undefined && data != null && data.length > 0) {
-                    const hashedPassword = data[0].password;
-                    // token = await data[0].generateAuthToken();
-                    // console.log(token)
-
-                    bcrypt.compare(password, hashedPassword, function(err, isMatch) {
-                        if (isMatch) {
-                            // token = data[0].generateAuthToken().then((res) => console.log(res));
-                            // console.log(token)
-                            // res.cookie("localhost", token, {
-                            //     expires: new Date(Date.now() + 25892000000),
-                            //     httpOnly: true
-                            // });
-
-
-                            res.status(200).json({
-                                message: "user found",
-                                data: data
-                            })
-                        } else {
-                            res.status(404).json({
-                                message: "incorrect password"
-                            })
-                        }
-                    });
+                const result = await encrypt.comparePassword(req.body.password, data.password)
+                console.log("result is", result)
+                if (result == true) {
+                    res.status(200).json({
+                        message: "user found",
+                        data: data
+                    })
                 } else {
                     res.status(404).json({
-                        message: "user not found"
+                        message: "user not found",
                     })
                 }
+
+
+            } else {
+                res.status(404).json({
+                    message: "user not found",
+                })
             }
-        })
 
 
-    } else {
-        res.status(404).json({
-            message: "email and password both are required"
-        })
-    }
+        }
+    })
+
 }
 
 
