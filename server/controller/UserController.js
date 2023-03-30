@@ -47,27 +47,6 @@ const getUserData = (req, res) => {
 
 }
 
-
-// const addUser = (req, res) => {
-
-
-//     const user = new userSchema(req.body);
-//     user.save((err, data) => {
-//         if (err) {
-//             res.status(500).json({
-//                 message: "error in adding user",
-//             })
-//         } else {
-//             res.status(201).json({
-//                 message: "user added successfully",
-//                 data: data
-//             })
-//         }
-
-//     })
-
-// }
-
 // const addUser = (req, res) => {
 
 
