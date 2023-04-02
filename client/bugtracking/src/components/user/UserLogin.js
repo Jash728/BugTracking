@@ -1,8 +1,8 @@
 import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
-import Footer from "../Footer";
-import Navbar from "../Navbar";
+import Footer from "../pages/Footer";
+import Navbar from "../pages/Navbar";
 import { useNavigate } from "react-router-dom";
 
 export const UserLogin = () => {

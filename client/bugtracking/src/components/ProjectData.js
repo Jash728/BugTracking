@@ -71,16 +71,19 @@ function ProjectData(props) {
       });
   };
   const getTeamMembers = async (id) => {
-    console.log(id);
+
+    console.log("Inside getTeamMembers: ",id);
     let data = [id];
     let newData = [];
 
     axios
-      .get("http://localhost:4000/projectteam/getbyuserproject", data)
+      .get(`http://localhost:4000/projectteam/getbyuserproject/${id}`)
       .then((res) => {
-        console.log("Get Data Devs", res.data);
+        console.log("Get Data Devs", res);
         // localStorage.setItem("_id",res.data.data[0]?._id)
         newData = res.data.data;
+        console.log("senor hola ", newData);
+
         setTeamMembers(newData);
       })
       .catch((err) => {
@@ -206,7 +209,7 @@ function ProjectData(props) {
 
   const openModal1 = (project) => {
     // setDesc(props.)
-    console.log("Modal ", data);
+    console.log("Modal ", project);
     setDesc(project.description);
     setCurrProjectID(project._id);
     getTeamMembers(project._id);
@@ -237,6 +240,9 @@ function ProjectData(props) {
   }
 
   const closeModal1 = () => {
+    setDesc("");
+    setCurrProjectID("");
+    getTeamMembers("");
     setShowModal1(false);
   };
 
@@ -318,12 +324,13 @@ function ProjectData(props) {
                                 >
                                   -- {desc}
                                 </p>
-
+                                
                                 <button
                                   className="btn btn-link text-secondary mb-0"
                                   onClick={(e) => {
                                     setModal(true);
-                                    getproductById(project._id);
+                                    getproductById(()=>project._id)
+
                                   }}
                                 >
                                   {teamMembers.length == 0
@@ -335,10 +342,11 @@ function ProjectData(props) {
                                   <div className="input-group input-group-outline my-3 mx-5">
                                     <ul>
                                       {teamMembers?.map((member) => {
+                                        console.log("qwertyuiop: ",member)
                                         return (
                                           <div>
                                             <li>
-                                              {member.userId
+                                              {member && member.userId
                                                 ? member.userId.firstname
                                                 : ""}
                                             </li>
@@ -435,9 +443,8 @@ function ProjectData(props) {
                                                   return (
                                                     <tr>
                                                       <td>
-                                                        {member.userId
-                                                          ? member.userId
-                                                              .firstname
+                                                        {member && member.userId
+                                                          ? member.userId.firstname
                                                           : ""}
                                                       </td>
                                                       <td>
@@ -476,8 +483,11 @@ function ProjectData(props) {
                                     border: "none",
                                     marginTop: "10px",
                                   }}
-                                  onClick={() =>
+                                  onClick={() => {
                                     openModal1(project ? project : "not found")
+                                    console.log("mooni: ",project._id)
+
+                                  }
                                   }
                                 >
                                   {project.title}
@@ -598,6 +608,7 @@ function ProjectData(props) {
                                 setModal1(true);
                                 handleProject(() => setCurrProject(project));
                                 getproductById(project._id);
+                                
                               }}
                             >
                               <EditIcon fontSize="small" color="action" />

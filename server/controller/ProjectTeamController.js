@@ -8,26 +8,31 @@ const addProjectTeam = async(req, res) => {
         userId: data[1],
     })
 
-    // const projectTeam = new projectTeamSchema(req.body)
-    console.log("Project team is ", projectTeam)
-        // projectTeam.save((err, data) => {
-        //     if (err) {
-        // res.status(500).json({
-        //         message: "error in adding user",
-        //     })
-        //     } else {
     res.status(201).json({
-            message: "user added successfully",
-            data: data
-        })
-        //     }
+        message: "user added successfully",
+        data: data
+    })
 
-    // })
+
 }
 
-const getProjectTeamByUserProject = (req, res) => {
+const getProjectTeamByUserProject = async(req, res) => {
+    let id = req.params.id
+        // try {
+        //     let data = await projectTeamSchema.find({ projectId: id })
+
+    //     console.log("Jash", data)
+    //     res.status(200).json({
+    //         message: "data fetched successfully",
+    //         data: data
+    //     })
+    // } catch (err) {
+    //     res.status(404).json({
+    //         message: "error in fetching data"
+    //     })
+    // }
     projectTeamSchema
-        .find()
+        .find({ projectId: id })
         .populate('projectId') // populate project field
         .populate('userId') // populate user field
         .exec((err, data) => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Navbar from "../Navbar";
+import Navbar from "../pages/Navbar";
 // import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
