@@ -1,20 +1,28 @@
 const projectTeamSchema = require("../schema/ProjectTeamSchema");
 
-const addProjectTeam = (req, res) => {
-    const projectTeam = new projectTeamSchema(req.body)
-    projectTeam.save((err, data) => {
-        if (err) {
-            res.status(500).json({
-                message: "error in adding user",
-            })
-        } else {
-            res.status(201).json({
-                message: "user added successfully",
-                data: data
-            })
-        }
-
+const addProjectTeam = async(req, res) => {
+    console.log(req.body)
+    let data = req.body
+    const projectTeam = await projectTeamSchema.create({
+        projectId: data[0],
+        userId: data[1],
     })
+
+    // const projectTeam = new projectTeamSchema(req.body)
+    console.log("Project team is ", projectTeam)
+        // projectTeam.save((err, data) => {
+        //     if (err) {
+        // res.status(500).json({
+        //         message: "error in adding user",
+        //     })
+        //     } else {
+    res.status(201).json({
+            message: "user added successfully",
+            data: data
+        })
+        //     }
+
+    // })
 }
 
 const getProjectTeamByUserProject = (req, res) => {

@@ -261,6 +261,27 @@ const getUserById = (req, res) => {
 
 }
 
+
+const getDeveloperData = async(req, res) => {
+    let id = "6410b77ad7e29a5fc469da8a"
+        // console.log("data is", req.params)
+    try {
+        let data = await userSchema.find({ role: id })
+        console.log("Jash", data)
+        res.status(200).json({
+            message: "data fetched successfully",
+            data: data
+        })
+    } catch (err) {
+        res.status(404).json({
+            message: "error in fetching data"
+        })
+    }
+
+
+}
+
+
 module.exports = {
     getUserData,
     addUser,
@@ -268,5 +289,6 @@ module.exports = {
     deleteUser,
     updateUser,
     loginUser,
-    getUserDataWithRole
+    getUserDataWithRole,
+    getDeveloperData
 }

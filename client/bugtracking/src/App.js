@@ -4,7 +4,7 @@ import { UserReg } from "./components/user/UserReg";
 import { UserLogin } from "./components/user/UserLogin";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DevDashboard from "./components//dashboard/DevDashboard";
+import ManagerDashboard from "./components//dashboard/ManagerDashboard";
 
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/userreg" element={<UserReg />} />
         <Route path="/login" element={<UserLogin />} />
-        <Route path="/devdashboard" element={<DevDashboard/>}/>
+        <Route path="/managerdashboard" element={<ManagerDashboard/>}/>
         <Route path="/logout" element={<UserLogin/>}/>
       </Routes>
     </div>

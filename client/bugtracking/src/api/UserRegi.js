@@ -8,7 +8,7 @@ export const UserRegi = () => {
 
   const submit = (data) => {
 
-      console.log(data)
+      // console.log(data)
       axios.post("http://localhost:4000/user/user",data).then((res)=>{
           console.log(res)
       }).catch((err)=>{

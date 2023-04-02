@@ -3,25 +3,113 @@ import axios from "axios";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { Form, Row, Col } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { get, set, useForm } from "react-hook-form";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 function ProjectData(props) {
   const { projects } = props;
   // console.log(projects);
-
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm();
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
+  const [modal1, setModal1] = useState(false);
+
   const [data, setData] = useState({});
   const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("jash")
-  
+  const [desc, setDesc] = useState("jash");
+  const [projects1, setProjects1] = useState([]);
+  const [devs, setDevs] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [currentMember, setCurrentMember] = useState("");
+  const [mySet, setMySet] = useState([]);
+  const [currProject, setCurrProject] = useState("");
+  const [currProjectID, setCurrProjectID] = useState("");
+
+  // const { register, handleSubmit, reset, setValue } = useForm();
+
   // const { register, handleSubmit, reset,setValue } = useForm();
   // console.log(data)
   const handleClick = () => {
     setModal(true);
+  };
+  const submit = (data) => {
+    var id = localStorage.getItem("_id");
+    data.userid = id;
+    // console.log(data);
+    axios
+      .post("http://localhost:4000/project/project", data)
+      .then((res) => {
+        console.log(res.data);
+        // localStorage.setItem("_id",res.data.data[0]?._id)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    reset();
+    getData();
+    setModal(false);
+  };
+
+  const pushTeamMember = () => {
+    console.log(currProjectID);
+    let data = [currProjectID, JSON.parse(currentMember)._id];
+    console.log("Dhruvil", data);
+    axios
+      .post("http://localhost:4000/projectteam/add", data)
+      .then((res) => {
+        console.log(res.data);
+        // localStorage.setItem("_id",res.data.data[0]?._id)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const addTeamMember = (e) => {
+    e.preventDefault();
+    console.log("XYZ : ", currentMember);
+    if (currentMember.length == 0 || currentMember === "Developer") {
+      alert("hello");
+      return;
+    }
+
+    let currArr = teamMembers;
+    console.log("Currrrr mem", currArr);
+
+    let currSet = mySet;
+
+    if (!currSet.includes(JSON.parse(currentMember)._id)) {
+      currArr.push(JSON.parse(currentMember));
+      currSet.push(JSON.parse(currentMember)._id);
+    } else {
+      alert("hello");
+      setCurrentMember("");
+      return;
+    }
+    pushTeamMember();
+    setMySet(currSet);
+    setTeamMembers(currArr);
+    setCurrentMember("");
+  };
+  const getData = () => {
+    let id = localStorage.getItem("_id");
+    fetch(`http://localhost:4000/project/project/all/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => setProjects1(resp.data))
+      .catch((error) => console.log(error));
+  };
+
+  const getCurrentTeamMember = (e) => {
+    e.preventDefault();
+    console.log("curr member1", e.target.value);
+    setCurrentMember(e.target.value);
   };
 
   const getproductById = (id) => {
@@ -36,7 +124,7 @@ function ProjectData(props) {
       // .then((res) => setData(res.data))
       .then((res) => {
         const obj = res.data;
-        console.log("obj is", obj);
+        // console.log("obj is", obj);
         setData(obj);
       })
 
@@ -59,16 +147,27 @@ function ProjectData(props) {
       .catch((error) => {
         console.error("Error:", error);
       });
-      setModal(false)
-      props.getData();
-      // return data;
-
+    setModal1(false);
+    props.getData();
+    // return data;
   };
 
+  const getDeveloperData = () => {
+    fetch(`http://localhost:4000/user/user/dev`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => setDevs(resp.data))
+      .catch((error) => console.log(error));
+  };
   useEffect(() => {
     // setTitle("Jas")
     props.getData();
     console.log("data is", data);
+    getDeveloperData();
   }, [data, modal]);
 
   const handleInputChange = (event) => {
@@ -84,10 +183,11 @@ function ProjectData(props) {
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
 
-  const openModal1 = (data) => {
+  const openModal1 = (project) => {
     // setDesc(props.)
-    // console.log("Modal " , data)
-    setDesc(data)
+    console.log("Modal ", data);
+    setDesc(project.description);
+    setCurrProjectID(project._id);
     setShowModal1(true);
   };
 
@@ -95,6 +195,10 @@ function ProjectData(props) {
     setShowModal1(false);
   };
 
+  const handleProject = (project) => {
+    // let currPrj = project
+    // setCurrProject(currPrj)
+  };
   const openModal2 = () => {
     setShowModal2(true);
   };
@@ -121,11 +225,11 @@ function ProjectData(props) {
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         Project
                       </th>
-                  
 
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         Technology
                       </th>
+
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                         Estimated hrs
                       </th>
@@ -140,38 +244,164 @@ function ProjectData(props) {
                   </thead>
                   <tbody>
                     {projects.map?.((project) => (
-                      
                       <tr>
+                        {console.log("QWERT", project)}
                         <td>
                           <div className="d-flex px-1">
                             <div>
-                            {console.log("Project is" , project)}
+                              {/* {console.log("Project is" , project)} */}
                               <img
                                 src="../assets/img/small-logos/logo-asana.svg"
                                 className="avatar avatar-sm rounded-circle me-2"
                                 alt="spotify"
                               />
                             </div>
-                            <Modal  isOpen={showModal1}>
-                                <ModalHeader onClick={closeModal1}>
-                                  Description
-                                </ModalHeader>
-                                {console.log("eshaan is : ", desc)}
-                                <ModalBody>
-                                {/* {project.description} */}
-                                {console.log("jash is : ", project)}
- <p style={{marginTop:"20px" , marginLeft:"20px", fontSize:"20px"}}>-- {desc}</p>
-                                </ModalBody>
+                            <Modal isOpen={showModal1}>
+                              <ModalHeader onClick={closeModal1}>
+                                Description
+                              </ModalHeader>
 
-                               
-                                {/* <button on?Click={closeModal1}>Close Modal 1</button> */}
+                              <ModalBody>
+                                {/* {project.description} */}
+
+                                <p
+                                  style={{
+                                    marginTop: "20px",
+                                    marginLeft: "20px",
+                                    fontSize: "20px",
+                                  }}
+                                >
+                                  -- {desc}
+                                </p>
+
+                                <button
+                                  className="btn btn-link text-secondary mb-0"
+                                  onClick={() => {
+                                    setModal(true);
+                                    getproductById(project._id);
+                                  }}
+                                >
+                                  <AddIcon fontSize="small" color="action" />
+                                  <Col sm={6}>
+                                    <div className="input-group input-group-outline my-3 mx-5">
+                                      <ul>
+                                        {teamMembers?.map((member) => {
+                                          return (
+                                            <div>
+                                              <li>
+                                                {member.firstname}{" "}
+                                                <RemoveIcon
+                                                  onClick={() =>
+                                                    console.log("deleted")
+                                                  }
+                                                />
+                                              </li>
+                                            </div>
+                                          );
+                                        })}
+                                      </ul>
+                                    </div>
+                                  </Col>
+                                  <div>
+                                    <Modal
+                                      size="lg"
+                                      isOpen={modal}
+                                      toggle={() => setModal(!modal)}
+                                    >
+                                      <ModalHeader
+                                        toggle={() => setModal(!modal)}
+                                      >
+                                        Add Team Members
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <form onSubmit={handleSubmit(submit)}>
+                                          <div>
+                                            <Col sm={6}>
+                                              <div className="input-group input-group-outline my-3">
+                                                <select
+                                                  class="form-select"
+                                                  aria-label="Default select example"
+                                                  // placeholder="role"
+                                                  {...register("role")}
+                                                  style={{
+                                                    padding: "12px",
+                                                    color: "#495057",
+                                                  }}
+                                                  onChange={(e) =>
+                                                    getCurrentTeamMember(e)
+                                                  }
+                                                  // placeholder="Add Developers "
+                                                >
+                                                  {console.log(
+                                                    "dev is there : ",
+                                                    devs
+                                                  )}
+                                                  <option selected>
+                                                    Developer
+                                                  </option>
+
+                                                  {devs?.map((dev) => {
+                                                    return (
+                                                      <option
+                                                        value={JSON.stringify(
+                                                          dev
+                                                        )}
+                                                      >
+                                                        {/* {role.rolename.charAt(0).toUpperCase() +
+                                          role.rolename.slice(1)} */}
+                                                        {dev.firstname}
+                                                      </option>
+                                                    );
+                                                  })}
+                                                </select>
+                                              </div>
+                                              <button
+                                                type="submit"
+                                                className="btn bg-gradient-primary my-1 mb-2"
+                                                onClick={(e) =>
+                                                  addTeamMember(e)
+                                                }
+                                              >
+                                                Add Team Member
+                                              </button>
+                                            </Col>
+                                            <Col sm={6}>
+                                              <div className="input-group input-group-outline my-3 mx-5">
+                                                <ul>
+                                                  {teamMembers?.map(
+                                                    (member) => {
+                                                      return (
+                                                        <div>
+                                                          <li>
+                                                            {member.firstname}{" "}
+                                                            <RemoveIcon
+                                                              onClick={() =>
+                                                                console.log(
+                                                                  "deleted"
+                                                                )
+                                                              }
+                                                            />
+                                                          </li>
+                                                        </div>
+                                                      );
+                                                    }
+                                                  )}
+                                                </ul>
+                                              </div>
+                                            </Col>
+                                          </div>
+                                        </form>
+                                      </ModalBody>
+                                    </Modal>
+                                  </div>
+                                </button>
+                              </ModalBody>
+
+                              {/* <button on?Click={closeModal1}>Close Modal 1</button> */}
                             </Modal>
 
                             <div className="my-auto">
-                              <h6
-                                className="mb-0 text-sm"
-                                
-                              >
+                              <h6 className="mb-0 text-sm">
                                 <button
                                   className="nav-link text-body p-1 btn btn-outline-primary"
                                   style={{
@@ -179,7 +409,9 @@ function ProjectData(props) {
                                     border: "none",
                                     marginTop: "10px",
                                   }}
-                                  onClick={() => openModal1(project.description?project.description:"not found")}
+                                  onClick={() =>
+                                    openModal1(project ? project : "not found")
+                                  }
                                 >
                                   {project.title}
                                 </button>
@@ -188,10 +420,10 @@ function ProjectData(props) {
 
                             <Modal
                               size="lg"
-                              isOpen={modal}
-                              toggle={() => setModal(!modal)}
+                              isOpen={modal1}
+                              toggle={() => setModal(!modal1)}
                             >
-                              <ModalHeader toggle={() => setModal(!modal)}>
+                              <ModalHeader toggle={() => setModal1(!modal1)}>
                                 Update Project
                               </ModalHeader>
                               <ModalBody>
@@ -205,7 +437,6 @@ function ProjectData(props) {
                                       value={data ? data.title : ""}
                                       onChange={handleInputChange}
                                     />
-                                    
                                   </div>
                                   <div className="input-group input-group-outline mb-3">
                                     <input
@@ -217,6 +448,7 @@ function ProjectData(props) {
                                       onChange={handleInputChange}
                                     />
                                   </div>
+
                                   <div className="input-group input-group-outline mb-3">
                                     <textarea
                                       class="form-control"
@@ -233,7 +465,7 @@ function ProjectData(props) {
                                       type="text"
                                       className="form-control"
                                       placeholder="estimated hrs"
-                                      name = "estimatedhours"
+                                      name="estimatedhours"
                                       value={data ? data.estimatedhours : ""}
                                       onChange={handleInputChange}
                                     />
@@ -256,7 +488,6 @@ function ProjectData(props) {
                                               ? data.startdate.substr(0, 10)
                                               : ""
                                           }
-                                          
                                           onChange={handleInputChange}
                                         />
                                       </Col>
@@ -267,7 +498,7 @@ function ProjectData(props) {
                                         <Form.Control
                                           type="date"
                                           placeholder="End Date"
-                                          name = "completiondate"
+                                          name="completiondate"
                                           value={
                                             data && data.completiondate
                                               ? data.completiondate.substr(
@@ -286,7 +517,6 @@ function ProjectData(props) {
                                       type="submit"
                                       className="btn bg-gradient-primary  w-15 my-5 mb-2"
                                       onClick={handleUpdate}
-                                      
                                     >
                                       Update
                                     </button>
@@ -298,9 +528,10 @@ function ProjectData(props) {
                             <button
                               className="btn btn-link text-secondary mb-0"
                               onClick={() => {
-                                setModal(true);
+                                setModal1(true);
+                                handleProject(() => setCurrProject(project));
+
                                 getproductById(project._id);
-                                
                               }}
                             >
                               <EditIcon fontSize="small" color="action" />
@@ -319,9 +550,8 @@ function ProjectData(props) {
                         </td>
                         <td>
                           <span className="text-xs font-weight-bold mb-0">
-                            {project.startdate.substr(0,10)}
+                            {project.startdate.substr(0, 10)}
                           </span>
-                          
                         </td>
                         <td className="align-middle text-center">
                           <div>
@@ -329,11 +559,9 @@ function ProjectData(props) {
                               className="me-2 text-xs font-weight-bold"
                               // style={{ marginRight: "50px" }}
                             >
-                              {project.completiondate.substr(0,10)}
+                              {project.completiondate.substr(0, 10)}
                             </span>
                           </div>
-                            
-                        
                         </td>
                         <td className="align-middle">
                           <button

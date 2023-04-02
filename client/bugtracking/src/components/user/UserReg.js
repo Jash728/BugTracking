@@ -101,10 +101,6 @@ export const UserReg = () => {
                               </option>
                             );
                           })}
-                          {/* <option selected>Role</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option> */}
                         </select>
                         {/* <div className="input-group input-group-outline mb-3">
                           <label>Role</label>

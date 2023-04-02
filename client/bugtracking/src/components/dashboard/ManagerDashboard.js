@@ -9,25 +9,28 @@ import { get, set, useForm } from "react-hook-form";
 import ProjectData from "../ProjectData";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { useNavigate } from "react-router-dom";
+import RemoveIcon from '@mui/icons-material/Remove';
 
-const DevDashboard = () => {
+const ManagerDashboard = () => {
   const [user, setuser] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedData, setSelectedData] = useState({});
-  var navigate = useNavigate()
+  var navigate = useNavigate();
   const [projects, setProjects] = useState([]);
+  const [devs,setDevs] = useState([])
+  const [teamMembers,setTeamMembers] = useState([])
+  const [currentMember,setCurrentMember] = useState({})
 
 
 
   const getData = () => {
-    let id = localStorage.getItem("_id")
+    let id = localStorage.getItem("_id");
     fetch(`http://localhost:4000/project/project/all/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-    
       },
     })
       .then((resp) => resp.json())
@@ -37,6 +40,7 @@ const DevDashboard = () => {
   useEffect(() => {
     getData();
     getLoggedinUserData();
+    getDeveloperData();
   }, []);
 
   const getLoggedinUserData = () => {
@@ -44,17 +48,30 @@ const DevDashboard = () => {
     axios
       .get("http://localhost:4000/user/user/" + id)
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setuser(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const getDeveloperData = () => {
+    fetch(`http://localhost:4000/user/user/dev`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => setDevs(resp.data))
+      .catch((error) => console.log(error));
+  }
+
   const submit = (data) => {
     var id = localStorage.getItem("_id");
     data.userid = id;
-    console.log(data)
+    // console.log(data);
     axios
       .post("http://localhost:4000/project/project", data)
       .then((res) => {
@@ -66,7 +83,7 @@ const DevDashboard = () => {
       });
     reset();
     getData();
-    setModal(false)
+    setModal(false);
   };
   // useEffect(() => {
   //   getLoggedinUserData();
@@ -94,16 +111,33 @@ const DevDashboard = () => {
     }
   };
 
-
-  const logout = (e)=>{
+  const addTeamMember = (e) =>{
     e.preventDefault();
-    console.log("Jash")
-    localStorage.clear();
-    setuser("")
-    setProjects("")
-    navigate("/login")
+
+    let currArr = teamMembers
+    currArr.push(currentMember)
+    setTeamMembers( currArr);
+    setCurrentMember("")
+
+
     
   }
+
+  const getCurrentTeamMember = (e) =>{
+    e.preventDefault();
+    console.log("curr member" ,e.target)
+    setCurrentMember(e.target.value);
+  }
+  
+
+  const logout = (e) => {
+    e.preventDefault();
+    console.log("Jash");
+    localStorage.clear();
+    setuser("");
+    setProjects("");
+    navigate("/login");
+  };
   return (
     <body
       className="g-sidenav-show   overflow-hidden bg-gray-200"
@@ -130,7 +164,7 @@ const DevDashboard = () => {
               className="navbar-brand-img h-100"
               alt="main_logo"
             />
-            <span className="ms-1 font-weight-bold text-white">Developer</span>
+            <span className="ms-1 font-weight-bold text-white">Manager</span>
           </a>
         </div>
         <hr className="horizontal light mt-0 mb-2" />
@@ -194,7 +228,6 @@ const DevDashboard = () => {
                 <span className="nav-link-text ms-1">Sign Up</span>
               </a>
             </li>
-            
           </ul>
         </div>
       </aside>
@@ -309,6 +342,56 @@ const DevDashboard = () => {
                                 {...register("completiondate")}
                               />
                             </Col>
+                            <Col sm={6}>
+                              <div className="input-group input-group-outline my-3">
+                                <select
+                                  class="form-select"
+                                  aria-label="Default select example"
+                                  // placeholder="role"
+                                  {...register("role")}
+                                  style={{ padding: "12px", color: "#495057" }}
+                                  onChange={(e) => getCurrentTeamMember(e)}
+                                // placeholder="Add Developers "
+
+                                >
+                                {console.log("dev is there : ", devs)}
+                                  {devs?.map((dev) => {
+                                    return (
+                                      <option value={JSON.stringify(dev)}>
+                                        {/* {role.rolename.charAt(0).toUpperCase() +
+                                          role.rolename.slice(1)} */}
+                                          {dev.firstname}
+                                      </option>
+                                    );
+                                  })}
+                                </select> 
+                              </div>
+                              <button
+                                type="submit"
+                                className="btn bg-gradient-primary my-1 mb-2"
+                                onClick={ (e) =>addTeamMember(e)}
+                              >
+                                Add Team Member
+                              </button>
+                            </Col>
+                            <Col sm={6}>
+                              <div className="input-group input-group-outline my-3 mx-5">
+                              <ul>
+                              {teamMembers?.map((member) => {
+                                    return (
+                                      <div>
+                                     
+                              
+                                        <li>{JSON.parse(member).firstname} <RemoveIcon onClick={()=>console.log("deleted")}/></li>
+                                      
+                                          
+
+                                      </div>
+                                    );
+                                  })}
+                                  </ul>
+                              </div>
+                            </Col>
                           </Form.Group>
                         </div>
                         <div className="text-center">
@@ -336,7 +419,7 @@ const DevDashboard = () => {
             getData={getData}
           />
         </div>
-        <div style={{float:"right", marginRight:"20px"}}>
+        <div style={{ float: "right", marginRight: "20px" }}>
           <li className="nav-item px-3 d-flex align-items-center">
             <button
               class="btn btn-danger"
@@ -353,17 +436,19 @@ const DevDashboard = () => {
           </li>
         </div>
         <li className="nav-item">
-              <a className="nav-link text-white " href="/logout">
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">assignment</i>
-                </div>
-                <button className="nav-link-text ms-1" onClick={(e)=>logout(e)}>Logout</button>
-              </a>
-            </li>
+          <a className="nav-link text-white " href="/logout">
+            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i className="material-icons opacity-10">assignment</i>
+            </div>
+            <button className="nav-link-text ms-1" onClick={(e) => logout(e)}>
+              Logout
+            </button>
+          </a>
+        </li>
         {/* End Navbar */}
       </main>
     </body>
   );
 };
 
-export default DevDashboard;
+export default ManagerDashboard;

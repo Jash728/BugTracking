@@ -19,8 +19,8 @@ export const UserLogin = () => {
             localStorage.setItem("_id",res.data.data?._id)
             console.log(res.data.data?.role.rolename)
             // axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
-            if(res.data.data?.role.rolename ==="developer"){
-                navigate("/devdashboard")
+            if(res.data.data?.role.rolename ==="manager"){
+                navigate("/managerdashboard")
             }
             //role...
             
