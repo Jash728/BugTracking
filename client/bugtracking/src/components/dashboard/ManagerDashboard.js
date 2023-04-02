@@ -38,9 +38,14 @@ const ManagerDashboard = () => {
       .catch((error) => console.log(error));
   };
   useEffect(() => {
+    let user = localStorage.getItem('_id')
+    if(!user){
+      navigate('/login');
+    }
     getData();
     getLoggedinUserData();
     getDeveloperData();
+
   }, []);
 
   const getLoggedinUserData = () => {

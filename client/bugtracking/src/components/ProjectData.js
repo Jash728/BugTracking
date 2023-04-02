@@ -27,6 +27,7 @@ function ProjectData(props) {
   const [mySet, setMySet] = useState([]);
   const [currProject, setCurrProject] = useState("");
   const [currProjectID, setCurrProjectID] = useState("");
+  const [teamDevelopers, setTeamDevelopers] = useState({});
 
   // const { register, handleSubmit, reset, setValue } = useForm();
 
@@ -53,7 +54,7 @@ function ProjectData(props) {
     setModal(false);
   };
 
-  const pushTeamMember = () => {
+  const pushTeamMember = async () => {
     console.log(currProjectID);
     let data = [currProjectID, JSON.parse(currentMember)._id];
     console.log("Dhruvil", data);
@@ -63,11 +64,30 @@ function ProjectData(props) {
         console.log(res.data);
         // localStorage.setItem("_id",res.data.data[0]?._id)
       })
+      .then(() => getTeamMembers(currProjectID))
+
       .catch((err) => {
         console.log(err);
       });
   };
-  const addTeamMember = (e) => {
+  const getTeamMembers = async (id) => {
+    console.log(id);
+    let data = [id];
+    let newData = [];
+
+    axios
+      .get("http://localhost:4000/projectteam/getbyuserproject", data)
+      .then((res) => {
+        console.log("Get Data Devs", res.data);
+        // localStorage.setItem("_id",res.data.data[0]?._id)
+        newData = res.data.data;
+        setTeamMembers(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const addTeamMember = async (e) => {
     e.preventDefault();
     console.log("XYZ : ", currentMember);
     if (currentMember.length == 0 || currentMember === "Developer") {
@@ -88,9 +108,10 @@ function ProjectData(props) {
       setCurrentMember("");
       return;
     }
-    pushTeamMember();
+    await pushTeamMember();
+
     setMySet(currSet);
-    setTeamMembers(currArr);
+    // setTeamMembers(currArr);
     setCurrentMember("");
   };
   const getData = () => {
@@ -168,7 +189,7 @@ function ProjectData(props) {
     props.getData();
     console.log("data is", data);
     getDeveloperData();
-  }, [data, modal]);
+  }, [data, modal, teamMembers]);
 
   const handleInputChange = (event) => {
     // console.log("event", event.target)
@@ -188,8 +209,32 @@ function ProjectData(props) {
     console.log("Modal ", data);
     setDesc(project.description);
     setCurrProjectID(project._id);
+    getTeamMembers(project._id);
     setShowModal1(true);
   };
+
+  const handleDeleteMember =(id) =>{
+    console.log(id)
+    axios
+    .delete(`http://localhost:4000/projectteam/deleteProjectTeam/${id}`)
+    .then((res) => {
+      console.log(res.data);
+      // localStorage.setItem("_id",res.data.data[0]?._id)
+    })
+    .then(()=>{
+      getTeamMembers(currProjectID);
+    })
+    .then(()=>{
+      let newSet = mySet.filter((item)=>{
+        return item != id;
+      } 
+      )
+      setMySet(newSet)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 
   const closeModal1 = () => {
     setShowModal1(false);
@@ -276,125 +321,147 @@ function ProjectData(props) {
 
                                 <button
                                   className="btn btn-link text-secondary mb-0"
-                                  onClick={() => {
+                                  onClick={(e) => {
                                     setModal(true);
                                     getproductById(project._id);
                                   }}
                                 >
-                                  <AddIcon fontSize="small" color="action" />
-                                  <Col sm={6}>
-                                    <div className="input-group input-group-outline my-3 mx-5">
-                                      <ul>
-                                        {teamMembers?.map((member) => {
-                                          return (
-                                            <div>
-                                              <li>
-                                                {member.firstname}{" "}
-                                                <RemoveIcon
-                                                  onClick={() =>
-                                                    console.log("deleted")
-                                                  }
-                                                />
-                                              </li>
-                                            </div>
-                                          );
-                                        })}
-                                      </ul>
-                                    </div>
-                                  </Col>
-                                  <div>
-                                    <Modal
-                                      size="lg"
-                                      isOpen={modal}
+                                  {teamMembers.length == 0
+                                    ? "Add Team Member"
+                                    : "Edit Team Members"}
+                                </button>
+
+                                <Col sm={6}>
+                                  <div className="input-group input-group-outline my-3 mx-5">
+                                    <ul>
+                                      {teamMembers?.map((member) => {
+                                        return (
+                                          <div>
+                                            <li>
+                                              {member.userId
+                                                ? member.userId.firstname
+                                                : ""}
+                                            </li>
+                                          </div>
+                                        );
+                                      })}
+                                    </ul>
+                                  </div>
+                                </Col>
+
+                                <div>
+                                  <Modal
+                                    size="lg"
+                                    isOpen={modal}
+                                    toggle={() => setModal(!modal)}
+                                  >
+                                    <ModalHeader
                                       toggle={() => setModal(!modal)}
                                     >
-                                      <ModalHeader
-                                        toggle={() => setModal(!modal)}
-                                      >
-                                        Add Team Members
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <form onSubmit={handleSubmit(submit)}>
-                                          <div>
-                                            <Col sm={6}>
-                                              <div className="input-group input-group-outline my-3">
-                                                <select
-                                                  class="form-select"
-                                                  aria-label="Default select example"
-                                                  // placeholder="role"
-                                                  {...register("role")}
-                                                  style={{
-                                                    padding: "12px",
-                                                    color: "#495057",
-                                                  }}
-                                                  onChange={(e) =>
-                                                    getCurrentTeamMember(e)
-                                                  }
-                                                  // placeholder="Add Developers "
-                                                >
-                                                  {console.log(
-                                                    "dev is there : ",
-                                                    devs
-                                                  )}
-                                                  <option selected>
-                                                    Developer
-                                                  </option>
-
-                                                  {devs?.map((dev) => {
-                                                    return (
-                                                      <option
-                                                        value={JSON.stringify(
-                                                          dev
-                                                        )}
-                                                      >
-                                                        {/* {role.rolename.charAt(0).toUpperCase() +
-                                          role.rolename.slice(1)} */}
-                                                        {dev.firstname}
-                                                      </option>
-                                                    );
-                                                  })}
-                                                </select>
-                                              </div>
-                                              <button
-                                                type="submit"
-                                                className="btn bg-gradient-primary my-1 mb-2"
-                                                onClick={(e) =>
-                                                  addTeamMember(e)
+                                      {teamMembers.length == 0
+                                        ? "Add Team Member"
+                                        : "Edit Team Members"}
+                                    </ModalHeader>
+                                    <ModalBody>
+                                      <form onSubmit={handleSubmit(submit)}>
+                                        <div>
+                                          <Col sm={6}>
+                                            <div className="input-group input-group-outline my-3">
+                                              <select
+                                                class="form-select"
+                                                aria-label="Default select example"
+                                                // placeholder="role"
+                                                {...register("role")}
+                                                style={{
+                                                  padding: "12px",
+                                                  color: "#495057",
+                                                }}
+                                                onChange={(e) =>
+                                                  getCurrentTeamMember(e)
                                                 }
+                                                // placeholder="Add Developers "
                                               >
-                                                Add Team Member
-                                              </button>
-                                            </Col>
-                                            <Col sm={6}>
-                                              <div className="input-group input-group-outline my-3 mx-5">
-                                                <ul>
-                                                  {teamMembers?.map(
-                                                    (member) => {
-                                                      return (
-                                                        <div>
-                                                          <li>
-                                                            {member.firstname}{" "}
-                                                            <RemoveIcon
-                                                              onClick={() =>
-                                                                console.log(
-                                                                  "deleted"
-                                                                )
-                                                              }
-                                                            />
-                                                          </li>
-                                                        </div>
-                                                      );
-                                                    }
-                                                  )}
-                                                </ul>
-                                              </div>
-                                            </Col>
-                                          </div>
-                                        </form>
-                                      </ModalBody>
-                                    </Modal>
-                                  </div>
-                                </button>
+                                                {console.log(
+                                                  "dev is there : ",
+                                                  devs
+                                                )}
+                                                <option selected>
+                                                  Developer
+                                                </option>
+
+                                                {devs?.map((dev) => {
+                                                  return (
+                                                    <option
+                                                      value={JSON.stringify(
+                                                        dev
+                                                      )}
+                                                    >
+                                                      {/* {role.rolename.charAt(0).toUpperCase() +
+                                          role.rolename.slice(1)} */}
+                                                      {dev.firstname}
+                                                    </option>
+                                                  );
+                                                })}
+                                              </select>
+                                            </div>
+                                            <button
+                                              type="submit"
+                                              className="btn bg-gradient-primary my-1 mb-2"
+                                              onClick={(e) => {
+                                                addTeamMember(e);
+                                              }}
+                                            >
+                                              Add Team Member
+                                            </button>
+                                          </Col>
+                                          <Col sm={6}>
+                                            <div className="input-group input-group-outline my-3 mx-5">
+                                              {/* <ul> */}
+                                                <table className="table align-items-center justify-content-center mb-0">
+                                                  <thead>
+                                                    <tr>
+                                                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                        Member Name
+                                                      </th>
+
+                                                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                        Actions
+                                                      </th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                  {teamMembers?.map((member) => {
+                                                  {/* {console.log("Dani: ", member)} */}
+                                                  return (
+                                                    <tr>
+                                                      <td>
+                                                        {member.userId
+                                                          ? member.userId
+                                                              .firstname
+                                                          : ""}
+                                                      </td>
+                                                      <td>
+                                                        <RemoveIcon
+                                                          onClick={() =>
+                                                              handleDeleteMember(member._id)
+                                                          }
+                                                        />
+                                                      </td>
+
+                                                    </tr>
+                                                  );
+                                                })}
+                                                  </tbody>
+                                                </table>
+                                                
+                                              {/* </ul> */}
+                                            </div>
+                                          </Col>
+                                        </div>
+                                      </form>
+                                    </ModalBody>
+                                  </Modal>
+                                </div>
                               </ModalBody>
 
                               {/* <button on?Click={closeModal1}>Close Modal 1</button> */}
@@ -530,7 +597,6 @@ function ProjectData(props) {
                               onClick={() => {
                                 setModal1(true);
                                 handleProject(() => setCurrProject(project));
-
                                 getproductById(project._id);
                               }}
                             >
