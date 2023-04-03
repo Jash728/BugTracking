@@ -3,7 +3,7 @@ import axios from "axios";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { Form, Row, Col } from "react-bootstrap";
 import { get, set, useForm } from "react-hook-form";
@@ -28,6 +28,8 @@ function ProjectData(props) {
   const [currProject, setCurrProject] = useState("");
   const [currProjectID, setCurrProjectID] = useState("");
   const [teamDevelopers, setTeamDevelopers] = useState({});
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
 
   // const { register, handleSubmit, reset, setValue } = useForm();
 
@@ -71,8 +73,7 @@ function ProjectData(props) {
       });
   };
   const getTeamMembers = async (id) => {
-
-    console.log("Inside getTeamMembers: ",id);
+    console.log("Inside getTeamMembers: ", id);
     let data = [id];
     let newData = [];
 
@@ -94,7 +95,7 @@ function ProjectData(props) {
     e.preventDefault();
     console.log("XYZ : ", currentMember);
     if (currentMember.length == 0 || currentMember === "Developer") {
-      alert("hello");
+      alert("Please assign developer name");
       return;
     }
 
@@ -107,7 +108,7 @@ function ProjectData(props) {
       currArr.push(JSON.parse(currentMember));
       currSet.push(JSON.parse(currentMember)._id);
     } else {
-      alert("hello");
+      alert("Please select other dev name");
       setCurrentMember("");
       return;
     }
@@ -204,9 +205,6 @@ function ProjectData(props) {
     props.onSave(data);
   };
 
-  const [showModal1, setShowModal1] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-
   const openModal1 = (project) => {
     // setDesc(props.)
     console.log("Modal ", project);
@@ -216,28 +214,26 @@ function ProjectData(props) {
     setShowModal1(true);
   };
 
-  const handleDeleteMember =(id) =>{
-    console.log(id)
+  const handleDeleteMember = (id) => {
+    console.log("New id ",id);
     axios
-    .delete(`http://localhost:4000/projectteam/deleteProjectTeam/${id}`)
-    .then((res) => {
-      console.log(res.data);
-      // localStorage.setItem("_id",res.data.data[0]?._id)
-    })
-    .then(()=>{
-      getTeamMembers(currProjectID);
-    })
-    .then(()=>{
-      let newSet = mySet.filter((item)=>{
-        return item != id;
-      } 
-      )
-      setMySet(newSet)
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+      .delete(`http://localhost:4000/projectteam/deleteProjectTeam/${id._id}`)
+      .then((res) => {
+        console.log(res.data);
+        // localStorage.setItem("_id",res.data.data[0]?._id)
+      })
+      .then(() => {
+        getTeamMembers(currProjectID);
+      })
+      .then(() => {
+        let newSet = mySet.filter((item) => item !== id.userId._id); // filter the mySet array to remove the deleted member ID
+        setMySet(newSet); // update the state with the new filtered array
+        console.log("New Set is ", newSet);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const closeModal1 = () => {
     setDesc("");
@@ -309,54 +305,71 @@ function ProjectData(props) {
                             </div>
                             <Modal isOpen={showModal1}>
                               <ModalHeader onClick={closeModal1}>
-                                Description
+                                <h1 style={{ AlignItems: "center" }}>
+                                  Details
+                                </h1>
                               </ModalHeader>
 
                               <ModalBody>
                                 {/* {project.description} */}
+                                <h5>
+                                  Description :{" "}
+                                  <span
+                                    style={{ fontSize: "15px", color: "red" }}
+                                  >
+                                    {" "}
+                                    {desc}
+                                  </span>
+                                </h5>
+                                <div style={{ marginTop: "20px" }}>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      padding: "10px",
+                                    }}
+                                  >
+                                    <h5>
+                                      {teamMembers.length == 0
+                                        ? " "
+                                        : "Team Member Name"}
+                                    </h5>
 
-                                <p
-                                  style={{
-                                    marginTop: "20px",
-                                    marginLeft: "20px",
-                                    fontSize: "20px",
-                                  }}
-                                >
-                                  -- {desc}
-                                </p>
-                                
-                                <button
-                                  className="btn btn-link text-secondary mb-0"
-                                  onClick={(e) => {
-                                    setModal(true);
-                                    getproductById(()=>project._id)
-
-                                  }}
-                                >
-                                  {teamMembers.length == 0
-                                    ? "Add Team Member"
-                                    : "Edit Team Members"}
-                                </button>
-
-                                <Col sm={6}>
-                                  <div className="input-group input-group-outline my-3 mx-5">
-                                    <ul>
-                                      {teamMembers?.map((member) => {
-                                        console.log("qwertyuiop: ",member)
-                                        return (
-                                          <div>
-                                            <li>
-                                              {member && member.userId
-                                                ? member.userId.firstname
-                                                : ""}
-                                            </li>
-                                          </div>
-                                        );
-                                      })}
-                                    </ul>
+                                    <button
+                                      className="btn btn-link text-secondary mb-0"
+                                      onClick={(e) => {
+                                        setModal(true);
+                                        getproductById(() => project._id);
+                                      }}
+                                      style={{ marginLeft: "100px" }}
+                                    >
+                                      {teamMembers.length == 0 ? (
+                                        <AddCircleRoundedIcon />
+                                      ) : (
+                                        <EditIcon />
+                                      )}
+                                    </button>
                                   </div>
-                                </Col>
 
+                                  <Col sm={6}>
+                                    <div className="input-group input-group-outline my-3 mx-5">
+                                      <ol>
+                                        {teamMembers?.map((member) => {
+                                          console.log("qwertyuiop: ", member);
+                                          return (
+                                            <div>
+                                              <li>
+                                                {member && member.userId
+                                                  ? member.userId.firstname
+                                                  : ""}
+                                              </li>
+                                            </div>
+                                          );
+                                        })}
+                                      </ol>
+                                    </div>
+                                  </Col>
+                                </div>
                                 <div>
                                   <Modal
                                     size="lg"
@@ -425,42 +438,49 @@ function ProjectData(props) {
                                           <Col sm={6}>
                                             <div className="input-group input-group-outline my-3 mx-5">
                                               {/* <ul> */}
-                                                <table className="table align-items-center justify-content-center mb-0">
-                                                  <thead>
-                                                    <tr>
-                                                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                        Member Name
-                                                      </th>
+                                              <table className="table align-items-center justify-content-center mb-0">
+                                                <thead>
+                                                  <tr>
+                                                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                      Member Name
+                                                    </th>
 
-                                                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                        Actions
-                                                      </th>
-                                                    </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                  {teamMembers?.map((member) => {
-                                                  {/* {console.log("Dani: ", member)} */}
-                                                  return (
-                                                    <tr>
-                                                      <td>
-                                                        {member && member.userId
-                                                          ? member.userId.firstname
-                                                          : ""}
-                                                      </td>
-                                                      <td>
-                                                        <RemoveIcon
-                                                          onClick={() =>
-                                                              handleDeleteMember(member._id)
-                                                          }
-                                                        />
-                                                      </td>
+                                                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                      Actions
+                                                    </th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  {teamMembers?.map(
+                                                    (member) => {
+                                                      {
+                                                        /* {console.log("Dani: ", member)} */
+                                                      }
+                                                      return (
+                                                        <tr>
+                                                          <td>
+                                                            {member &&
+                                                            member.userId
+                                                              ? member.userId
+                                                                  .firstname
+                                                              : ""}
+                                                          </td>
+                                                          <td>
+                                                            <RemoveIcon
+                                                              onClick={() =>
+                                                                handleDeleteMember(
+                                                                  member
+                                                                )
+                                                              }
+                                                            />
+                                                          </td>
+                                                        </tr>
+                                                      );
+                                                    }
+                                                  )}
+                                                </tbody>
+                                              </table>
 
-                                                    </tr>
-                                                  );
-                                                })}
-                                                  </tbody>
-                                                </table>
-                                                
                                               {/* </ul> */}
                                             </div>
                                           </Col>
@@ -484,11 +504,9 @@ function ProjectData(props) {
                                     marginTop: "10px",
                                   }}
                                   onClick={() => {
-                                    openModal1(project ? project : "not found")
-                                    console.log("mooni: ",project._id)
-
-                                  }
-                                  }
+                                    openModal1(project ? project : "not found");
+                                    console.log("mooni: ", project._id);
+                                  }}
                                 >
                                   {project.title}
                                 </button>
@@ -608,7 +626,6 @@ function ProjectData(props) {
                                 setModal1(true);
                                 handleProject(() => setCurrProject(project));
                                 getproductById(project._id);
-                                
                               }}
                             >
                               <EditIcon fontSize="small" color="action" />

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export const UserLogin = () => {
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   var navigate = useNavigate()
   const submit = (data)=>{
     
@@ -30,6 +30,7 @@ export const UserLogin = () => {
         console.log("user not found....")
         alert("user not found....")
     })
+    reset();
   }
 
   return (
