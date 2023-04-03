@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { Form, Row, Col } from "react-bootstrap";
 import { get, set, useForm } from "react-hook-form";
-import RemoveIcon from "@mui/icons-material/Remove";
+import ProjectDetailsModal from "./Modals/ProjectDetailsModal";
+import UpdateProjectModal from "./Modals/UpdateProjectModal";
 
 function ProjectData(props) {
   const { projects } = props;
-  // console.log(projects);
   const { register, handleSubmit, reset, setValue } = useForm();
-  const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
 
   const [data, setData] = useState({});
-  const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("jash");
   const [projects1, setProjects1] = useState([]);
   const [devs, setDevs] = useState([]);
@@ -27,17 +23,8 @@ function ProjectData(props) {
   const [mySet, setMySet] = useState([]);
   const [currProject, setCurrProject] = useState("");
   const [currProjectID, setCurrProjectID] = useState("");
-  const [teamDevelopers, setTeamDevelopers] = useState({});
   const [showModal1, setShowModal1] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
 
-  // const { register, handleSubmit, reset, setValue } = useForm();
-
-  // const { register, handleSubmit, reset,setValue } = useForm();
-  // console.log(data)
-  const handleClick = () => {
-    setModal(true);
-  };
   const submit = (data) => {
     var id = localStorage.getItem("_id");
     data.userid = id;
@@ -145,11 +132,8 @@ function ProjectData(props) {
       },
     })
       .then((res) => res.json())
-      // .then((res) => console.log("resp are" ,res.data))
-      // .then((res) => setData(res.data))
       .then((res) => {
         const obj = res.data;
-        // console.log("obj is", obj);
         setData(obj);
       })
 
@@ -157,7 +141,6 @@ function ProjectData(props) {
   };
 
   const handleUpdate = (event) => {
-    // console.log("event + ", data);
     fetch(`http://localhost:4000/project/project/${data._id}`, {
       method: "PUT",
       headers: {
@@ -174,7 +157,6 @@ function ProjectData(props) {
       });
     setModal1(false);
     props.getData();
-    // return data;
   };
 
   const getDeveloperData = () => {
@@ -189,14 +171,12 @@ function ProjectData(props) {
       .catch((error) => console.log(error));
   };
   useEffect(() => {
-    // setTitle("Jas")
     props.getData();
     console.log("data is", data);
     getDeveloperData();
   }, [data, modal, teamMembers]);
 
   const handleInputChange = (event) => {
-    // console.log("event", event.target)
     const { name, value } = event.target;
     setData({ ...data, [name]: value });
   };
@@ -206,7 +186,6 @@ function ProjectData(props) {
   };
 
   const openModal1 = (project) => {
-    // setDesc(props.)
     console.log("Modal ", project);
     setDesc(project.description);
     setCurrProjectID(project._id);
@@ -215,12 +194,11 @@ function ProjectData(props) {
   };
 
   const handleDeleteMember = (id) => {
-    console.log("New id ",id);
+    console.log("New id ", id);
     axios
       .delete(`http://localhost:4000/projectteam/deleteProjectTeam/${id._id}`)
       .then((res) => {
         console.log(res.data);
-        // localStorage.setItem("_id",res.data.data[0]?._id)
       })
       .then(() => {
         getTeamMembers(currProjectID);
@@ -245,13 +223,6 @@ function ProjectData(props) {
   const handleProject = (project) => {
     // let currPrj = project
     // setCurrProject(currPrj)
-  };
-  const openModal2 = () => {
-    setShowModal2(true);
-  };
-
-  const closeModal2 = () => {
-    setShowModal2(false);
   };
 
   return (
@@ -292,207 +263,31 @@ function ProjectData(props) {
                   <tbody>
                     {projects.map?.((project) => (
                       <tr>
-                        {console.log("QWERT", project)}
                         <td>
                           <div className="d-flex px-1">
                             <div>
-                              {/* {console.log("Project is" , project)} */}
                               <img
                                 src="../assets/img/small-logos/logo-asana.svg"
                                 className="avatar avatar-sm rounded-circle me-2"
                                 alt="spotify"
                               />
                             </div>
-                            <Modal isOpen={showModal1}>
-                              <ModalHeader onClick={closeModal1}>
-                                <h1 style={{ AlignItems: "center" }}>
-                                  Details
-                                </h1>
-                              </ModalHeader>
-
-                              <ModalBody>
-                                {/* {project.description} */}
-                                <h5>
-                                  Description :{" "}
-                                  <span
-                                    style={{ fontSize: "15px", color: "red" }}
-                                  >
-                                    {" "}
-                                    {desc}
-                                  </span>
-                                </h5>
-                                <div style={{ marginTop: "20px" }}>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      padding: "10px",
-                                    }}
-                                  >
-                                    <h5>
-                                      {teamMembers.length == 0
-                                        ? " "
-                                        : "Team Member Name"}
-                                    </h5>
-
-                                    <button
-                                      className="btn btn-link text-secondary mb-0"
-                                      onClick={(e) => {
-                                        setModal(true);
-                                        getproductById(() => project._id);
-                                      }}
-                                      style={{ marginLeft: "100px" }}
-                                    >
-                                      {teamMembers.length == 0 ? (
-                                        <AddCircleRoundedIcon />
-                                      ) : (
-                                        <EditIcon />
-                                      )}
-                                    </button>
-                                  </div>
-
-                                  <Col sm={6}>
-                                    <div className="input-group input-group-outline my-3 mx-5">
-                                      <ol>
-                                        {teamMembers?.map((member) => {
-                                          console.log("qwertyuiop: ", member);
-                                          return (
-                                            <div>
-                                              <li>
-                                                {member && member.userId
-                                                  ? member.userId.firstname
-                                                  : ""}
-                                              </li>
-                                            </div>
-                                          );
-                                        })}
-                                      </ol>
-                                    </div>
-                                  </Col>
-                                </div>
-                                <div>
-                                  <Modal
-                                    size="lg"
-                                    isOpen={modal}
-                                    toggle={() => setModal(!modal)}
-                                  >
-                                    <ModalHeader
-                                      toggle={() => setModal(!modal)}
-                                    >
-                                      {teamMembers.length == 0
-                                        ? "Add Team Member"
-                                        : "Edit Team Members"}
-                                    </ModalHeader>
-                                    <ModalBody>
-                                      <form onSubmit={handleSubmit(submit)}>
-                                        <div>
-                                          <Col sm={6}>
-                                            <div className="input-group input-group-outline my-3">
-                                              <select
-                                                class="form-select"
-                                                aria-label="Default select example"
-                                                // placeholder="role"
-                                                {...register("role")}
-                                                style={{
-                                                  padding: "12px",
-                                                  color: "#495057",
-                                                }}
-                                                onChange={(e) =>
-                                                  getCurrentTeamMember(e)
-                                                }
-                                                // placeholder="Add Developers "
-                                              >
-                                                {console.log(
-                                                  "dev is there : ",
-                                                  devs
-                                                )}
-                                                <option selected>
-                                                  Developer
-                                                </option>
-
-                                                {devs?.map((dev) => {
-                                                  return (
-                                                    <option
-                                                      value={JSON.stringify(
-                                                        dev
-                                                      )}
-                                                    >
-                                                      {/* {role.rolename.charAt(0).toUpperCase() +
-                                          role.rolename.slice(1)} */}
-                                                      {dev.firstname}
-                                                    </option>
-                                                  );
-                                                })}
-                                              </select>
-                                            </div>
-                                            <button
-                                              type="submit"
-                                              className="btn bg-gradient-primary my-1 mb-2"
-                                              onClick={(e) => {
-                                                addTeamMember(e);
-                                              }}
-                                            >
-                                              Add Team Member
-                                            </button>
-                                          </Col>
-                                          <Col sm={6}>
-                                            <div className="input-group input-group-outline my-3 mx-5">
-                                              {/* <ul> */}
-                                              <table className="table align-items-center justify-content-center mb-0">
-                                                <thead>
-                                                  <tr>
-                                                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                      Member Name
-                                                    </th>
-
-                                                    <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                      Actions
-                                                    </th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                  {teamMembers?.map(
-                                                    (member) => {
-                                                      {
-                                                        /* {console.log("Dani: ", member)} */
-                                                      }
-                                                      return (
-                                                        <tr>
-                                                          <td>
-                                                            {member &&
-                                                            member.userId
-                                                              ? member.userId
-                                                                  .firstname
-                                                              : ""}
-                                                          </td>
-                                                          <td>
-                                                            <RemoveIcon
-                                                              onClick={() =>
-                                                                handleDeleteMember(
-                                                                  member
-                                                                )
-                                                              }
-                                                            />
-                                                          </td>
-                                                        </tr>
-                                                      );
-                                                    }
-                                                  )}
-                                                </tbody>
-                                              </table>
-
-                                              {/* </ul> */}
-                                            </div>
-                                          </Col>
-                                        </div>
-                                      </form>
-                                    </ModalBody>
-                                  </Modal>
-                                </div>
-                              </ModalBody>
-
-                              {/* <button on?Click={closeModal1}>Close Modal 1</button> */}
-                            </Modal>
+                            <ProjectDetailsModal
+                              submit={submit}
+                              modal1={modal1}
+                              modal={modal}
+                              setModal={setModal}
+                              showModal1={showModal1}
+                              closeModal1={closeModal1}
+                              desc={desc}
+                              teamMembers={teamMembers}
+                              devs={devs}
+                              prooject={project}
+                              getCurrentTeamMember={getCurrentTeamMember}
+                              addTeamMember={addTeamMember}
+                              handleDeleteMember={handleDeleteMember}
+                              getproductById={getproductById}
+                            />
 
                             <div className="my-auto">
                               <h6 className="mb-0 text-sm">
@@ -513,113 +308,15 @@ function ProjectData(props) {
                               </h6>
                             </div>
 
-                            <Modal
-                              size="lg"
-                              isOpen={modal1}
-                              toggle={() => setModal(!modal1)}
-                            >
-                              <ModalHeader toggle={() => setModal1(!modal1)}>
-                                Update Project
-                              </ModalHeader>
-                              <ModalBody>
-                                <form onSubmit={handleSubmit(handleFormSubmit)}>
-                                  <div className="input-group input-group-outline my-3">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Title"
-                                      name="title"
-                                      value={data ? data.title : ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </div>
-                                  <div className="input-group input-group-outline mb-3">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="technology"
-                                      name="technology"
-                                      value={data ? data.technology : ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </div>
-
-                                  <div className="input-group input-group-outline mb-3">
-                                    <textarea
-                                      class="form-control"
-                                      id="exampleFormControlTextarea1"
-                                      rows="3"
-                                      placeholder="description"
-                                      name="description"
-                                      value={data ? data.description : ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </div>
-                                  <div className="input-group input-group-outline mb-3">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="estimated hrs"
-                                      name="estimatedhours"
-                                      value={data ? data.estimatedhours : ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </div>
-                                  <div>
-                                    <Form.Group
-                                      as={Row}
-                                      controlId="formHorizontalDateRange"
-                                    >
-                                      <Form.Label column sm={2}>
-                                        Start Date
-                                      </Form.Label>
-                                      <Col sm={3}>
-                                        <Form.Control
-                                          type="date"
-                                          placeholder="Start Date"
-                                          name="startdate"
-                                          value={
-                                            data && data.startdate
-                                              ? data.startdate.substr(0, 10)
-                                              : ""
-                                          }
-                                          onChange={handleInputChange}
-                                        />
-                                      </Col>
-                                      <Form.Label column sm={2}>
-                                        End Date
-                                      </Form.Label>
-                                      <Col sm={3}>
-                                        <Form.Control
-                                          type="date"
-                                          placeholder="End Date"
-                                          name="completiondate"
-                                          value={
-                                            data && data.completiondate
-                                              ? data.completiondate.substr(
-                                                  0,
-                                                  10
-                                                )
-                                              : ""
-                                          }
-                                          onChange={handleInputChange}
-                                        />
-                                      </Col>
-                                    </Form.Group>
-                                  </div>
-                                  <div className="text-center">
-                                    <button
-                                      type="submit"
-                                      className="btn bg-gradient-primary  w-15 my-5 mb-2"
-                                      onClick={handleUpdate}
-                                    >
-                                      Update
-                                    </button>
-                                  </div>
-                                </form>
-                              </ModalBody>
-                            </Modal>
-
+                          <UpdateProjectModal
+                            data={data}
+                            handleInputChange = {handleInputChange}
+                            modal1={modal1}
+                            setModal1 = {setModal1}
+                            setModal = {setModal}
+                            handleFormSubmit = {handleFormSubmit}
+                            handleUpdate = {handleUpdate}
+                          />
                             <button
                               className="btn btn-link text-secondary mb-0"
                               onClick={() => {
