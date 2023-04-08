@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { Form, Row, Col } from "react-bootstrap";
 import { get, set, useForm } from "react-hook-form";
 import ProjectDetailsModal from "./Modals/ProjectDetailsModal";
 import UpdateProjectModal from "./Modals/UpdateProjectModal";
+import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
 function ProjectData(props) {
+  var navigate = useNavigate()
   const { projects } = props;
   const { register, handleSubmit, reset, setValue } = useForm();
   const [modal, setModal] = useState(false);
@@ -225,6 +226,11 @@ function ProjectData(props) {
     // setCurrProject(currPrj)
   };
 
+  const handleClick = (id) => {
+    localStorage.setItem("project_id", id);
+    navigate("/projectdetails")
+  }
+
   return (
     <div className="container-fluid py-4">
       <div className="row">
@@ -299,7 +305,7 @@ function ProjectData(props) {
                                     marginTop: "10px",
                                   }}
                                   onClick={() => {
-                                    openModal1(project ? project : "not found");
+                                    handleClick(project._id)
                                     console.log("mooni: ", project._id);
                                   }}
                                 >
@@ -327,8 +333,19 @@ function ProjectData(props) {
                             >
                               <EditIcon fontSize="small" color="action" />
                             </button>
+                            <button
+                              className="btn btn-link text-secondary mb-0"
+                              onClick={() => {
+                               
+                                    openModal1(project ? project : "not found");
+                                    console.log("mooni: ", project._id);
+                              }}
+                            >
+                              <AddIcon fontSize="small" color="action" />
+                            </button>
                           </div>
                         </td>
+
                         <td>
                           <p className="text-sm font-weight-bold mb-0">
                             {project.technology}

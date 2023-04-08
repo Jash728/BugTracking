@@ -70,7 +70,7 @@ const getUserData = (req, res) => {
 const addUser = async(req, res) => {
 
     const hash = await encrypt.encryptPassword(req.body.password)
-    console.log(hash)
+        // console.log(hash)
     const userData = {
         firstname: req.body.firstname,
         email: req.body.email,
@@ -183,11 +183,11 @@ const loginUser = async(req, res) => {
             })
         } else {
 
-            console.log("data is", data)
+            // console.log("data is", data)
             if (data !== null || data !== undefined) {
 
                 const result = await encrypt.comparePassword(req.body.password, data.password)
-                console.log("result is", result)
+                    // console.log("result is", result)
                 if (result == true) {
                     res.status(200).json({
                         message: "user found",
@@ -267,7 +267,7 @@ const getDeveloperData = async(req, res) => {
         // console.log("data is", req.params)
     try {
         let data = await userSchema.find({ role: id })
-        console.log("Jash", data)
+            // console.log("Jash", data)
         res.status(200).json({
             message: "data fetched successfully",
             data: data

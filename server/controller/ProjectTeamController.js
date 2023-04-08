@@ -1,7 +1,7 @@
 const projectTeamSchema = require("../schema/ProjectTeamSchema");
 
 const addProjectTeam = async(req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     let data = req.body
     const projectTeam = await projectTeamSchema.create({
         projectId: data[0],

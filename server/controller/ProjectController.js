@@ -9,7 +9,7 @@ const projectSchema = require("../schema/ProjectSchema")
 
 const getProjectData = async(req, res) => {
     let id = req.params.id
-    console.log("data is", req.params)
+        // console.log("data is", req.params)
     try {
         let data = await projectSchema.find({ userid: id })
             // console.log(data)
@@ -23,27 +23,33 @@ const getProjectData = async(req, res) => {
         })
     }
 
-    // projectSchema.find((err, data) => {
-    //     if (err) {
-    //         res.status(404).json({
-    //             message: "error in fetching data"
-    //         })
-    //     } else {
-    //         res.status(200).json({
-    //             message: "data fetched successfully",
-    //             data: data
-    //         })
-    //     }
+}
 
-    // })
+const getProjectDataById = async(req, res) => {
+    let id = req.params.id
+    console.log("Indivitual Project is", req.params)
+    console.log("id is", id)
+    try {
+        let data = await projectSchema.find({ _id: id })
+        console.log("data is ", data)
+        res.status(200).json({
+            message: "data fetched successfully",
+            data: data
+        })
+    } catch (err) {
+        res.status(404).json({
+            message: "error in fetching data"
+        })
+    }
 
 }
 
 
 
+
 const addProject = (req, res) => {
 
-    console.log(req.body)
+    // console.log(req.body)
     const project = new projectSchema(req.body)
 
     project.save((err, data) => {
@@ -129,4 +135,4 @@ const deleteProject = (req, res) => {
 
 
 
-module.exports = { getProjectData, addProject, getProjectById, updateProject, deleteProject }
+module.exports = { getProjectData, addProject, getProjectById, updateProject, deleteProject, getProjectDataById }

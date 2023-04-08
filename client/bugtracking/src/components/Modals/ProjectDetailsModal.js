@@ -62,24 +62,7 @@ const ProjectDetailsModal = (props) => {
               </button>
             </div>
 
-            <Col sm={6}>
-              <div className="input-group input-group-outline my-3 mx-5">
-                <ol>
-                  {teamMembers?.map((member) => {
-                    console.log("qwertyuiop: ", member);
-                    return (
-                      <div>
-                        <li>
-                          {member && member.userId
-                            ? member.userId.firstname
-                            : ""}
-                        </li>
-                      </div>
-                    );
-                  })}
-                </ol>
-              </div>
-            </Col>
+           
           </div>
           <div>
             <Modal size="lg" isOpen={modal} toggle={() => setModal(!modal)}>
