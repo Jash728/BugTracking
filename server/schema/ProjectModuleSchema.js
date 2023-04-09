@@ -3,8 +3,7 @@ const Schema = mongoose.Schema
 
 const ProjectModuleSchema = new Schema({
     projectId: {
-        type: Schema.Types.ObjectId,
-        ref: 'project'
+        type: String,
     },
     modulename: {
         type: String,
@@ -20,7 +19,6 @@ const ProjectModuleSchema = new Schema({
     },
     startdate: {
         type: Date,
-        // required: true,
         default: Date.now()
     },
     status: {

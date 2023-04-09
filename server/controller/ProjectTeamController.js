@@ -1,7 +1,6 @@
 const projectTeamSchema = require("../schema/ProjectTeamSchema");
 
 const addProjectTeam = async(req, res) => {
-    // console.log(req.body)
     let data = req.body
     const projectTeam = await projectTeamSchema.create({
         projectId: data[0],
@@ -18,19 +17,6 @@ const addProjectTeam = async(req, res) => {
 
 const getProjectTeamByUserProject = async(req, res) => {
     let id = req.params.id
-        // try {
-        //     let data = await projectTeamSchema.find({ projectId: id })
-
-    //     console.log("Jash", data)
-    //     res.status(200).json({
-    //         message: "data fetched successfully",
-    //         data: data
-    //     })
-    // } catch (err) {
-    //     res.status(404).json({
-    //         message: "error in fetching data"
-    //     })
-    // }
     projectTeamSchema
         .find({ projectId: id })
         .populate('projectId') // populate project field

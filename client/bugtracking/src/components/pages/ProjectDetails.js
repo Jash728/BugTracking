@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import SideBar from "./SideBar";
 import DashBoardNavbar from "../pages/DashBoardNavbar";
 import { Form, Row, Col } from "react-bootstrap";
+import ProjectModule from "./ProjectModule";
 // import { useParams } from "react-router-dom";
 
 function ProjectDetails() {
@@ -70,9 +71,15 @@ function ProjectDetails() {
     getProjectData();
     console.log("Project is data", selectedProject);
     getTeamMembers();
-    getLoggedinUserData();
     
-  }, [selectedProject]);
+    
+  }, []);
+
+
+
+  useEffect(()=>{
+    getLoggedinUserData();
+  },[])
 
   return (
     <body
@@ -222,9 +229,13 @@ function ProjectDetails() {
                   </div>
                 </div>
               </div>
+
+
             </div>
           </div>
         </div>
+        <ProjectModule/>
+        
       </main>
     </body>
   );
