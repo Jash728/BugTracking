@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ManagerDashboard from "./components//dashboard/ManagerDashboard";
 import ProjectDetails from "./components/pages/ProjectDetails";
-
+import ModuleDetails from "./components/pages/ModuleDetails";
 
 function App() {
   return (
@@ -27,10 +27,12 @@ function App() {
       {/* <UserReg/> */}
 
       <Routes>
+        <Route path="/" element={<UserReg />} />
         <Route path="/userreg" element={<UserReg />} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/managerdashboard" element={<ManagerDashboard/>}/>
         <Route path="/projectdetails" element={<ProjectDetails/>}/>
+        <Route path="/moduledetails" element={<ModuleDetails/>}/>
         <Route path="/logout" element={<UserLogin/>}/>
       </Routes>
     </div>

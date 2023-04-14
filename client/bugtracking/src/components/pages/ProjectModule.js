@@ -6,7 +6,11 @@ import CreateProjectModuleModal from "../Modals/CreateProjectModuleModal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateProjectModuleModal from "../Modals/UpdateProjectModuleModal";
 import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
+
+
 const ProjectModule = () => {
+  var navigate = useNavigate()
   const [module, setModule] = useState("");
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState();
@@ -122,6 +126,12 @@ const ProjectModule = () => {
       .catch((error) => console.log(error));
   };
 
+  const handleClick = (id) => {
+    localStorage.setItem("module_id", id);
+    
+    navigate(`/moduledetails`);
+  }
+
   return (
     <div className="container-fluid py-4">
       <div className="row">
@@ -169,7 +179,7 @@ const ProjectModule = () => {
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-1">
                         Start Date
                       </th>
-                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-5">
+                      <th className="text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-1">
                         Status
                       </th>
                       <th />
@@ -181,18 +191,13 @@ const ProjectModule = () => {
                         {console.log("module name", module)}
                         <td>
                           <div className="d-flex px-1">
-                            <div>
-                              <img
-                                src="../assets/img/small-logos/logo-asana.svg"
-                                className="avatar avatar-sm rounded-circle me-2"
-                                alt="spotify"
-                              />
-                            </div>
+                           
 
                             <div className="my-auto">
                               <h6 className="mb-0 text-sm">
                                 <button
                                   className="nav-link text-body p-1 btn btn-outline-primary"
+                                  onClick={()=>handleClick(m._id)}
                                   style={{
                                     marginLeft: "10px",
                                     border: "none",
@@ -231,7 +236,7 @@ const ProjectModule = () => {
                             {m.startdate.substr(0, 10)}
                           </span>
                         </td>
-                        <td className="align-middle text-center">
+                        <td >
                           <div>
                             <span
                               className="me-2 text-xs font-weight-bold"

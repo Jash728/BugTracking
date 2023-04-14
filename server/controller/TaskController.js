@@ -1,45 +1,45 @@
-const projectModuleSchema = require("../schema/ProjectModuleSchema");
+const taskSchema = require("../schema/TaskSchema");
 
-
-const addProjectModule = (req, res) => {
-    const projectmodule = new projectModuleSchema(req.body);
-    console.log("Project module is", projectmodule)
-    projectmodule.save((err, data) => {
+const addTask = (req, res) => {
+    const newtask = new taskSchema(req.body);
+    // console.log("Project module is", projectmodule)
+    newtask.save((err, data) => {
         if (err) {
             res.status(500).json({
-                message: "error in adding project module",
+                message: "error in adding task",
             });
         } else {
             res.status(201).json({
-                message: "project module added successfully",
+                message: "task added successfully",
                 data: data,
             });
         }
     });
 };
 
-const getProjectModuleByProjectStatus = async(req, res) => {
+const getTaskBymodulestatus = async(req, res) => {
     let id = req.params.id
         // console.log("id is", id)
-    projectModuleSchema
-        .find({ projectId: id })
-        .populate('projectId') // populate project field
+    taskSchema
+        .find({ moduleId: id })
+        .populate('projectId')
+        .populate('moduleId') // populate project field
         .populate('status') // populate user field
         .exec((err, data) => {
             if (err) {
                 res.status(500).json({
-                    message: "Error in getting module",
+                    message: "Error in getting task",
                     err: err
                 })
             } else {
                 if (data != null || data != undefined || data.length != 0) {
                     res.status(200).json({
-                        message: "Module fetched successfully",
+                        message: "task fetched successfully",
                         data: data // send populated data
                     })
                 } else {
                     res.status(404).json({
-                        message: "Module not found",
+                        message: "task not found",
                     })
                 }
             }
@@ -47,11 +47,12 @@ const getProjectModuleByProjectStatus = async(req, res) => {
 }
 
 
-const getModuleById = (req, res) => {
+const gettaskById = (req, res) => {
     var id = req.params.id
 
 
-    projectModuleSchema.findById(id).populate('projectId')
+    taskSchema.findById(id).populate('projectId')
+        .populate("moduleId")
         .populate('status')
         .exec((err, data) => {
             if (err) {
@@ -67,41 +68,42 @@ const getModuleById = (req, res) => {
         })
 }
 
-const updateProjectModule = (req, res) => {
+const updateTask = (req, res) => {
     const id = req.params.id;
 
-    projectModuleSchema.findByIdAndUpdate(id, req.body, { new: true })
+    taskSchema.findByIdAndUpdate(id, req.body, { new: true })
         .populate('projectId') // populate project field
+        .populate('moduleId') // populate project field
         .populate('status') // populate user field
         .exec((err, updatedData) => {
             if (err) {
                 res.status(404).json({
-                    message: "error in updating project module data",
+                    message: "error in updating task data",
                 })
             } else {
                 res.status(200).json({
-                    message: "project module data updated successfully",
+                    message: "task data updated successfully",
                     data: updatedData // send populated and updated data
                 })
             }
         })
 }
-const deleteProjectModule = (req, res) => {
+const deleteTask = (req, res) => {
     const id = req.params.id;
 
-    projectModuleSchema.findByIdAndDelete(id, (err, doc) => {
+    taskSchema.findByIdAndDelete(id, (err, doc) => {
         if (err) {
             res.status(500).json({
-                message: "Error in deleting project module",
+                message: "Error in deleting task",
                 error: err
             });
         } else if (!doc) {
             res.status(404).json({
-                message: "Project module not found"
+                message: "task not found"
             });
         } else {
             res.status(200).json({
-                message: "Project module deleted successfully",
+                message: "task deleted successfully",
                 data: doc
             });
         }
@@ -109,4 +111,4 @@ const deleteProjectModule = (req, res) => {
 };
 
 
-module.exports = { addProjectModule, getProjectModuleByProjectStatus, updateProjectModule, deleteProjectModule, getModuleById }
+module.exports = { addTask, getTaskBymodulestatus, gettaskById, updateTask, deleteTask }

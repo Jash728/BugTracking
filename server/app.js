@@ -16,6 +16,8 @@ const projectRoutes = require('./routes/ProjectRoutes')
 const projectTeamRoutes = require('./routes/ProjectTeamRoutes')
 const projectModuleRoutes = require('./routes/ProjectModuleRoutes')
 const statusRoutes = require('./routes/StatusRoutes');
+const taskRoutes = require("./routes/TaskRoutes")
+const userTaskRoutes = require("./routes/UserTaskRoutes")
 
 app.use('/role', roleRoutes);
 app.use('/user', userRoutes);
@@ -23,6 +25,8 @@ app.use('/project', projectRoutes)
 app.use('/projectteam', projectTeamRoutes)
 app.use('/projectmodule', projectModuleRoutes)
 app.use('/status', statusRoutes)
+app.use('/task', taskRoutes)
+app.use('/userTask', userTaskRoutes)
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/bugtracker", {}, (err) => {

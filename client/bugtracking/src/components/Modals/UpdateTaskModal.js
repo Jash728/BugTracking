@@ -4,7 +4,7 @@ import { get, set, useForm } from "react-hook-form";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import axios from "axios";
 
-const UpdateProjectModuleModal = (props) => {
+const UpdateTaskModal = (props) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const data = props.data;
   const handleInputChange = props.handleInputChange;
@@ -31,7 +31,7 @@ const UpdateProjectModuleModal = (props) => {
       {console.log("status data ", data != null ? data : "not found")}
       <Modal size="lg" isOpen={modal1} toggle={() => setModal(!modal1)}>
         <ModalHeader toggle={() => setModal1(!modal1)}>
-          Update Module
+          Update Task
         </ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -39,9 +39,19 @@ const UpdateProjectModuleModal = (props) => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Module name"
-                name="modulename"
-                value={data ? data.modulename : ""}
+                placeholder="Title"
+                name="title"
+                value={data ? data.title : ""}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="input-group input-group-outline mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="priority"
+                name="priority"
+                value={data ? data.priority : ""}
                 onChange={handleInputChange}
               />
             </div>
@@ -56,40 +66,27 @@ const UpdateProjectModuleModal = (props) => {
               />
             </div>
 
-            <div className="input-group input-group-outline mb-3">
-              <textarea
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
-                placeholder="Estimated Hours"
-                name="estimatedhours"
-                value={data ? data.estimatedhours : ""}
-                onChange={handleInputChange}
-              />
-            </div>
+           
 
             <div className="input-group input-group-outline mb-3">
-              Current Status : {data && data.status ? data.status.statusname: ""}
+              Current Status :{" "}
+              {data && data.status ? data.status.statusname : ""}
             </div>
             <div className="input-group input-group-outline mb-3">
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              // placeholder="role"
-              name="status"
-              value={data && data.status ? data.status.statusname : ""}
-              onChange={handleInputChange}
-              style={{ padding: "12px", color: "#495057" }}
-            >
-              <option selected>Status</option>
-              {status?.map((s) => {
-                return (
-                  <option value={s._id}>
-                    {s.statusname}
-                  </option>
-                );
-              })}
-            </select>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                // placeholder="role"
+                name="status"
+                value={data && data.status ? data.status.statusname : ""}
+                onChange={handleInputChange}
+                style={{ padding: "12px", color: "#495057" }}
+              >
+                <option selected>Status</option>
+                {status?.map((s) => {
+                  return <option value={s._id}>{s.statusname}</option>;
+                })}
+              </select>
               {/* <input
                 type="text"
                 className="form-control"
@@ -99,25 +96,19 @@ const UpdateProjectModuleModal = (props) => {
                 onChange={handleInputChange}
               /> */}
             </div>
-            
-            <div>
-              <Form.Group as={Row} controlId="formHorizontalDateRange">
-                <Form.Label column sm={2}>
-                  Start Date
-                </Form.Label>
-                <Col sm={3}>
-                  <Form.Control
-                    type="date"
-                    placeholder="Start Date"
-                    name="startdate"
-                    value={
-                      data && data.startdate ? data.startdate.substr(0, 10) : ""
-                    }
-                    onChange={handleInputChange}
-                  />
-                </Col>
-              </Form.Group>
+            <div className="input-group input-group-outline mb-3">
+              <input
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                placeholder="Total Minutes"
+                name="totalMinutes"
+                value={data ? data.totalMinutes : ""}
+                onChange={handleInputChange}
+              />
             </div>
+
+            
             <div className="text-center">
               <button
                 type="submit"
@@ -134,4 +125,4 @@ const UpdateProjectModuleModal = (props) => {
   );
 };
 
-export default UpdateProjectModuleModal;
+export default UpdateTaskModal;

@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { get, set, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import SideBar from "./SideBar";
 import DashBoardNavbar from "../pages/DashBoardNavbar";
-import { Form, Row, Col } from "react-bootstrap";
 import ProjectModule from "./ProjectModule";
-// import { useParams } from "react-router-dom";
 
 function ProjectDetails() {
   const [user, setuser] = useState("");
@@ -120,10 +114,10 @@ function ProjectDetails() {
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-1">
                             Start Date
                           </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-5">
+                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-1">
                             Completion Date
                           </th>
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-5">
+                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-1">
                             Member Name
                           </th>
                           
@@ -136,11 +130,21 @@ function ProjectDetails() {
                            
                           <tr key={selectedProject._id}>
                           
-                            <td>
-                              <p className="text-sm font-weight-bold mb-0">
-                                {selectedProject.title}
-                              </p>
-                            </td>
+                          <div className="my-auto">
+                                  <h6 className="mb-0 text-sm">
+                                    <button
+                                      className="nav-link text-body p-1 btn btn-outline-primary"
+                                      // onClick={()=>handleClick(task._id)}
+                                      style={{
+                                        marginLeft: "10px",
+                                        border: "none",
+                                        marginTop: "10px",
+                                      }}
+                                    >
+                                      {selectedProject.title}
+                                    </button>
+                                  </h6>
+                                </div>
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
                                 {selectedProject.technology}
@@ -156,7 +160,7 @@ function ProjectDetails() {
                                 {selectedProject.startdate.substr(0, 10)}
                               </span>
                             </td>
-                            <td className="align-middle text-center">
+                            <td >
                               <div>
                                 <span
                                   className="me-2 text-xs font-weight-bold"

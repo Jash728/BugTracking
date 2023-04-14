@@ -306,7 +306,7 @@ function ProjectData(props) {
                                   }}
                                   onClick={() => {
                                     handleClick(project._id)
-                                    console.log("mooni: ", project._id);
+                                    
                                   }}
                                 >
                                   {project.title}
