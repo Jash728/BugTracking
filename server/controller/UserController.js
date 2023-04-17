@@ -1,7 +1,7 @@
 const userSchema = require('../schema/UserSchema');
 // const bcrypt = require("bcryptjs")
 const encrypt = require('../utils/encrypt');
-// const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
 
 const getUserDataWithRole = (req, res) => {
@@ -185,13 +185,17 @@ const loginUser = async(req, res) => {
 
             // console.log("data is", data)
             if (data !== null || data !== undefined) {
-
+                // console.log(data)
                 const result = await encrypt.comparePassword(req.body.password, data.password)
                     // console.log("result is", result)
+                const token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
+                    expiresIn: "1d",
+                });
                 if (result == true) {
                     res.status(200).json({
                         message: "user found",
-                        data: data
+                        data: data,
+                        token: token
                     })
                 } else {
                     res.status(404).json({

@@ -3,15 +3,16 @@ const Schema = mongoose.Schema
 
 const UserTaskSchema = new Schema({
     userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'user',
+        type: String,
+        ref: 'users',
         unique: false
     },
     taskId: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'task',
         unique: false
     }
 })
+
 
 module.exports = mongoose.model('usertask', UserTaskSchema)

@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ManagerDashboard from "./components//dashboard/ManagerDashboard";
 import ProjectDetails from "./components/pages/ProjectDetails";
 import ModuleDetails from "./components/pages/ModuleDetails";
+import DeveloperDashboard from "./components/dashboard/DeveloperDashboard";
+// import {ProtectedRoute} from "./components/ProtectedRoute"
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
         <Route path="/userreg" element={<UserReg />} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/managerdashboard" element={<ManagerDashboard/>}/>
+        <Route path="/developerdashboard" element={<DeveloperDashboard/>}/>
         <Route path="/projectdetails" element={<ProjectDetails/>}/>
         <Route path="/moduledetails" element={<ModuleDetails/>}/>
         <Route path="/logout" element={<UserLogin/>}/>

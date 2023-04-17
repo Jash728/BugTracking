@@ -5,7 +5,7 @@ const app = express()
 const dotenv = require("dotenv");
 const PORT = 4000
 
-dotenv.config({ path: './config.env' });
+dotenv.config();
 
 app.use(cors())
 app.use(express.json());
@@ -18,6 +18,7 @@ const projectModuleRoutes = require('./routes/ProjectModuleRoutes')
 const statusRoutes = require('./routes/StatusRoutes');
 const taskRoutes = require("./routes/TaskRoutes")
 const userTaskRoutes = require("./routes/UserTaskRoutes")
+const developerProjectRoutes = require("./routes/DevelopersByProjectRoutes");
 
 app.use('/role', roleRoutes);
 app.use('/user', userRoutes);
@@ -27,6 +28,7 @@ app.use('/projectmodule', projectModuleRoutes)
 app.use('/status', statusRoutes)
 app.use('/task', taskRoutes)
 app.use('/userTask', userTaskRoutes)
+app.use('/developer', developerProjectRoutes)
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/bugtracker", {}, (err) => {

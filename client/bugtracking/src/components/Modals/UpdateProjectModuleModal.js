@@ -28,7 +28,7 @@ const UpdateProjectModuleModal = (props) => {
   }, []);
   return (
     <div>
-      {console.log("status data ", data != null ? data : "not found")}
+      {/* {console.log("status data ", data != null ? data : "not found")} */}
       <Modal size="lg" isOpen={modal1} toggle={() => setModal(!modal1)}>
         <ModalHeader toggle={() => setModal1(!modal1)}>
           Update Module

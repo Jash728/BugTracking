@@ -131,8 +131,23 @@ const deleteProject = (req, res) => {
 
 }
 
+const getProjectsByUser = async(req, res) => {
+    const id = req.params.id;
+
+    try {
+        let data = await projectSchema.find({ userid: id })
+            // console.log(data)
+        res.status(200).json({
+            message: "data fetched successfully",
+            data: data
+        })
+    } catch (err) {
+        res.status(404).json({
+            message: "error in fetching data"
+        })
+    }
+}
 
 
 
-
-module.exports = { getProjectData, addProject, getProjectById, updateProject, deleteProject, getProjectDataById }
+module.exports = { getProjectData, addProject, getProjectById, updateProject, deleteProject, getProjectDataById, getProjectsByUser }

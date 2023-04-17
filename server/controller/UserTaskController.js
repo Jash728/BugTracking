@@ -15,6 +15,7 @@ const addUserTask = async(req, res) => {
             console.log("already Assigned")
 
         } else {
+            console.log("inside else")
             const userTask = await userTaskSchema.create({
                 userId: data[0],
                 taskId: data[1],
@@ -30,15 +31,15 @@ const addUserTask = async(req, res) => {
         })
         console.log(error)
     }
-}
-
+};
 
 const getDeveloper = async(req, res) => {
     let id = req.params.id
+    console.log(id)
     userTaskSchema
         .find({ taskId: id })
-        .populate('taskId') // populate project field
-        .populate('userId') // populate user field
+        .populate('userId') // populate project field
+        .populate('taskId') // populate user field
         .exec((err, data) => {
             if (err) {
                 res.status(500).json({
@@ -47,6 +48,7 @@ const getDeveloper = async(req, res) => {
                 })
             } else {
                 if (data != null || data != undefined || data.length != 0) {
+                    console.log(data)
                     res.status(200).json({
                         message: "assign user fetched successfully",
                         data: data // send populated data
@@ -103,6 +105,11 @@ const deleteDeveloper = (req, res) => {
         }
     });
 };
+
+
+const getTaskByUser = (req, res) => {
+
+}
 
 
 module.exports = {

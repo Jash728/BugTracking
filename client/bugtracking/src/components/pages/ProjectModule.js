@@ -188,7 +188,7 @@ const ProjectModule = () => {
                   <tbody>
                     {module.map?.((m) => (
                       <tr>
-                        {console.log("module name", module)}
+                        {/* {console.log("module name", module)} */}
                         <td>
                           <div className="d-flex px-1">
                            

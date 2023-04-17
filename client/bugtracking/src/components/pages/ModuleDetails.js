@@ -10,16 +10,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateTaskModal from "../Modals/UpdateTaskModal";
 import EditIcon from "@mui/icons-material/Edit";
 
+import ShowUserModal from "../Modals/ShowUserModal";
+
 const ModuleDetails = () => {
   const [user, setuser] = useState("");
   const [tasks, setTasks] = useState("");
   const [modal, setModal] = useState(false);
+  const [modal2, setModal2] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
   const [data, setData] = useState({});
   const [modal1, setModal1] = useState(false);
+  const [assigndevs, setAssigndevs] = useState([]);
   const [currTask, setCurrTask] = useState("");
   const [teamMembers, setTeamMembers] = useState([]);
   const [currentMember, setCurrentMember] = useState("");
+  const [showModal1, setShowModal1] = useState(false);
   const getLoggedinUserData = () => {
     var id = localStorage.getItem("_id");
 
@@ -86,21 +91,21 @@ const ModuleDetails = () => {
   };
 
   const assignusertotask = (id) => {
-    console.log("Assign Task", id)
-    console.log("current Member", currentMember.userId._id)
+    console.log("Assign Task", id);
+    console.log("current Member", currentMember.userId._id);
     const userid = currentMember.userId._id;
-    // console.log("user id", userid.userId._id) 
+    // console.log("user id", userid.userId._id)
     let dataArr = [userid, id];
     axios
-    .post("http://localhost:4000/userTask/userTask",dataArr)
-    .then((res) => {
-      console.log("Task is ", res.data);
-      // localStorage.setItem("_id",res.data.data[0]?._id)
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+      .post("http://localhost:4000/userTask/userTask", dataArr)
+      .then((res) => {
+        console.log("Task is ", res.data);
+        // localStorage.setItem("_id",res.data.data[0]?._id)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   function handleDelete(id) {
     console.log("item deleted");
@@ -167,12 +172,52 @@ const ModuleDetails = () => {
       .catch((error) => console.log(error));
   };
 
+  const closeModal1 = () => {
+    
+    setShowModal1(false);
+  };
+
+  const showAssginMembers = (id) => {
+    console.log("assign id", id);
+    fetch(`http://localhost:4000/userTask/userTask/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const obj = res.data;
+        console.log("devs", obj);
+        setAssigndevs(obj);
+      })
+
+      .catch((error) => console.log(error));
+      setModal2(true);
+  };
+
   const handleOnChange = (e, id) => {
     e.preventDefault();
-    console.log("task id" , id)
+    console.log("task id", id);
     gettaskById(id);
     console.log("assign member1", JSON.parse(e.target.value));
     setCurrentMember(JSON.parse(e.target.value));
+  };
+
+  const deleteUserfromtask = (id) => {
+    console.log("delete user", id);
+    axios
+      .delete(`http://localhost:4000/userTask/userTask/${id}`)
+      .then((response) => {
+        // handle success
+        console.log("Data deleted successfully");
+        setAssigndevs(module.filter((item) => item._id !== id)); // remove deleted item from state
+      })
+      .catch((error) => {
+        // handle error
+        console.log("Error deleting data:", error);
+      });
+      showAssginMembers(id)
   }
 
   useEffect(() => {
@@ -239,12 +284,15 @@ const ModuleDetails = () => {
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-1">
                             Team Members
                           </th>
+                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-1">
+                            Assign Members
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {tasks.map?.((task) => (
                           <tr key={task._id}>
-                            {console.log("module name", module)}
+                            {/* {console.log("module name", module)} */}
                             <td>
                               <div className="d-flex px-1">
                                 <div className="my-auto">
@@ -300,36 +348,12 @@ const ModuleDetails = () => {
                                 {task.totalMinutes}
                               </span>
                             </td>
-
-                            {/* <ul>
-                              {teamMembers?.map((member) => {
-                                
-                                   {console.log("Dani: ", member)} 
-                                
-                                return (
-                                  <li>
-                                    {member && member.userId
-                                      ? member.userId.firstname
-                                      : ""}
-                                  </li>
-                                );
-                              })}
-                            </ul> */}
                             <td className="input-group input-group-outline mb-3 d-flex flex-column">
-                              <div style={{width:"70%"}}>
+                              <div style={{ width: "70%" }}>
                                 <select
                                   class="form-select"
                                   aria-label="Default select example"
-                                  onChange={(e)=>handleOnChange(e, task._id)}
-                                  
-                                  // placeholder="role"
-                                  // name="status"
-                                  // value={
-                                  //   data && data.status
-                                  //     ? data.status.statusname
-                                  //     : ""
-                                  // }
-                                  // onChange={handleInputChange}
+                                  onChange={(e) => handleOnChange(e, task._id)}
                                   style={{ padding: "12px", color: "#495057" }}
                                 >
                                   <option selected>Members</option>
@@ -350,18 +374,38 @@ const ModuleDetails = () => {
                                   })}
                                 </select>
                               </div>
-                              <div style={{ marginTop: "20px" , marginBottom: "-40px", width:"100%"}}>
+                              <div
+                                style={{
+                                  marginTop: "20px",
+                                  marginBottom: "-40px",
+                                  width: "100%",
+                                }}
+                              >
                                 <button
-                                  style={{width:"70%"}}
+                                  style={{ width: "70%" }}
                                   type="button"
                                   class="btn btn-danger btn-sm"
-                                  
-                                  onClick={()=>assignusertotask(task._id)}
+                                  onClick={() => assignusertotask(task._id)}
                                 >
-                                
                                   Assign
                                 </button>
                               </div>
+                            </td>
+                            <td>
+                              <button
+                                style={{ width: "70%" }}
+                                type="button"
+                                class="btn btn-danger btn-sm"
+                                onClick={() => showAssginMembers(task._id)}
+                              >
+                                show assign developer
+                              </button>
+                              <ShowUserModal
+                                modal2 = {modal2}
+                                setModal2 = {setModal2}
+                                assigndevs = {assigndevs}
+                                deleteUserfromtask = {deleteUserfromtask}
+                              />
                             </td>
                             <td className="align-middle">
                               <button

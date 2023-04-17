@@ -28,8 +28,7 @@ const ProjectSchema = new Schema({
     },
     userid: {
         type: String,
-        // ref: 'User',
-        // required: true
+
     }
 }, {
     timestamps: true

@@ -338,7 +338,7 @@ function ProjectData(props) {
                               onClick={() => {
                                
                                     openModal1(project ? project : "not found");
-                                    console.log("mooni: ", project._id);
+                                    
                               }}
                             >
                               <AddIcon fontSize="small" color="action" />
