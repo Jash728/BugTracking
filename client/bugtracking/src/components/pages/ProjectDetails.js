@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import SideBar from "./SideBar";
+import SideBar from "./ManagerSideBar";
 import DashBoardNavbar from "../pages/DashBoardNavbar";
 import ProjectModule from "./ProjectModule";
 

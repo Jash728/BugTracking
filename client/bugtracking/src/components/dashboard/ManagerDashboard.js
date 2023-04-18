@@ -2,13 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
-import { Form, Row, Col } from "react-bootstrap";
 import { get, set, useForm } from "react-hook-form";
 import ProjectData from "../ProjectData";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { useNavigate } from "react-router-dom";
 import RemoveIcon from "@mui/icons-material/Remove";
-import SideBar from "../pages/SideBar";
+import SideBar from "../pages/ManagerSideBar";
 import DashBoardNavbar from "../pages/DashBoardNavbar";
 import CreateProjectModal from "../Modals/CreateProjectModal";
 
@@ -18,7 +17,6 @@ const ManagerDashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
-  const [selectedData, setSelectedData] = useState({});
   var navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [devs, setDevs] = useState([]);

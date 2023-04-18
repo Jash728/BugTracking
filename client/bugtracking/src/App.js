@@ -8,6 +8,7 @@ import ManagerDashboard from "./components//dashboard/ManagerDashboard";
 import ProjectDetails from "./components/pages/ProjectDetails";
 import ModuleDetails from "./components/pages/ModuleDetails";
 import DeveloperDashboard from "./components/dashboard/DeveloperDashboard";
+import ShowDevTasks from "./components/pages/ShowDevTasks";
 // import {ProtectedRoute} from "./components/ProtectedRoute"
 
 function App() {
@@ -32,10 +33,11 @@ function App() {
         <Route path="/" element={<UserReg />} />
         <Route path="/userreg" element={<UserReg />} />
         <Route path="/login" element={<UserLogin />} />
-        <Route path="/managerdashboard" element={<ManagerDashboard/>}/>
-        <Route path="/developerdashboard" element={<DeveloperDashboard/>}/>
+        <Route path="/manager" element={<ManagerDashboard/>}/>
+        <Route path="/developer" element={<DeveloperDashboard/>}/>
         <Route path="/projectdetails" element={<ProjectDetails/>}/>
         <Route path="/moduledetails" element={<ModuleDetails/>}/>
+        <Route path="/tasks" element={<ShowDevTasks/>}/>
         <Route path="/logout" element={<UserLogin/>}/>
       </Routes>
     </div>

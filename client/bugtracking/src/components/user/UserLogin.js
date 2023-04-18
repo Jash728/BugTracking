@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Footer from "../pages/Footer";
 import Navbar from "../pages/Navbar";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const UserLogin = () => {
 
@@ -21,10 +22,10 @@ export const UserLogin = () => {
             console.log(res.data.data?.role.rolename)
             // axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
             if(res.data.data?.role.rolename ==="manager"){
-                navigate("/managerdashboard")
+                navigate("/manager")
             }
             else if(res.data.data?.role.rolename ==="developer"){
-              navigate("/developerdashboard")
+              navigate("/developer")
             }
             //role...
             
@@ -95,10 +96,6 @@ export const UserLogin = () => {
                           {...register("password")}
                         />
                       </div>
-                      {/* <div className="form-check form-switch d-flex align-items-center mb-3">
-                        <input className="form-check-input" type="checkbox" id="rememberMe" defaultChecked />
-                        <label className="form-check-label mb-0 ms-3" htmlFor="rememberMe">Remember me</label>
-                      </div> */}
                       <div className="text-center">
                         <button
                           type="submit"
@@ -109,12 +106,12 @@ export const UserLogin = () => {
                       </div>
                       <p className="mt-4 text-sm text-center">
                         Don't have an account?
-                        <a
-                          href="/userreg"
+                        <Link
+                          to="/userreg"
                           className="text-primary text-gradient font-weight-bold"
                         >
                           Sign up
-                        </a>
+                        </Link>
                       </p>
                     </form>
                   </div>

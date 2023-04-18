@@ -3,13 +3,12 @@ import DeveloperSideBar from "../pages/DeveloperSidebar";
 import DashBoardNavbar from "../pages/DashBoardNavbar";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import ShowDevProjects from '../pages/ShowDevProjects';
+import ShowTasks from './ShowTasks';
 
-const DeveloperDashboard = () => {
+const ShowDevTasks = () => {
 
   const [user, setuser] = useState("");
   var navigate = useNavigate();
-  const [devProjects, setDevProjects] = useState([]);
   const [devTasks, setDevTasks] = useState([]);
 
 
@@ -27,25 +26,7 @@ const DeveloperDashboard = () => {
   };
 
 
-  const getProjects = async() => {
-    let id = localStorage.getItem('_id');
-    console.log("Developer's ", id)
-    await fetch(`http://localhost:4000/developer/developer/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        console.log("Developer's resp ", resp.data);
-        setDevProjects(resp.data)
-        
-      })
-      .catch((error) => console.log(error));
-    
-  }
-
+  
   const getTasks = async() => {
     let id = localStorage.getItem('_id');
     console.log("Developer's ", id)
@@ -70,7 +51,7 @@ const DeveloperDashboard = () => {
     if (!user) {
       navigate("/login");
     }
-    getProjects();
+    getTasks();
     getLoggedinUserData();
     
    
@@ -92,10 +73,7 @@ const DeveloperDashboard = () => {
       style={{ overflow: "hidden" }}
     >
       {/* side navbar */}
-     
-
       <DeveloperSideBar logout={logout} user = {user} />
-    
       {/* --------------------------------------------------------------------------------------- */}
       {/* // top Navbar */}
       <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -104,11 +82,10 @@ const DeveloperDashboard = () => {
 
         <br />
        
-      <div>
 
-        <ShowDevProjects devProjects={devProjects}/>
+      <div>
+        <ShowTasks devTasks={devTasks}/>
       </div>
-     
         {/* End Navbar */}
 
        
@@ -121,4 +98,4 @@ const DeveloperDashboard = () => {
   )
 }
 
-export default DeveloperDashboard
+export default ShowDevTasks

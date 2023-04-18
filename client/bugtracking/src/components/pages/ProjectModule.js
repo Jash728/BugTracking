@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const ProjectModule = () => {
   var navigate = useNavigate()
-  const [module, setModule] = useState("");
+  const [module, setModule] = useState([]);
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState();
   const { register, handleSubmit, reset, setValue } = useForm();

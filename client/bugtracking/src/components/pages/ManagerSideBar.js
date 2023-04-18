@@ -2,7 +2,7 @@ import React from "react";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 
-const SideBar = (props) => {
+const ManagerSideBar = (props) => {
   const logout = props.logout;
   return (
     <aside
@@ -91,4 +91,4 @@ const SideBar = (props) => {
   );
 };
 
-export default SideBar;
+export default ManagerSideBar;

@@ -1,7 +1,10 @@
 import React from 'react'
+import { useParams } from "react-router-dom";
 
 const DashBoardNavbar = (props) => {
     const user = props.user
+    const urlPath = window.location.pathname; // "/developer"
+    const pname = urlPath.substring(1); // "developer"
   return (
     <nav
     className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl "
@@ -20,7 +23,7 @@ const DashBoardNavbar = (props) => {
             className="breadcrumb-item text-sm text-dark active"
             aria-current="page"
           >
-            Dashboard
+            {pname.charAt(0).toUpperCase() + pname.slice(1)}
           </li>
         </ol>
         <h6 className="font-weight-bolder mb-0">Dashboard</h6>

@@ -2,22 +2,47 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Navbar from "../pages/Navbar";
-// import { toast } from "react-toastify";
+import {  useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const UserReg = () => {
   const { register, handleSubmit, reset} = useForm();
   const [roles, setroles] = useState();
+  const navigate = useNavigate()
 
   const submit = (data) => {
     axios
       .post("http://localhost:4000/user/user", data)
       .then((res) => {
         console.log(res.data);
+        toast.success("Registration Successful!!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        navigate('/login')
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Registration Error!  ", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
+     
       reset();
   };
   useEffect(() => {
@@ -102,32 +127,7 @@ export const UserReg = () => {
                             );
                           })}
                         </select>
-                        {/* <div className="input-group input-group-outline mb-3">
-                          <label>Role</label>
-                          {roles?.map((role) => {
-                            return (
-                              <div
-                                style={{ display: "flex",paddingLeft: "20px", flexDirection:"row" }}
-                              >
-                                <input
-                                  type="radio"
-                                  value={role._id}
-                                  {...register("role")}
-                                  style={{ cursor: "pointer", paddingTop:"10px", paddingBottom:"10px" }}
-                                />
-                                <label style={{ marginRight: "25px", paddingBlock:"0px"}}>
-                                  {role.rolename}
-                                </label>
-                              </div>
-                            );
-                          })}
-                        </div> */}
-                        {/* <div className="form-check form-check-info text-start ps-0">
-                          <input className="form-check-input" type="checkbox" defaultValue id="flexCheckDefault" defaultChecked />
-                          <label className="form-check-label" htmlFor="flexCheckDefault">
-                            I agree the <a href="javascript:;" className="text-dark font-weight-bolder">Terms and Conditions</a>
-                          </label>
-                        </div> */}
+                      
                         <div className="text-center">
                           <button
                             type="submit"
@@ -141,12 +141,12 @@ export const UserReg = () => {
                     <div className="card-footer text-center pt-0 px-lg-2 px-1">
                       <p className="mb-2 text-sm mx-auto">
                         Already have an account?
-                        <a
-                          href="/login"
+                        <Link
+                          to="/login"
                           className="text-primary text-gradient font-weight-bold"
                         >
                           Sign in
-                        </a>
+                        </Link>
                       </p>
                     </div>
                   </div>
