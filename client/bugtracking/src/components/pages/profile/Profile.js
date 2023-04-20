@@ -44,7 +44,7 @@ const Profile = () => {
           <div className="col-auto">
             <div className="avatar avatar-xl position-relative">
               <img
-                src={user.profile ? `${imagePath}${user.profile}` : `${defaultPath}bruce-mars.jpg`}
+                src={user.profile ? user.profile : `${defaultPath}bruce-mars.jpg`}
                 alt="profile_image"
                 className="w-100 border-radius-lg shadow-sm"
               />

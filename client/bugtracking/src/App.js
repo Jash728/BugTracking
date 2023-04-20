@@ -13,6 +13,7 @@ import UpdateUserForm from "./components/pages/profile/UpdateUserForm";
 import Profile from "./components/pages//profile/Profile";
 import UpdateProfile from "./components/pages/profile/UpdateProfile";
 import ProtectedRoutes from "./ProtectedRoutes";
+import ShowStatus from "./components/pages/developer/ShowStatus";
 // import {ProtectedRoute} from "./components/ProtectedRoute"
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/tasks" element={<ShowDevTasks />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/updateprofile" element={<UpdateProfile />} />
+          <Route path="/taskstatus" element={<ShowStatus />} />
           <Route path="/logout" element={<UserLogin />} />
         </Route>
       </Routes>

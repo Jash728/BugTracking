@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const DashBoardNavbar = (props) => {
@@ -7,6 +7,10 @@ const DashBoardNavbar = (props) => {
   const pname = urlPath.substring(1); // "developer"
   const SERVER_URL = "http://localhost:4000";
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    
+  }, [user])
 
   const imagePath = `${SERVER_URL}/uploads/`;
   return (
@@ -46,7 +50,7 @@ const DashBoardNavbar = (props) => {
             <li className="nav-item d-flex align-items-center">
               <img
                 onClick={() => navigate("/profile")}
-                src={`${imagePath}${user.profile}`}
+                src={user.profile?user.profile:"../assets/img/bruce-mars.jpg"}
                 alt=""
                 style={{
                   height: "20px",

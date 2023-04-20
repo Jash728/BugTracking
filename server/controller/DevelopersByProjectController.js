@@ -35,7 +35,13 @@ const getTaskByUsers = async(req, res) => {
     // console.log("id is", id)
     userTaskSchema
         .find({ userId: id })
-        .populate("taskId") // populate project field
+        .populate({
+            path: 'taskId',
+            populate: {
+                path: 'status', // the field you want to populate
+                select: 'statusname', // specify the fields to be returned
+            }
+        }) // populate project field
         .populate("userId") // populate user field
         .exec((err, data) => {
             if (err) {

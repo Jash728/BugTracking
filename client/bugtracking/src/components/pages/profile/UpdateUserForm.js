@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+const Buffer = require('buffer/').Buffer;
 
 function UpdateUserForm() {
   const [user, setUser] = useState(null);
   const [roles, setroles] = useState([]);
   const [profileName, setProfileName] = useState("");
+  const navigate = useNavigate();
 
   const getRoles = () => {
     axios.get("http://localhost:4000/role/get").then((res) => {
@@ -37,7 +40,7 @@ function UpdateUserForm() {
     firstname: "",
     email: "",
     password: "",
-    profile: null,
+    profile: "",
     role: "",
   });
 
@@ -51,6 +54,7 @@ function UpdateUserForm() {
         role: user.role,
       });
     }
+    console.log("user profile", user)
   }, [user]);
 
   const handleChange = (event) => {
@@ -58,6 +62,7 @@ function UpdateUserForm() {
   };
 
   const handleFileChange = (event) => {
+    user.profile="";
     const file = event.target.files[0];
     const reader = new FileReader();
     setFormData({ ...formData, profile: event.target.files[0] });
@@ -76,18 +81,19 @@ function UpdateUserForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+
     const id = localStorage.getItem("_id");
     console.log("---id---", id);
     const { firstname, email, password, profile, role } = formData;
     console.log("form data", formData);
-    const imageBuffer = Buffer.from(image, 'base64');
-    const imageString = imageBuffer.toString('utf-8');
+    // const imageBuffer = Buffer.from(image, 'base64');
+    // const imageString = imageBuffer.toString('utf-8');
 
     const data = {
       firstname,
       email,
       password,
-      profile:imageString,
+      profile:image.length>0?image:profile,
       role,
     };
     // data.append("firstname", firstname);
@@ -111,6 +117,7 @@ function UpdateUserForm() {
         console.error(err);
         // Handle error
       });
+      navigate('/developer')
   };
 
   if (!user) {
@@ -118,52 +125,7 @@ function UpdateUserForm() {
   }
 
   return (
-    // <form onSubmit={handleSubmit}>
-    //   <label>
-    //     Firstname:
-    //     <input
-    //       type="text"
-    //       name="firstname"
-    //       value={formData.firstname}
-    //       onChange={handleChange}
-    //     />
-    //   </label>
-    //   <label>
-    //     Email:
-    //     <input
-    //       type="email"
-    //       name="email"
-    //       value={formData.email}
-    //       onChange={handleChange}
-    //     />
-    //   </label>
-    //   <label>
-    //     Password:
-    //     <input
-    //       type="password"
-    //       name="password"
-    //       value={formData.password}
-    //       onChange={handleChange}
-    //     />
-    //   </label>
-    //   <label>
-    //     Profile Picture:
-    //     <input type="file" name="profile" onChange={handleFileChange} />
-    //     {profileName && <div>{profileName}</div>}
-    //   </label>
-    //   <label>
-    //     Role:
-    //     <select name="role" value={formData.role} onChange={handleChange}>
-    //       <option value="">-- Select Role --</option>
-    //       {roles.map((role) => (
-    //         <option key={role._id} value={role._id}>
-    //           {role.rolename}
-    //         </option>
-    //       ))}
-    //     </select>
-    //   </label>
-    //   <button type="submit">Update User</button>
-    // </form>
+  
     <div className="container-fluid px-2 px-md-4">
       <div
         className="page-header min-height-150 border-radius-xl mt-2"
@@ -180,7 +142,7 @@ function UpdateUserForm() {
             <div className="col-auto">
               <div className="avatar avatar-xl position-relative">
                 <img
-                  src="../assets/img/bruce-mars.jpg"
+                  src={user.profile.length>0?user.profile:image}
                   alt="profile_image"
                   className="w-100 border-radius-lg shadow-sm"
                 />
