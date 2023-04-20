@@ -8,10 +8,11 @@ import ManagerDashboard from "./components//dashboard/ManagerDashboard";
 import ProjectDetails from "./components/pages/ProjectDetails";
 import ModuleDetails from "./components/pages/ModuleDetails";
 import DeveloperDashboard from "./components/dashboard/DeveloperDashboard";
-import ShowDevTasks from "./components/pages/ShowDevTasks";
-import UpdateUserForm from "./components/pages/UpdateUserForm";
-import Profile from "./components/pages/Profile";
-import UpdateProfile from "./components/pages/UpdateProfile";
+import ShowDevTasks from "./components/pages//developer/ShowDevTasks";
+import UpdateUserForm from "./components/pages/profile/UpdateUserForm";
+import Profile from "./components/pages//profile/Profile";
+import UpdateProfile from "./components/pages/profile/UpdateProfile";
+import ProtectedRoutes from "./ProtectedRoutes";
 // import {ProtectedRoute} from "./components/ProtectedRoute"
 
 function App() {
@@ -36,18 +37,20 @@ function App() {
         <Route path="/" element={<UserReg />} />
         <Route path="/userreg" element={<UserReg />} />
         <Route path="/login" element={<UserLogin />} />
-        <Route path="/manager" element={<ManagerDashboard/>}/>
-        <Route path="/developer" element={<DeveloperDashboard/>}/>
-        <Route path="/projectdetails" element={<ProjectDetails/>}/>
-        <Route path="/moduledetails" element={<ModuleDetails/>}/>
-        <Route path="/tasks" element={<ShowDevTasks/>}/>
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path="/updateprofile" element={<UpdateProfile/>}/>
-        <Route path="/logout" element={<UserLogin/>}/>
+
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/manager" element={<ManagerDashboard />} />
+          <Route path="/developer" element={<DeveloperDashboard />} />
+          <Route path="/projectdetails" element={<ProjectDetails />} />
+          <Route path="/moduledetails" element={<ModuleDetails />} />
+          <Route path="/tasks" element={<ShowDevTasks />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/updateprofile" element={<UpdateProfile />} />
+          <Route path="/logout" element={<UserLogin />} />
+        </Route>
       </Routes>
     </div>
   );
 }
-
 
 export default App;

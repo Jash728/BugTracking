@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import SideBar from "./ManagerSideBar";
-import DashBoardNavbar from "../pages/DashBoardNavbar";
+import SideBar from "../pages/sidebar/ManagerSideBar";
+import DashBoardNavbar from "../pages/navbar/DashBoardNavbar";
 import ProjectModule from "./ProjectModule";
 
 function ProjectDetails() {

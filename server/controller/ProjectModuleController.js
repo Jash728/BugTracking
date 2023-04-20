@@ -109,4 +109,23 @@ const deleteProjectModule = (req, res) => {
 };
 
 
-module.exports = { addProjectModule, getProjectModuleByProjectStatus, updateProjectModule, deleteProjectModule, getModuleById }
+const searchModule = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const regex = new RegExp(req.params.key, 'i');
+        const results = await projectModuleSchema
+            .find({
+                projectId: id,
+                $or: [{ modulename: regex }],
+            })
+
+        .exec();
+        res.send(results);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred while searching for projects");
+    }
+};
+
+
+module.exports = { addProjectModule, getProjectModuleByProjectStatus, updateProjectModule, deleteProjectModule, getModuleById, searchModule }

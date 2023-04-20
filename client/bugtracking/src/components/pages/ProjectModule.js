@@ -8,9 +8,8 @@ import UpdateProjectModuleModal from "../Modals/UpdateProjectModuleModal";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
 
-
 const ProjectModule = () => {
-  var navigate = useNavigate()
+  var navigate = useNavigate();
   const [module, setModule] = useState([]);
   const [modal, setModal] = useState(false);
   const [status, setStatus] = useState();
@@ -46,6 +45,22 @@ const ProjectModule = () => {
         console.log("Error deleting data:", error);
       });
   }
+
+  const searchHandle = async (event) => {
+    let key = event.target.value;
+    let id = localStorage.getItem('project_id')
+    if (key) {
+      let result = await fetch(
+        `http://localhost:4000/projectmodule/${id}/search/${key}`
+      );
+      result = await result.json();
+      if (result) {
+        setModule(result);
+      }
+    } else {
+      getModuleData();
+    }
+  };
 
   const submit = (data) => {
     var id = localStorage.getItem("project_id");
@@ -128,9 +143,9 @@ const ProjectModule = () => {
 
   const handleClick = (id) => {
     localStorage.setItem("module_id", id);
-    
+
     navigate(`/moduledetails`);
-  }
+  };
 
   return (
     <div className="container-fluid py-4">
@@ -138,10 +153,29 @@ const ProjectModule = () => {
         <div className="col-12">
           <div className="card my-4">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 className="text-white text-capitalize ps-3">
+              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
+              style={{ display: "flex", flexDirection: "row" }}>
+                <h6 className="text-white text-capitalize ps-3"  style={{ marginRight: "20px" }}>
                   Project Modules
                 </h6>
+                <div className="ms-md-auto pe-md-3 d-flex align-items-center">
+                  <div className="input-group input-group-outline">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="search module"
+                      style={{ color: "white" }}
+                      onChange={searchHandle}
+                    />
+                  </div>
+                  <style>
+                    {`
+          ::placeholder {
+            color: white;
+          }
+        `}
+                  </style>
+                </div>
               </div>
             </div>
             <CreateProjectModuleModal
@@ -191,13 +225,11 @@ const ProjectModule = () => {
                         {/* {console.log("module name", module)} */}
                         <td>
                           <div className="d-flex px-1">
-                           
-
                             <div className="my-auto">
                               <h6 className="mb-0 text-sm">
                                 <button
                                   className="nav-link text-body p-1 btn btn-outline-primary"
-                                  onClick={()=>handleClick(m._id)}
+                                  onClick={() => handleClick(m._id)}
                                   style={{
                                     marginLeft: "10px",
                                     border: "none",
@@ -236,7 +268,7 @@ const ProjectModule = () => {
                             {m.startdate.substr(0, 10)}
                           </span>
                         </td>
-                        <td >
+                        <td>
                           <div>
                             <span
                               className="me-2 text-xs font-weight-bold"

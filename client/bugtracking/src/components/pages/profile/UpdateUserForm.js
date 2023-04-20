@@ -80,12 +80,14 @@ function UpdateUserForm() {
     console.log("---id---", id);
     const { firstname, email, password, profile, role } = formData;
     console.log("form data", formData);
+    const imageBuffer = Buffer.from(image, 'base64');
+    const imageString = imageBuffer.toString('utf-8');
 
     const data = {
       firstname,
       email,
       password,
-      profile:image,
+      profile:imageString,
       role,
     };
     // data.append("firstname", firstname);
@@ -98,7 +100,7 @@ function UpdateUserForm() {
     axios
       .put(`http://localhost:4000/user/user/${id}`, data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {

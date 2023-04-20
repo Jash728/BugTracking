@@ -7,10 +7,9 @@ import ProjectData from "../ProjectData";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { useNavigate } from "react-router-dom";
 import RemoveIcon from "@mui/icons-material/Remove";
-import SideBar from "../pages/ManagerSideBar";
-import DashBoardNavbar from "../pages/DashBoardNavbar";
+import SideBar from "../pages/sidebar/ManagerSideBar";
+import DashBoardNavbar from "../pages/navbar/DashBoardNavbar";
 import CreateProjectModal from "../Modals/CreateProjectModal";
-
 
 const ManagerDashboard = () => {
   const [user, setuser] = useState("");
@@ -134,6 +133,21 @@ const ManagerDashboard = () => {
     navigate("/login");
   };
 
+  const searchHandle = async (event) => {
+    let key = event.target.value;
+    if (key) {
+      let result = await fetch(`http://localhost:4000/project/search/${key}`);
+      result = await result.json();
+      if (result) {
+        setProjects(result);
+      }
+    }
+    else{
+      getData();
+    }
+
+    // console.warn(event.target.value);
+  };
   return (
     <body
       className="g-sidenav-show   overflow-hidden bg-gray-200"
@@ -145,7 +159,7 @@ const ManagerDashboard = () => {
       {/* // top Navbar */}
       <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         {/* Navbar */}
-        <DashBoardNavbar user = {user}/>
+        <DashBoardNavbar user={user} />
 
         <br />
         <div>
@@ -153,9 +167,15 @@ const ManagerDashboard = () => {
             projects={projects}
             handleDelete={handleDelete}
             getData={getData}
+            searchHandle={searchHandle}
           />
         </div>
-        <CreateProjectModal submit={submit} getData ={getData} modal ={modal} setModal={setModal}/>
+        <CreateProjectModal
+          submit={submit}
+          getData={getData}
+          modal={modal}
+          setModal={setModal}
+        />
         <div style={{ float: "right", marginRight: "20px" }}>
           <li className="nav-item px-3 d-flex align-items-center">
             <button

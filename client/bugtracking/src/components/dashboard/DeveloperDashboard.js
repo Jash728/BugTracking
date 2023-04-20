@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import DeveloperSideBar from "../pages/DeveloperSidebar";
-import DashBoardNavbar from "../pages/DashBoardNavbar";
+import DeveloperSideBar from "../pages/sidebar/DeveloperSidebar";
+import DashBoardNavbar from "../pages/navbar/DashBoardNavbar";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import ShowDevProjects from '../pages/ShowDevProjects';
+import ShowDevProjects from '../pages/developer/ShowDevProjects';
 
 const DeveloperDashboard = () => {
 

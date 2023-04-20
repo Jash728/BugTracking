@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import UpdateUserForm from "./UpdateUserForm";
-import DeveloperSideBar from "../pages/DeveloperSidebar";
-import DashBoardNavbar from "../pages/DashBoardNavbar";
+import DeveloperSideBar from "../sidebar/DeveloperSidebar";
+import DashBoardNavbar from "../navbar/DashBoardNavbar";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 

@@ -131,8 +131,19 @@ const deleteProject = (req, res) => {
 
 }
 
+const searchProject = async(req, res) => {
+    try {
+        const regex = new RegExp(req.params.key, "i");
+        const results = await projectSchema.find({
+            $or: [{ title: regex }, { technology: regex }],
+        }).exec();
+        res.send(results);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred while searching for projects");
+    }
+};
 
 
 
-
-module.exports = { getProjectData, addProject, getProjectById, updateProject, deleteProject, getProjectDataById }
+module.exports = { getProjectData, addProject, getProjectById, updateProject, deleteProject, getProjectDataById, searchProject }

@@ -7,6 +7,7 @@ router.get('/getbyprojectstatus/:id', projectModuleController.getProjectModuleBy
 router.put('/updateprojectmodule/:id', projectModuleController.updateProjectModule)
 router.delete('/deleteprojectmodule/:id', projectModuleController.deleteProjectModule)
 router.get('/getmodulebyid/:id', projectModuleController.getModuleById)
+router.get('/:id/search/:key', projectModuleController.searchModule)
 
 
 module.exports = router

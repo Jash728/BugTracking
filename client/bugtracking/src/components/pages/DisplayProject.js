@@ -33,8 +33,11 @@ const DisplayProject =  (displayProjectProps) => {
     const setCurrProject = displayProjectProps.setCurrProject
     
   return (
+    
     <div className="card my-4">
+     
       <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+    
         <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
           <h6 className="text-white text-capitalize ps-3">My Projects</h6>
         </div>
@@ -64,6 +67,7 @@ const DisplayProject =  (displayProjectProps) => {
                 <th />
               </tr>
             </thead>
+           
             <tbody>
               {projects.map?.((project) => (
                 <tr>

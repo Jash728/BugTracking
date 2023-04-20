@@ -9,8 +9,9 @@ import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 
 function ProjectData(props) {
-  var navigate = useNavigate()
+  var navigate = useNavigate();
   const { projects } = props;
+  const searchHandle = props.searchHandle;
   const { register, handleSubmit, reset, setValue } = useForm();
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
@@ -228,17 +229,55 @@ function ProjectData(props) {
 
   const handleClick = (id) => {
     localStorage.setItem("project_id", id);
-    navigate("/projectdetails")
-  }
-
+    navigate("/projectdetails");
+  };
+  const styles = {
+    placeholder: {
+      color: "#fff",
+    },
+  };
   return (
     <div className="container-fluid py-4">
       <div className="row">
         <div className="col-12">
           <div className="card my-4">
             <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 className="text-white text-capitalize ps-3">My Projects</h6>
+              <div
+                className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                <h6
+                  className="text-white text-capitalize ps-3"
+                  style={{ marginRight: "20px" }}
+                >
+                  My Projects
+                </h6>
+                <div className="ms-md-auto pe-md-3 d-flex align-items-center">
+                  <div className="input-group input-group-outline">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="search project"
+                      style={{ color: "white" }}
+                      onChange={searchHandle}
+                    />
+                  </div>
+                  <style>
+                    {`
+          ::placeholder {
+            color: white;
+          }
+        `}
+                  </style>
+                </div>
+                {/* <input
+                  type="text"
+                  placeholder="Search Project"
+                  name=""
+                  id=""
+                  onChange={searchHandle}
+                  style={{ marginLeft: "850px" }}
+                /> */}
               </div>
             </div>
             <div className="card-body px-0 pb-2">
@@ -267,120 +306,121 @@ function ProjectData(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {projects.map?.((project) => (
-                      <tr>
-                        <td>
-                          <div className="d-flex px-1">
-                            <div>
-                              <img
-                                src="../assets/img/small-logos/logo-asana.svg"
-                                className="avatar avatar-sm rounded-circle me-2"
-                                alt="spotify"
+                    {projects.length > 0 ? (
+                      projects.map?.((project) => (
+                        <tr>
+                          <td>
+                            <div className="d-flex px-1">
+                              <div>
+                                <img
+                                  src="../assets/img/small-logos/logo-asana.svg"
+                                  className="avatar avatar-sm rounded-circle me-2"
+                                  alt="spotify"
+                                />
+                              </div>
+                              <ProjectDetailsModal
+                                submit={submit}
+                                modal1={modal1}
+                                modal={modal}
+                                setModal={setModal}
+                                showModal1={showModal1}
+                                closeModal1={closeModal1}
+                                desc={desc}
+                                teamMembers={teamMembers}
+                                devs={devs}
+                                prooject={project}
+                                getCurrentTeamMember={getCurrentTeamMember}
+                                addTeamMember={addTeamMember}
+                                handleDeleteMember={handleDeleteMember}
+                                getproductById={getproductById}
                               />
+
+                              <div className="my-auto">
+                                <h6 className="mb-0 text-sm">
+                                  <button
+                                    className="nav-link text-body p-1 btn btn-outline-primary"
+                                    style={{
+                                      marginLeft: "10px",
+                                      border: "none",
+                                      marginTop: "10px",
+                                    }}
+                                    onClick={() => {
+                                      handleClick(project._id);
+                                    }}
+                                  >
+                                    {project.title}
+                                  </button>
+                                </h6>
+                              </div>
+
+                              <UpdateProjectModal
+                                data={data}
+                                handleInputChange={handleInputChange}
+                                modal1={modal1}
+                                setModal1={setModal1}
+                                setModal={setModal}
+                                handleFormSubmit={handleFormSubmit}
+                                handleUpdate={handleUpdate}
+                              />
+                              <button
+                                className="btn btn-link text-secondary mb-0"
+                                onClick={() => {
+                                  setModal1(true);
+                                  handleProject(() => setCurrProject(project));
+                                  getproductById(project._id);
+                                }}
+                              >
+                                <EditIcon fontSize="small" color="action" />
+                              </button>
+                              <button
+                                className="btn btn-link text-secondary mb-0"
+                                onClick={() => {
+                                  openModal1(project ? project : "not found");
+                                }}
+                              >
+                                <AddIcon fontSize="small" color="action" />
+                              </button>
                             </div>
-                            <ProjectDetailsModal
-                              submit={submit}
-                              modal1={modal1}
-                              modal={modal}
-                              setModal={setModal}
-                              showModal1={showModal1}
-                              closeModal1={closeModal1}
-                              desc={desc}
-                              teamMembers={teamMembers}
-                              devs={devs}
-                              prooject={project}
-                              getCurrentTeamMember={getCurrentTeamMember}
-                              addTeamMember={addTeamMember}
-                              handleDeleteMember={handleDeleteMember}
-                              getproductById={getproductById}
-                            />
+                          </td>
 
-                            <div className="my-auto">
-                              <h6 className="mb-0 text-sm">
-                                <button
-                                  className="nav-link text-body p-1 btn btn-outline-primary"
-                                  style={{
-                                    marginLeft: "10px",
-                                    border: "none",
-                                    marginTop: "10px",
-                                  }}
-                                  onClick={() => {
-                                    handleClick(project._id)
-                                    
-                                  }}
-                                >
-                                  {project.title}
-                                </button>
-                              </h6>
-                            </div>
-
-                          <UpdateProjectModal
-                            data={data}
-                            handleInputChange = {handleInputChange}
-                            modal1={modal1}
-                            setModal1 = {setModal1}
-                            setModal = {setModal}
-                            handleFormSubmit = {handleFormSubmit}
-                            handleUpdate = {handleUpdate}
-                          />
-                            <button
-                              className="btn btn-link text-secondary mb-0"
-                              onClick={() => {
-                                setModal1(true);
-                                handleProject(() => setCurrProject(project));
-                                getproductById(project._id);
-                              }}
-                            >
-                              <EditIcon fontSize="small" color="action" />
-                            </button>
-                            <button
-                              className="btn btn-link text-secondary mb-0"
-                              onClick={() => {
-                               
-                                    openModal1(project ? project : "not found");
-                                    
-                              }}
-                            >
-                              <AddIcon fontSize="small" color="action" />
-                            </button>
-                          </div>
-                        </td>
-
-                        <td>
-                          <p className="text-sm font-weight-bold mb-0">
-                            {project.technology}
-                          </p>
-                        </td>
-                        <td>
-                          <p className="text-sm font-weight-bold mb-0">
-                            {project.estimatedhours}
-                          </p>
-                        </td>
-                        <td>
-                          <span className="text-xs font-weight-bold mb-0">
-                            {project.startdate.substr(0, 10)}
-                          </span>
-                        </td>
-                        <td className="align-middle text-center">
-                          <div>
-                            <span
-                              className="me-2 text-xs font-weight-bold"
-                              // style={{ marginRight: "50px" }}
-                            >
-                              {project.completiondate.substr(0, 10)}
+                          <td>
+                            <p className="text-sm font-weight-bold mb-0">
+                              {project.technology}
+                            </p>
+                          </td>
+                          <td>
+                            <p className="text-sm font-weight-bold mb-0">
+                              {project.estimatedhours}
+                            </p>
+                          </td>
+                          <td>
+                            <span className="text-xs font-weight-bold mb-0">
+                              {project.startdate.substr(0, 10)}
                             </span>
-                          </div>
-                        </td>
-                        <td className="align-middle">
-                          <button
-                            className="btn btn-link text-secondary mb-0"
-                            onClick={() => props.handleDelete(project._id)}
-                          >
-                            <DeleteIcon color="action" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                          <td className="align-middle text-center">
+                            <div>
+                              <span
+                                className="me-2 text-xs font-weight-bold"
+                                // style={{ marginRight: "50px" }}
+                              >
+                                {project.completiondate.substr(0, 10)}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="align-middle">
+                            <button
+                              className="btn btn-link text-secondary mb-0"
+                              onClick={() => props.handleDelete(project._id)}
+                            >
+                              <DeleteIcon color="action" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <h1>No Projects Found</h1>
+                    )}
                   </tbody>
                 </table>
               </div>

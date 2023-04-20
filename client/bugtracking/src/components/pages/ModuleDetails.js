@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import SideBar from "./ManagerSideBar";
-import DashBoardNavbar from "../pages/DashBoardNavbar";
+import SideBar from "./sidebar/ManagerSideBar";
+import DashBoardNavbar from "./navbar/DashBoardNavbar";
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import CreateTaskModal from "../Modals/CreateTaskModal";
@@ -70,6 +70,22 @@ const ModuleDetails = () => {
       .then((resp) => setTasks(resp.data))
       .then((resp) => console.log("task is", resp))
       .catch((error) => console.log(error));
+  };
+
+  const searchHandle = async (event) => {
+    let key = event.target.value;
+    let id = localStorage.getItem("module_id");
+    if (key) {
+      let result = await fetch(
+        `http://localhost:4000/task/${id}/search/${key}`
+      );
+      result = await result.json();
+      if (result) {
+        setTasks(result);
+      }
+    } else {
+      getTaskData();
+    }
   };
 
   const submit = (data) => {
@@ -173,7 +189,6 @@ const ModuleDetails = () => {
   };
 
   const closeModal1 = () => {
-    
     setShowModal1(false);
   };
 
@@ -193,7 +208,7 @@ const ModuleDetails = () => {
       })
 
       .catch((error) => console.log(error));
-      setModal2(true);
+    setModal2(true);
   };
 
   const handleOnChange = (e, id) => {
@@ -217,8 +232,8 @@ const ModuleDetails = () => {
         // handle error
         console.log("Error deleting data:", error);
       });
-      showAssginMembers(id)
-  }
+    showAssginMembers(id);
+  };
 
   useEffect(() => {
     getTaskData();
@@ -239,8 +254,34 @@ const ModuleDetails = () => {
             <div className="col-12">
               <div className="card my-4">
                 <div className="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                  <div className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                    <h6 className="text-white text-capitalize ps-3">Tasks</h6>
+                  <div
+                    className="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3"
+                    style={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <h6
+                      className="text-white text-capitalize ps-3"
+                      style={{ marginRight: "20px" }}
+                    >
+                      All Tasks
+                    </h6>
+                    <div className="ms-md-auto pe-md-3 d-flex align-items-center">
+                      <div className="input-group input-group-outline">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="search tasks"
+                          style={{ color: "white" }}
+                          onChange={searchHandle}
+                        />
+                      </div>
+                      <style>
+                        {`
+          ::placeholder {
+            color: white;
+          }
+        `}
+                      </style>
+                    </div>
                   </div>
                 </div>
                 <CreateTaskModal
@@ -401,10 +442,10 @@ const ModuleDetails = () => {
                                 show assign developer
                               </button>
                               <ShowUserModal
-                                modal2 = {modal2}
-                                setModal2 = {setModal2}
-                                assigndevs = {assigndevs}
-                                deleteUserfromtask = {deleteUserfromtask}
+                                modal2={modal2}
+                                setModal2={setModal2}
+                                assigndevs={assigndevs}
+                                deleteUserfromtask={deleteUserfromtask}
                               />
                             </td>
                             <td className="align-middle">

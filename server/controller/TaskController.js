@@ -110,5 +110,23 @@ const deleteTask = (req, res) => {
     });
 };
 
+const searchTask = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const regex = new RegExp(req.params.key, 'i');
+        const results = await taskSchema
+            .find({
+                moduleId: id,
+                $or: [{ title: regex }],
+            })
 
-module.exports = { addTask, getTaskBymodulestatus, gettaskById, updateTask, deleteTask }
+        .exec();
+        res.send(results);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("An error occurred while searching for projects");
+    }
+};
+
+
+module.exports = { addTask, getTaskBymodulestatus, gettaskById, updateTask, deleteTask, searchTask }
