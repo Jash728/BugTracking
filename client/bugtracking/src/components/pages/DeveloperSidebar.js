@@ -111,13 +111,36 @@ const DeveloperSideBar = (props) => {
             </h6>
           </li>
 
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a className="nav-link text-white" href="../pages/profile.html">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">person</i>
               </div>
               <span className="nav-link-text ms-1">Profile</span>
             </a>
+          </li> */}
+
+
+          <li className="nav-item">
+            <StyledNavLink
+              className="nav-link text-white"
+              to="/updateprofile"
+              exact
+              activeClassName="active"
+              isActive={(match, location) => {
+                if (match) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }}
+              
+            >
+              <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i className="material-icons opacity-10">person</i>
+              </div>
+              <span className="nav-link-text ms-1">Profile</span>
+            </StyledNavLink>
           </li>
 
           <li className="nav-item">

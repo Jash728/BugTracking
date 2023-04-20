@@ -16,6 +16,9 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    profile: {
+        type: String
+    },
     role: {
         type: Schema.Types.ObjectId,
         ref: 'role'

@@ -1,5 +1,6 @@
 const userSchema = require('../schema/UserSchema');
 // const bcrypt = require("bcryptjs")
+const mongoose = require("mongoose");
 const encrypt = require('../utils/encrypt');
 const jwt = require('jsonwebtoken')
 
@@ -47,35 +48,19 @@ const getUserData = (req, res) => {
 
 }
 
-// const addUser = (req, res) => {
 
-
-//     const user = new userSchema(req.body)
-//     user.save((err, data) => {
-//         if (err) {
-//             res.status(500).json({
-//                 message: "error in adding user",
-//             })
-//         } else {
-//             res.status(201).json({
-//                 message: "user added successfully",
-//                 data: data
-//             })
-//         }
-
-//     })
-
-// }
 
 const addUser = async(req, res) => {
 
+    let profile = req.file ? req.file.filename : null
     const hash = await encrypt.encryptPassword(req.body.password)
         // console.log(hash)
     const userData = {
         firstname: req.body.firstname,
         email: req.body.email,
         role: req.body.role,
-        password: hash
+        password: hash,
+        profile: profile
     }
 
     const user = new userSchema(userData)
@@ -119,59 +104,7 @@ const deleteUser = (req, res) => {
 }
 
 
-// const loginUser = async(req, res) => {
 
-//     // let token;
-//     var email = req.body.email
-//     var password = req.body.password
-
-//     if (email != undefined && password != undefined && email != "" && password != "") {
-//         userSchema.find({ email: email }).populate('role').exec((err, data) => {
-//             if (err) {
-//                 res.status(500).json({
-//                     message: "error while fetching user"
-//                 })
-//             } else {
-//                 if (data != undefined && data != null && data.length > 0) {
-//                     const hashedPassword = data[0].password;
-//                     // token = await data[0].generateAuthToken();
-//                     // console.log(token)
-
-//                     bcrypt.compare(password, hashedPassword, function(err, isMatch) {
-//                         if (isMatch) {
-//                             // token = data[0].generateAuthToken().then((res) => console.log(res));
-//                             // console.log(token)
-//                             // res.cookie("localhost", token, {
-//                             //     expires: new Date(Date.now() + 25892000000),
-//                             //     httpOnly: true
-//                             // });
-
-
-//                             res.status(200).json({
-//                                 message: "user found",
-//                                 data: data
-//                             })
-//                         } else {
-//                             res.status(404).json({
-//                                 message: "incorrect password"
-//                             })
-//                         }
-//                     });
-//                 } else {
-//                     res.status(404).json({
-//                         message: "user not found"
-//                     })
-//                 }
-//             }
-//         })
-
-
-//     } else {
-//         res.status(404).json({
-//             message: "email and password both are required"
-//         })
-//     }
-// }
 
 
 const loginUser = async(req, res) => {
@@ -182,12 +115,15 @@ const loginUser = async(req, res) => {
                 err: err
             })
         } else {
-
-            // console.log("data is", data)
+            console.log("-sasa--", await userSchema.findOne({ email: req.body.email }))
+                // console.log("data is", data)
             if (data !== null || data !== undefined) {
-                // console.log(data)
+                console.log("---", req.body)
+
                 const result = await encrypt.comparePassword(req.body.password, data.password)
-                    // console.log("result is", result)
+
+                console.log("req.body.password", await encrypt.encryptPassword(req.body.password, 10))
+                console.log("result is", result)
                 const token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
                     expiresIn: "1d",
                 });
@@ -195,9 +131,13 @@ const loginUser = async(req, res) => {
                     res.status(200).json({
                         message: "user found",
                         data: data,
-                        token: token
+
+
                     })
+                    console.log("Yesss")
+                    return;
                 } else {
+                    console.log("elsessss")
                     res.status(404).json({
                         message: "user not found",
                     })
@@ -205,6 +145,7 @@ const loginUser = async(req, res) => {
 
 
             } else {
+                console.log("Idhar aa raha he")
                 res.status(404).json({
                     message: "user not found",
                 })
@@ -221,27 +162,6 @@ const loginUser = async(req, res) => {
 
 
 
-const updateUser = (req, res) => {
-
-    const id = req.params.id
-
-    // const user = new userSchema(req.body)
-    // user.fi
-    userSchema.findByIdAndUpdate(id, req.body, (err, success) => {
-        if (err) {
-            res.status(404).json({
-                message: "error in updating user",
-            })
-        } else {
-            res.status(200).json({
-                message: "user updated successfully",
-            })
-        }
-    })
-
-
-
-}
 
 
 
@@ -249,18 +169,20 @@ const getUserById = (req, res) => {
 
     var id = req.params.id
 
-    userSchema.findById(id, (err, data) => {
-        if (err) {
-            res.status(404).json({
-                message: "error in fetching data"
-            })
-        } else {
-            res.status(200).json({
-                message: "data fetched successfully",
-                data: data
-            })
-        }
-    })
+    userSchema.findById(id)
+        .populate('role') // replace fieldToPopulate with the actual field name in your schema
+        .exec((err, data) => {
+            if (err) {
+                res.status(404).json({
+                    message: "error in fetching data"
+                })
+            } else {
+                res.status(200).json({
+                    message: "data fetched successfully",
+                    data: data
+                })
+            }
+        });
 
 
 }
@@ -284,6 +206,52 @@ const getDeveloperData = async(req, res) => {
 
 
 }
+
+const updateUser = async(req, res) => {
+    const id = req.params.id;
+    const { firstname, email, password, profile, role } = req.body;
+    console.log("req.body", req.body)
+
+    try {
+        const user = await userSchema.findById(id).populate('role');
+        console.log("user is", user)
+
+        if (!user) {
+            console.log("1")
+            return res.status(404).json({ message: 'User not found' });
+
+        }
+        // Only hash the new password if it is provided
+        if (password) {
+            const hashedPassword = await encrypt.encryptPassword(password);
+            user.password = hashedPassword;
+            console.log("2")
+        }
+
+        // Add validation for required fields
+        if (firstname && email) {
+            user.firstname = firstname;
+            user.email = email;
+            user.profile = profile;
+            user.role = role;
+            console.log("3")
+
+            const updatedUser = await user.save();
+
+            return res.status(200).json(updatedUser);
+        } else {
+            return res.status(400).json({ message: 'Firstname and email are required fields' });
+        }
+    } catch (error) {
+        console.error(error);
+
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'Invalid user ID' });
+        }
+
+        return res.status(500).json({ message: 'Server error' });
+    }
+};
 
 
 module.exports = {

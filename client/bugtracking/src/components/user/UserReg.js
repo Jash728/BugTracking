@@ -2,19 +2,38 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Navbar from "../pages/Navbar";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const UserReg = () => {
-  const { register, handleSubmit, reset} = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const [roles, setroles] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [inputField, setInputField] = useState({ profilePic: "" });
+
+  const imageUpload = (e) => {
+    const file = e.target.files[0];
+    setInputField({ profilePic: file });
+  };
+
 
   const submit = (data) => {
+    const formData = new FormData();
+    console.log('==', inputField.profilePic, inputField.profilePic.name)
+    formData.append("firstname", data.firstname);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("myFile", inputField.profilePic, inputField.profilePic.name);
+    formData.append("role", data.role);
+    console.log("==", formData);
     axios
-      .post("http://localhost:4000/user/user", data)
+      .post("http://localhost:4000/user/user", formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       .then((res) => {
         console.log(res.data);
         toast.success("Registration Successful!!", {
@@ -27,7 +46,7 @@ export const UserReg = () => {
           progress: undefined,
           theme: "colored",
         });
-        navigate('/login')
+        navigate("/login");
       })
       .catch((err) => {
         console.log(err);
@@ -42,8 +61,8 @@ export const UserReg = () => {
           theme: "colored",
         });
       });
-     
-      reset();
+
+    reset();
   };
   useEffect(() => {
     getRoles();
@@ -55,6 +74,8 @@ export const UserReg = () => {
       setroles(res.data.data);
     });
   };
+
+ 
 
   return (
     <div>
@@ -109,7 +130,18 @@ export const UserReg = () => {
                             {...register("password")}
                           />
                         </div>
-                       
+                        <div className="mb-3">
+                          <label className="form-label">Upload Profile</label>
+                          <input
+                            type="file"
+                            placeholder="Profile Pic"
+                            className="form-control"
+                            name="myFile"
+                            // {...register("")}
+                            onChange={imageUpload}
+                          />
+                        </div>
+
                         <select
                           class="form-select"
                           aria-label="Default select example"
@@ -127,7 +159,7 @@ export const UserReg = () => {
                             );
                           })}
                         </select>
-                      
+
                         <div className="text-center">
                           <button
                             type="submit"

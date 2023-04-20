@@ -27,6 +27,9 @@ export const UserLogin = () => {
             else if(res.data.data?.role.rolename ==="developer"){
               navigate("/developer")
             }
+            else{
+              navigate("/developer")
+            }
             //role...
             
         }
