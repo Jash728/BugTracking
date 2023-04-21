@@ -50,7 +50,7 @@ const ShowTasks = (props) => {
                                       }}>
                               <h6 className="mb-0 text-sm">
                                
-                                  {task.taskId.title}
+                                  {task.taskId?.title}
                                 
                               </h6>
                             </div>
@@ -60,17 +60,17 @@ const ShowTasks = (props) => {
 
                         <td>
                           <p className="text-sm font-weight-bold mb-0">
-                            {task.taskId.priority}
+                            {task.taskId?.priority}
                           </p>
                         </td>
                         <td>
                           <p className="text-sm font-weight-bold mb-0">
-                            {task.taskId.description}
+                            {task.taskId?.description}
                           </p>
                         </td>
                         <td>
                           <span className="text-xs font-weight-bold mb-0">
-                            {task.taskId.totalMinutes}
+                            {task.taskId?.totalMinutes}
                           </span>
                         </td>
                       
