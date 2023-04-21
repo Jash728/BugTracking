@@ -115,15 +115,15 @@ const loginUser = async(req, res) => {
                 err: err
             })
         } else {
-            console.log("-sasa--", await userSchema.findOne({ email: req.body.email }))
-                // console.log("data is", data)
+            // console.log("-sasa--", await userSchema.findOne({ email: req.body.email }))
+            // console.log("data is", data)
             if (data !== null || data !== undefined) {
                 console.log("---", req.body)
 
                 const result = await encrypt.comparePassword(req.body.password, data.password)
 
-                console.log("req.body.password", await encrypt.encryptPassword(req.body.password, 10))
-                console.log("result is", result)
+                // console.log("req.body.password", await encrypt.encryptPassword(req.body.password, 10))
+                // console.log("result is", result)
                 const token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
                     expiresIn: "1d",
                 });
@@ -210,11 +210,11 @@ const getDeveloperData = async(req, res) => {
 const updateUser = async(req, res) => {
     const id = req.params.id;
     const { firstname, email, password, profile, role } = req.body;
-    console.log("req.body", req.body)
+    // console.log("req.body", req.body)
 
     try {
         const user = await userSchema.findById(id).populate('role');
-        console.log("user is", user)
+        // console.log("user is", user)
 
         if (!user) {
             console.log("1")
@@ -225,7 +225,7 @@ const updateUser = async(req, res) => {
         if (password) {
             const hashedPassword = await encrypt.encryptPassword(password);
             user.password = hashedPassword;
-            console.log("2")
+            // console.log("2")
         }
 
         // Add validation for required fields
@@ -234,7 +234,7 @@ const updateUser = async(req, res) => {
             user.email = email;
             user.profile = profile;
             user.role = role;
-            console.log("3")
+            // console.log("3")
 
             const updatedUser = await user.save();
 

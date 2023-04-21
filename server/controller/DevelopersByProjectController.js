@@ -76,14 +76,22 @@ const updateTaskStatus = async(req, res) => {
         // Convert status to ObjectId
         const statusId = new ObjectId(status);
 
-        // Update task in TaskSchema
-        const updatedTask = await taskSchema.findByIdAndUpdate(
-            taskId, { status: statusId }, { new: true } // return updated document
-        );
+        // Get the task from the database
+        const task = await taskSchema.findById(taskId);
 
-        if (!updatedTask) {
+        if (!task) {
             return res.status(404).json({ message: 'Task not found' });
         }
+
+        // Calculate the total minutes spent on the task
+        const createdAt = new Date(task.createdAt).getTime();
+        const updatedAt = new Date(task.updatedAt).getTime();
+        const totalMinutes = Math.round((updatedAt - createdAt) / 1000 / 60);
+
+        // Update task in TaskSchema
+        const updatedTask = await taskSchema.findByIdAndUpdate(
+            taskId, { status: statusId, totalMinutes: totalMinutes }, { new: true } // return updated document
+        );
 
         // Update task status in UserTaskSchema
         await userTaskSchema.findOneAndUpdate({ taskId }, { $set: { status: statusId } }, { new: true });
