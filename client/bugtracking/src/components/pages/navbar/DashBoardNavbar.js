@@ -53,7 +53,7 @@ const DashBoardNavbar = (props) => {
                 src={user.profile?user.profile:"../assets/img/bruce-mars.jpg"}
                 alt=""
                 style={{
-                  height: "20px",
+                  height: "40px",
                   width: "50px",
                   borderRadius: "50%",
                   overflow: "hidden",

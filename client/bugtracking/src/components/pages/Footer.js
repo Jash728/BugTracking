@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -10,8 +11,7 @@ const Footer = () => {
                   <div className="copyright text-center text-sm text-white text-lg-start">
                     © ,
                     made with <i className="fa fa-heart" aria-hidden="true" /> by
-                    <a href="https://www.creative-tim.com" className="font-weight-bold text-white" target="_blank">Creative Tim</a>
-                    for a better web.
+                    <Link href="http://www.arthinfosoft.in/" className="font-weight-bold text-white" target="_blank">Arth Infosoft</Link>
                   </div>
                 </div>
                 <div className="col-12 col-md-6">

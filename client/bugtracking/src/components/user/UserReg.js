@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Navbar from "../pages/Navbar";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
@@ -79,7 +78,7 @@ export const UserReg = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="main-content  mt-0">
         <section>
           <div className="page-header min-vh-100">

@@ -117,7 +117,7 @@ function UpdateUserForm() {
         console.error(err);
         // Handle error
       });
-      navigate('/developer')
+      navigate('/updateprofile')
   };
 
   if (!user) {
@@ -142,7 +142,7 @@ function UpdateUserForm() {
             <div className="col-auto">
               <div className="avatar avatar-xl position-relative">
                 <img
-                  src={user.profile.length>0?user.profile:image}
+                  src={user.profile?.length>0?user.profile:image}
                   alt="profile_image"
                   className="w-100 border-radius-lg shadow-sm"
                 />

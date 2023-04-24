@@ -2,7 +2,6 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Footer from "../pages/Footer";
-import Navbar from "../pages/Navbar";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -44,7 +43,6 @@ export const UserLogin = () => {
 
   return (
     <div>
-      <Navbar />
       <main className="main-content  mt-0">
         <div
           className="page-header align-items-start min-vh-100"
@@ -125,7 +123,7 @@ export const UserLogin = () => {
           </div>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import DeveloperSideBar from "../sidebar/DeveloperSidebar";
 import DashBoardNavbar from "../navbar/DashBoardNavbar";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import ManagerSideBar from "../sidebar/ManagerSideBar";
 
 const UpdateProfile = () => {
     const [user, setuser] = useState("");
@@ -16,6 +17,7 @@ const UpdateProfile = () => {
       .then((res) => {
         // console.log(res.data.data);
         setuser(res.data.data);
+        console.log("------", user)
       })
       .catch((err) => {
         console.log(err);
@@ -48,7 +50,7 @@ const UpdateProfile = () => {
         style={{ overflow: "hidden" }}
       >
         {/* side navbar */}
-        <DeveloperSideBar logout={logout} user={user} />
+        {user && user.role && user.role.rolename === 'developer' ? <DeveloperSideBar logout={logout} user={user}/> : <ManagerSideBar logout={logout} />}
         {/* --------------------------------------------------------------------------------------- */}
         {/* // top Navbar */}
         <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">

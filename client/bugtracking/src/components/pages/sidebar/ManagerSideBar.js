@@ -1,6 +1,6 @@
 import React from "react";
-import BugReportIcon from "@mui/icons-material/BugReport";
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 
 const ManagerSideBar = (props) => {
   const logout = props.logout;
@@ -35,30 +35,64 @@ const ManagerSideBar = (props) => {
       >
         <ul className="navbar-nav">
           <li className="nav-item">
-            <a
-              className="nav-link text-white active bg-gradient-primary"
-              href="../pages/dashboard.html"
+            <StyledNavLink
+              className="nav-link text-white"
+              to="/manager"
+              exact
+              activeClassName="active"
+              isActive={(match, location) => {
+                if (match) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }}
             >
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">dashboard</i>
               </div>
               <span className="nav-link-text ms-1">Dashboard</span>
-            </a>
+            </StyledNavLink>
           </li>
-
           <li className="nav-item">
-            <a className="nav-link text-white " href="../pages/tables.html">
+            <StyledNavLink
+              className="nav-link text-white"
+              to="/projectdetails"
+              exact
+              activeClassName="active"
+              isActive={(match, location) => {
+                if (match) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }}
+            >
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <BugReportIcon />
+                <i className="material-icons opacity-10">dashboard</i>
               </div>
-              <span className="nav-link-text ms-1">Bugs</span>
-            </a>
+              <span className="nav-link-text ms-1">Modules</span>
+            </StyledNavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-white " href="/devform">
-              <AccountTreeIcon />
-              <span className="nav-link-text ms-2">Projects</span>
-            </a>
+            <StyledNavLink
+              className="nav-link text-white"
+              to="/moduledetails"
+              exact
+              activeClassName="active"
+              isActive={(match, location) => {
+                if (match) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }}
+            >
+              <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="material-icons opacity-10">dashboard</i>
+              </div>
+              <span className="nav-link-text ms-1">Tasks</span>
+            </StyledNavLink>
           </li>
 
           <li className="nav-item mt-3">
@@ -67,28 +101,48 @@ const ManagerSideBar = (props) => {
             </h6>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-white " href="../pages/profile.html">
+            <StyledNavLink
+              className="nav-link text-white"
+              to="/updateprofile"
+              exact
+              activeClassName="active"
+              isActive={(match, location) => {
+                if (match) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }}
+            >
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">person</i>
               </div>
               <span className="nav-link-text ms-1">Profile</span>
-            </a>
+            </StyledNavLink>
           </li>
 
           <li className="nav-item">
-              <a className="nav-link text-white " 
-                href="/logout"
-                onClick={(e) => logout(e)}>
-                <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i className="material-icons opacity-10">assignment</i>
-                </div>
-                <span className="nav-link-text ms-1">Log Out</span>
-              </a>
+            <a
+              className="nav-link text-white "
+              href="/logout"
+              onClick={(e) => logout(e)}
+            >
+              <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="material-icons opacity-10">assignment</i>
+              </div>
+              <span className="nav-link-text ms-1">Log Out</span>
+            </a>
           </li>
         </ul>
       </div>
     </aside>
   );
 };
+
+const StyledNavLink = styled(NavLink)`
+  &.active {
+    background-color: #de2567 !important;
+  }
+`;
 
 export default ManagerSideBar;

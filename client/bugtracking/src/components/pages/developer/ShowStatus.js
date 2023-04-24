@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import DeveloperSideBar from "../sidebar/DeveloperSidebar";
 import DashBoardNavbar from "../navbar/DashBoardNavbar";
-import { Table } from "react-bootstrap";
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import DoneIcon from "@mui/icons-material/Done";
+
+import Showtaskstatus from "./Showtaskstatus";
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const statusId = new ObjectId("6431cc48af10c92d6dcf96fb");
@@ -90,6 +91,7 @@ const ShowStatus = () => {
       navigate("/login");
     }
     getTasks();
+    getLoggedinUserData();
   }, []);
 
   const logout = (e) => {
@@ -116,65 +118,10 @@ const ShowStatus = () => {
 
           <br />
 
-          <div className="card">
-            <div className="card-header">
-              <h3 className="mb-0">Tasks</h3>
-            </div>
-            <div className="card-body px-0 pb-2">
-              <div className="table-responsive p-0">
-                <Table
-                  className="table align-items-center justify-content-center mb-0"
-                  striped
-                  bordered
-                  hover
-                >
-                  <thead>
-                    <tr>
-                      <th
-                        className="text-uppercase text-white text-xxs font-weight-bolder opacity-7"
-                        style={{ width: "50%", backgroundColor: "#DE2567" }}
-                      >
-                        To Do
-                      </th>
-                      <th
-                        className="text-uppercase text-white text-xxs font-weight-bolder opacity-7"
-                        style={{ width: "50%", backgroundColor: "#DE2567" }}
-                      >
-                        Complete
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tasks &&
-                      tasks.map((task) => (
-                        <tr key={task._id}>
-                          <td>
-                            <div className="d-flex px-1">
-                              {task.taskId?.status.statusname === "pending" ? (
-                                <>
-                                  {task.taskId.title}
-                                  <button
-                                    onClick={() => handleDelete(task.taskId)}
-                                    className="btn btn-sm btn-success ms-3"
-                                  >
-                                    Done
-                                  </button>
-                                </>
-                              ) : null}
-                            </div>
-                          </td>
-                          <td>
-                            {task.taskId?.status.statusname === "complete"
-                              ? task.taskId.title
-                              : null}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </Table>
-              </div>
-            </div>
+          <div>
+            <Showtaskstatus tasks={tasks} handleDelete={handleDelete}/>
           </div>
+          
           {/* End Navbar */}
         </main>
       </body>

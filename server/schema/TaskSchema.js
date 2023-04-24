@@ -13,7 +13,7 @@ const TaskSchema = new Schema({
         require: true
     },
     priority: {
-        type: String,
+        type: Number,
 
     },
     description: {

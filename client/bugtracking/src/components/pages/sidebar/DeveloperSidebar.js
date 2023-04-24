@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+
 
 const DeveloperSideBar = (props) => {
   const logout = props.logout;
@@ -40,28 +40,7 @@ const DeveloperSideBar = (props) => {
         id="sidenav-collapse-main"
       >
         <ul className="navbar-nav">
-          <li className="nav-item">
-            <StyledNavLink
-              className="nav-link text-white"
-              to="/developer"
-              exact
-              activeClassName="active"
-              isActive={(match, location) => {
-                if (match) {
-                  return true;
-                  
-                } else {
-                  return false;
-                }
-              }}
-              
-            >
-              <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="material-icons opacity-10">dashboard</i>
-              </div>
-              <span className="nav-link-text ms-1">Dashboard</span>
-            </StyledNavLink>
-          </li>
+       
 
           <li className="nav-item">
             <StyledNavLink

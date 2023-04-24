@@ -24,7 +24,8 @@ const getTaskBymodulestatus = async(req, res) => {
         .find({ moduleId: id })
         .populate('projectId')
         .populate('moduleId') // populate project field
-        .populate('status') // populate user field
+        .populate('status')
+        .sort({ priority: 1 }) // populate user field
         .exec((err, data) => {
             if (err) {
                 res.status(500).json({

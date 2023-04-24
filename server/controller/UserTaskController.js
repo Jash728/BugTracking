@@ -1,11 +1,47 @@
 const userTaskSchema = require("../schema/UserTaskSchema");
+const mailer = require("../utils/mailer")
+
+// const addUserTask = async(req, res) => {
+//     let data = req.body
+//     console.log("data is", req.body);
+//     try {
+//         let userId = data[0];
+//         let taskId = data[1];
+//         const check = await userTaskSchema.findOne({ userId, taskId });
+//         console.log("check is-----------", check)
+//         if (check != null) {
+//             res.status(409).json({
+//                 message: "User already assigned"
+//             })
+//             console.log("already Assigned")
+
+//         } else {
+//             console.log("inside else")
+//             const userTask = await userTaskSchema.create({
+//                 userId: data[0],
+//                 taskId: data[1],
+//             })
+//             res.status(201).json({
+//                 message: "user added successfully",
+//                 data: data
+//             })
+//         }
+//     } catch (error) {
+//         res.status(200).json({
+//             message: "Error in assigning user"
+//         })
+//         console.log(error)
+//     }
+// };
 
 const addUserTask = async(req, res) => {
     let data = req.body
+        // let users = data[0];
     console.log("data is", req.body);
     try {
         let userId = data[0];
         let taskId = data[1];
+        console.log(userId)
         const check = await userTaskSchema.findOne({ userId, taskId });
         console.log("check is-----------", check)
         if (check != null) {
@@ -48,7 +84,7 @@ const getDeveloper = async(req, res) => {
                 })
             } else {
                 if (data != null || data != undefined || data.length != 0) {
-                    console.log(data)
+                    // console.log(data)
                     res.status(200).json({
                         message: "assign user fetched successfully",
                         data: data // send populated data

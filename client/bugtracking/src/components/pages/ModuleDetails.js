@@ -478,7 +478,7 @@ const ModuleDetails = () => {
                 onClick={() => setModal(true)}
                 style={{ float: "left" }}
               >
-                <AddIcon /> Add Module
+                <AddIcon /> Add Task
               </button>
 
               <span
