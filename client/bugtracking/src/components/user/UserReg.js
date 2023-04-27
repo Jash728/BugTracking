@@ -99,7 +99,7 @@ export const UserReg = () => {
                     <div className="card-header">
                       <h4 className="font-weight-bolder">Sign Up</h4>
                       <p className="mb-0">
-                        Enter your email and password to register
+                        Enter below details to register
                       </p>
                     </div>
                     <div className="card-body">
@@ -111,6 +111,7 @@ export const UserReg = () => {
                             className="form-control"
                             placeholder="Name"
                             {...register("firstname")}
+                            required
                           />
                         </div>
                         <div className="input-group input-group-outline mb-3">
@@ -119,6 +120,7 @@ export const UserReg = () => {
                             placeholder="Email"
                             className="form-control"
                             {...register("email")}
+                            required
                           />
                         </div>
                         <div className="input-group input-group-outline mb-3">
@@ -127,6 +129,7 @@ export const UserReg = () => {
                             placeholder="Password"
                             className="form-control"
                             {...register("password")}
+                            required
                           />
                         </div>
                         <div className="mb-3">
@@ -138,6 +141,7 @@ export const UserReg = () => {
                             name="myFile"
                             // {...register("")}
                             onChange={imageUpload}
+                            required
                           />
                         </div>
 

@@ -63,7 +63,7 @@ function ProjectDetails() {
     getProjectData();
     console.log("Project is data", selectedProject);
     getTeamMembers();
-  }, []);
+  }, );
 
   useEffect(() => {
     getLoggedinUserData();
@@ -121,7 +121,7 @@ function ProjectDetails() {
                           "Project is selected xyz",
                           selectedProject
                         )}
-                        {selectedProject.length !== 0 ? (
+                        {selectedProject?.length !== 0 ? (
                           <tr key={selectedProject._id}>
                             <div className="my-auto">
                               <h6 className="mb-0 text-sm">
@@ -134,23 +134,23 @@ function ProjectDetails() {
                                     marginTop: "10px",
                                   }}
                                 >
-                                  {selectedProject.title}
+                                  {selectedProject?.title}
                                 </button>
                               </h6>
                             </div>
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
-                                {selectedProject.technology}
+                                {selectedProject?.technology}
                               </p>
                             </td>
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
-                                {selectedProject.estimatedhours}
+                                {selectedProject?.estimatedhours}
                               </p>
                             </td>
                             <td>
                               <span className="text-xs font-weight-bold mb-0">
-                                {selectedProject.startdate.substr(0, 10)}
+                                {selectedProject?.startdate.substr(0, 10)}
                               </span>
                             </td>
                             <td>
@@ -159,19 +159,16 @@ function ProjectDetails() {
                                   className="me-2 text-xs font-weight-bold"
                                   // style={{ marginRight: "50px" }}
                                 >
-                                  {selectedProject.completiondate.substr(0, 10)}
+                                  {selectedProject?.completiondate.substr(0, 10)}
                                 </span>
                               </div>
                             </td>
                             <ul>
                               {teamMembers?.map((member) => {
-                                {
-                                  /* {console.log("Dani: ", member)} */
-                                }
                                 return (
                                   <li>
-                                    {member && member.userId
-                                      ? member.userId.firstname
+                                    {member && member?.userId
+                                      ? member?.userId?.firstname
                                       : ""}
                                   </li>
                                 );
@@ -181,40 +178,7 @@ function ProjectDetails() {
                         ) : (
                           ""
                         )}
-                        {/* {selectedProject.length>0 && selectedProject.map?.((project) => (
-                          <tr key={project._id}>
-                            <td>
-                              <p className="text-sm font-weight-bold mb-0">
-                                {project.title}
-                              </p>
-                            </td>
-                            <td>
-                              <p className="text-sm font-weight-bold mb-0">
-                                {project.technology}
-                              </p>
-                            </td>
-                            <td>
-                              <p className="text-sm font-weight-bold mb-0">
-                                {project.estimatedhours}
-                              </p>
-                            </td>
-                            <td>
-                              <span className="text-xs font-weight-bold mb-0">
-                                {project.startdate.substr(0, 10)}
-                              </span>
-                            </td>
-                            <td className="align-middle text-center">
-                              <div>
-                                <span
-                                  className="me-2 text-xs font-weight-bold"
-                                  // style={{ marginRight: "50px" }}
-                                >
-                                  {project.completiondate.substr(0, 10)}
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                        ))} */}
+                        
                       </tbody>
                     </table>
                   </div>

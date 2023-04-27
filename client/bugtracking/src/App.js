@@ -35,7 +35,7 @@ function App() {
       {/* <UserReg/> */}
 
       <Routes>
-        <Route path="/" element={<UserReg />} />
+        <Route path="/" element={<UserLogin />} />
         <Route path="/userreg" element={<UserReg />} />
         <Route path="/login" element={<UserLogin />} />
 

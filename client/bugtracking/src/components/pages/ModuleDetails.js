@@ -154,8 +154,9 @@ const ModuleDetails = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
+      getTaskData();
     setModal1(false);
-    getTaskData();
+    
   };
 
   const handleInputChange = (event) => {
@@ -309,9 +310,7 @@ const ModuleDetails = () => {
                             Title
                           </th>
 
-                          <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                            priority
-                          </th>
+                         
 
                           <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                             description
@@ -363,11 +362,7 @@ const ModuleDetails = () => {
                                 </button>
                               </div>
                             </td>
-                            <td>
-                              <p className="text-sm font-weight-bold mb-0">
-                                {task.priority}
-                              </p>
-                            </td>
+                            
                             <td>
                               <p className="text-sm font-weight-bold mb-0">
                                 {task.description}

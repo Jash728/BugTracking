@@ -124,9 +124,9 @@ const loginUser = async(req, res) => {
 
                 // console.log("req.body.password", await encrypt.encryptPassword(req.body.password, 10))
                 // console.log("result is", result)
-                const token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
-                    expiresIn: "1d",
-                });
+                // const token = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
+                //     expiresIn: "1d",
+                // });
                 if (result == true) {
                     res.status(200).json({
                         message: "user found",
