@@ -311,13 +311,7 @@ function ProjectData(props) {
                         <tr>
                           <td>
                             <div className="d-flex px-1">
-                              <div>
-                                <img
-                                  src="../assets/img/small-logos/logo-asana.svg"
-                                  className="avatar avatar-sm rounded-circle me-2"
-                                  alt="spotify"
-                                />
-                              </div>
+                            
                               <ProjectDetailsModal
                                 submit={submit}
                                 modal1={modal1}

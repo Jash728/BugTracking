@@ -25,6 +25,8 @@ const ModuleDetails = () => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [currentMember, setCurrentMember] = useState("");
   const [showModal1, setShowModal1] = useState(false);
+
+
   const getLoggedinUserData = () => {
     var id = localStorage.getItem("_id");
 
@@ -110,8 +112,9 @@ const ModuleDetails = () => {
     console.log("Assign Task", id);
     console.log("current Member", currentMember.userId._id);
     const userid = currentMember.userId._id;
+    const projectid = localStorage.getItem("project_id")
     // console.log("user id", userid.userId._id)
-    let dataArr = [userid, id];
+    let dataArr = [userid, id, projectid];
     axios
       .post("http://localhost:4000/userTask/userTask", dataArr)
       .then((res) => {
@@ -122,6 +125,8 @@ const ModuleDetails = () => {
         console.log(err);
       });
   };
+
+
 
   function handleDelete(id) {
     console.log("item deleted");
@@ -240,6 +245,7 @@ const ModuleDetails = () => {
     getTaskData();
     getLoggedinUserData();
     getTeamMembers();
+    
   }, []);
   return (
     <body

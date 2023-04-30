@@ -1,5 +1,8 @@
-import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotifcationModal from "../../Modals/NotifcationModal";
+import axios from "axios";
 
 const DashBoardNavbar = (props) => {
   const user = props.user;
@@ -7,10 +10,39 @@ const DashBoardNavbar = (props) => {
   const pname = urlPath.substring(1); // "developer"
   const SERVER_URL = "http://localhost:4000";
   const navigate = useNavigate();
+  const [modal2, setModal2] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [userRole, setUserRole] = useState("");
 
-  useEffect(()=>{
-    
-  }, [user])
+  const getUserRole = () => {
+    setUserRole(localStorage.getItem("rolename"));
+  };
+
+  const getUserNotifications = async () => {
+    const userid = localStorage.getItem("_id");
+    setInterval(() => {
+      axios
+        .get(`http://localhost:4000/notifications/notifications/${userid}`)
+        .then((res) => {
+          console.log("not is ", res.data);
+          setNotifications(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, 1000);
+  };
+  const handleNotifications = () => {
+    setModal2(true);
+    getUserNotifications();
+  };
+
+  useEffect(() => {
+    getUserRole();
+    getUserNotifications();
+  }, []);
+
+  useEffect(() => {}, [user, notifications]);
 
   const imagePath = `${SERVER_URL}/uploads/`;
   return (
@@ -34,7 +66,6 @@ const DashBoardNavbar = (props) => {
               {pname.charAt(0).toUpperCase() + pname.slice(1)}
             </li>
           </ol>
-          <h6 className="font-weight-bolder mb-0">Dashboard</h6>
         </nav>
         <div
           className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 "
@@ -48,9 +79,37 @@ const DashBoardNavbar = (props) => {
           </div>
           <ul className="navbar-nav  justify-content-end">
             <li className="nav-item d-flex align-items-center">
+              {/* <Notification/> */}
+              {/* {setTimeout( () => {
+                console.log("oops")
+              }, 10000)} */}
+              {userRole !== "manager" ? (
+                notifications.length > 0 ? (
+                  <>
+                    <NotificationsIcon onClick={handleNotifications} />
+                    <div>
+                      {" "}
+                      {notifications.length > 0 ? notifications.length : ""}
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
+              )}
+
+              <NotifcationModal
+                modal2={modal2}
+                setModal2={setModal2}
+                notifications={notifications}
+                setNotifications={setNotifications}
+              />
               <img
                 onClick={() => navigate("/profile")}
-                src={user.profile?user.profile:"../assets/img/bruce-mars.jpg"}
+                src={
+                  user.profile ? user.profile : "../assets/img/bruce-mars.jpg"
+                }
                 alt=""
                 style={{
                   height: "40px",
@@ -58,7 +117,7 @@ const DashBoardNavbar = (props) => {
                   borderRadius: "50%",
                   overflow: "hidden",
                   marginRight: "10px",
-                  cursor:"pointer"
+                  cursor: "pointer",
                 }}
               />
               <span className="d-sm-inline d-none">{user.firstname}</span>
