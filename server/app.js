@@ -22,6 +22,7 @@ const statusRoutes = require('./routes/StatusRoutes');
 const taskRoutes = require("./routes/TaskRoutes")
 const userTaskRoutes = require("./routes/UserTaskRoutes")
 const developerProjectRoutes = require("./routes/DevelopersByProjectRoutes");
+const notificationRoutes = require("./routes/NotificationRoutes");
 
 app.use('/role', roleRoutes);
 app.use('/user', userRoutes);
@@ -32,6 +33,7 @@ app.use('/status', statusRoutes)
 app.use('/task', taskRoutes)
 app.use('/userTask', userTaskRoutes)
 app.use('/developer', developerProjectRoutes)
+app.use("/notifications", notificationRoutes)
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/bugtracker", {}, (err) => {

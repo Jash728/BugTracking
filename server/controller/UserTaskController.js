@@ -1,4 +1,5 @@
 const userTaskSchema = require("../schema/UserTaskSchema");
+const notificationSchema = require("../schema/NotificationSchema")
 const mailer = require("../utils/mailer")
 
 // const addUserTask = async(req, res) => {
@@ -55,6 +56,11 @@ const addUserTask = async(req, res) => {
             const userTask = await userTaskSchema.create({
                 userId: data[0],
                 taskId: data[1],
+            })
+            const addNotification = await notificationSchema.create({
+                userId: data[0],
+                taskId: data[1],
+                projectId: data[2]
             })
             res.status(201).json({
                 message: "user added successfully",
