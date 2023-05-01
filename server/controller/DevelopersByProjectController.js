@@ -53,10 +53,13 @@ const getTaskByUsers = async(req, res) => {
                     err: err,
                 });
             } else {
+                console.log('Data before sorting: ', data); // print data before sorting
                 if (data != null || data != undefined || data.length != 0) {
+                    data.sort((a, b) => a.taskId.priority - b.taskId.priority); // sort the data
+                    console.log('Data after sorting: ', data); // print data after sorting
                     res.status(200).json({
                         message: "Module fetched successfully",
-                        data: data, // send populated data
+                        data: data, // send sorted data
                     });
                 } else {
                     res.status(404).json({

@@ -79,24 +79,27 @@ const DashBoardNavbar = (props) => {
           </div>
           <ul className="navbar-nav  justify-content-end">
             <li className="nav-item d-flex align-items-center">
-              {/* <Notification/> */}
-              {/* {setTimeout( () => {
-                console.log("oops")
-              }, 10000)} */}
-              {userRole !== "manager" ? (
-                notifications.length > 0 ? (
-                  <>
-                    <NotificationsIcon onClick={handleNotifications} />
-                    <div>
-                      {" "}
-                      {notifications.length > 0 ? notifications.length : ""}
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
+              {userRole !== "manager" && (
+                <>
+                  <div style={{ position: "relative" }}>
+                    <NotificationsIcon onClick={handleNotifications} style={{ cursor:"pointer"}}/>
+                    {notifications.length > 0 && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "-10px",
+                          right: "-10px",
+                          backgroundColor: "#DE2567",
+                          color: "white",
+                          borderRadius: "50%",
+                          padding: "2px",
+                        }}
+                      >
+                        {notifications.length}
+                      </div>
+                    )}
+                  </div>
+                </>
               )}
 
               <NotifcationModal
@@ -118,9 +121,10 @@ const DashBoardNavbar = (props) => {
                   overflow: "hidden",
                   marginRight: "10px",
                   cursor: "pointer",
+                  marginLeft: "10px", // add margin to the left of the image
                 }}
               />
-              <span className="d-sm-inline d-none">{user.firstname}</span>
+              <span className="d-sm-inline d-none" style={{fontWeight: "bold"}}>{user.firstname}</span>
             </li>
           </ul>
         </div>
