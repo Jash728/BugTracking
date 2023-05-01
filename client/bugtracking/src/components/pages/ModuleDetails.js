@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SideBar from "./sidebar/ManagerSideBar";
 import DashBoardNavbar from "./navbar/DashBoardNavbar";
-import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import CreateTaskModal from "../Modals/CreateTaskModal";
 import AddIcon from "@mui/icons-material/Add";
@@ -17,7 +16,7 @@ const ModuleDetails = () => {
   const [tasks, setTasks] = useState("");
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {  reset } = useForm();
   const [data, setData] = useState({});
   const [modal1, setModal1] = useState(false);
   const [assigndevs, setAssigndevs] = useState([]);
@@ -225,6 +224,14 @@ const ModuleDetails = () => {
     setCurrentMember(JSON.parse(e.target.value));
   };
 
+  function formatMinutes(totalMinutes) {
+    const days = Math.floor(totalMinutes / 1440);
+    const hours = Math.floor((totalMinutes % 1440) / 60);
+    // const minutes = totalMinutes % 60;
+
+    return `${days} days ${hours} hours `;
+  }
+
   const deleteUserfromtask = (id) => {
     console.log("delete user", id);
     axios
@@ -387,7 +394,7 @@ const ModuleDetails = () => {
                             </td>
                             <td>
                               <span className="text-sm font-weight-bold mb-0">
-                                {task.totalMinutes}
+                                {formatMinutes(task.totalMinutes)}
                               </span>
                             </td>
                             <td className="input-group input-group-outline mb-3 d-flex flex-column">

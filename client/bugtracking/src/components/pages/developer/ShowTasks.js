@@ -1,7 +1,14 @@
 import React from "react";
 
 const ShowTasks = (props) => {
-    const devTasks = props.devTasks
+  const devTasks = props.devTasks;
+  function formatMinutes(totalMinutes) {
+    const days = Math.floor(totalMinutes / 1440);
+    const hours = Math.floor((totalMinutes % 1440) / 60);
+    const minutes = totalMinutes % 60;
+
+    return `${days} days ${hours} hours ${minutes} minutes`;
+  }
   return (
     <div className="container-fluid py-4">
       <div className="row">
@@ -29,9 +36,9 @@ const ShowTasks = (props) => {
                         Description
                       </th>
                       <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-1">
-                        Total Mins
+                        Total Time
                       </th>
-                     
+
                       <th />
                     </tr>
                   </thead>
@@ -40,21 +47,18 @@ const ShowTasks = (props) => {
                       <tr>
                         <td>
                           <div className="d-flex px-1">
-                           
-                          
-
-                            <div className="my-auto" style={{
-                                        marginLeft: "10px",
-                                        border: "none",
-                                        marginTop: "10px",
-                                      }}>
+                            <div
+                              className="my-auto"
+                              style={{
+                                marginLeft: "10px",
+                                border: "none",
+                                marginTop: "10px",
+                              }}
+                            >
                               <h6 className="mb-0 text-sm">
-                               
-                                  {task.taskId?.title}
-                                
+                                {task.taskId?.title}
                               </h6>
                             </div>
-
                           </div>
                         </td>
 
@@ -70,11 +74,9 @@ const ShowTasks = (props) => {
                         </td>
                         <td>
                           <span className="text-xs font-weight-bold mb-0">
-                            {task.taskId?.totalMinutes}
+                            {formatMinutes(task.taskId?.totalMinutes)}
                           </span>
                         </td>
-                      
-                       
                       </tr>
                     ))}
                   </tbody>
