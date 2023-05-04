@@ -2,22 +2,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
-import { get, set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ProjectData from "../ProjectData";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { useNavigate } from "react-router-dom";
-import RemoveIcon from "@mui/icons-material/Remove";
 import SideBar from "../pages/sidebar/ManagerSideBar";
 import DashBoardNavbar from "../pages/navbar/DashBoardNavbar";
 import CreateProjectModal from "../Modals/CreateProjectModal";
 
 const ManagerDashboard = () => {
   const [user, setuser] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { reset } = useForm();
   var navigate = useNavigate();
   const [projects, setProjects] = useState([]);
+  // eslint-disable-next-line
   const [devs, setDevs] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [currentMember, setCurrentMember] = useState({});
@@ -39,9 +37,9 @@ const ManagerDashboard = () => {
     if (!user) {
       navigate("/login");
     }
-    // getData();
     getLoggedinUserData();
     getDeveloperData();
+    // eslint-disable-next-line
   }, []);
 
   const getLoggedinUserData = () => {
@@ -49,7 +47,6 @@ const ManagerDashboard = () => {
     axios
       .get("http://localhost:4000/user/user/" + id)
       .then((res) => {
-        // console.log(res.data.data);
         setuser(res.data.data);
       })
       .catch((err) => {
@@ -72,12 +69,10 @@ const ManagerDashboard = () => {
   const submit = (data) => {
     var id = localStorage.getItem("_id");
     data.userid = id;
-    // console.log(data);
     axios
       .post("http://localhost:4000/project/project", data)
       .then((res) => {
         console.log(res.data);
-        // localStorage.setItem("_id",res.data.data[0]?._id)
       })
       .catch((err) => {
         console.log(err);
@@ -91,8 +86,6 @@ const ManagerDashboard = () => {
     axios
       .delete(`http://localhost:4000/project/project/${id}`)
       .then((response) => {
-        // handle success
-        console.log("Data deleted successfully");
         setProjects(projects.filter((item) => item._id !== id)); // remove deleted item from state
       })
       .catch((error) => {
@@ -100,7 +93,7 @@ const ManagerDashboard = () => {
         console.log("Error deleting data:", error);
       });
   }
-
+  // eslint-disable-next-line
   const handleUpdate = async (formData, id) => {
     try {
       await axios.put(`http://localhost:4000/project/project/${id}`, formData);
@@ -108,7 +101,7 @@ const ManagerDashboard = () => {
       console.error(error);
     }
   };
-
+// eslint-disable-next-line
   const addTeamMember = (e) => {
     e.preventDefault();
 
@@ -117,16 +110,14 @@ const ManagerDashboard = () => {
     setTeamMembers(currArr);
     setCurrentMember("");
   };
-
+// eslint-disable-next-line
   const getCurrentTeamMember = (e) => {
     e.preventDefault();
-    console.log("curr member", e.target);
     setCurrentMember(e.target.value);
   };
 
   const logout = (e) => {
     e.preventDefault();
-    console.log("Jash");
     localStorage.clear();
     setuser("");
     setProjects("");

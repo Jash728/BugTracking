@@ -34,7 +34,6 @@ const ModuleDetails = () => {
     axios
       .get("http://localhost:4000/user/user/" + id)
       .then((res) => {
-        // console.log(res.data.data);
         setuser(res.data.data);
       })
       .catch((err) => {
@@ -49,10 +48,8 @@ const ModuleDetails = () => {
     axios
       .get(`http://localhost:4000/projectteam/getbyuserproject/${id}`)
       .then((res) => {
-        console.log("Get Data Devs", res);
-        // localStorage.setItem("_id",res.data.data[0]?._id)
+        
         newData = res.data.data;
-        console.log("senor hola ", newData);
 
         setTeamMembers(newData);
       })
@@ -94,7 +91,6 @@ const ModuleDetails = () => {
   const submit = (data) => {
     var id = localStorage.getItem("module_id");
     data.moduleId = id;
-    console.log(data);
     axios
       .post("http://localhost:4000/task/task", data)
       .then((res) => {
@@ -110,11 +106,8 @@ const ModuleDetails = () => {
   };
 
   const assignusertotask = (id) => {
-    console.log("Assign Task", id);
-    console.log("current Member", currentMember.userId._id);
     const userid = currentMember.userId._id;
     const projectid = localStorage.getItem("project_id")
-    // console.log("user id", userid.userId._id)
     let dataArr = [userid, id, projectid];
     axios
       .post("http://localhost:4000/userTask/userTask", dataArr)
@@ -130,12 +123,10 @@ const ModuleDetails = () => {
 
 
   function handleDelete(id) {
-    console.log("item deleted");
     axios
       .delete(`http://localhost:4000/task/task/${id}`)
       .then((response) => {
-        // handle success
-        console.log("Data deleted successfully");
+        
         setTasks(module.filter((item) => item._id !== id)); // remove deleted item from state
       })
       .catch((error) => {
@@ -200,7 +191,6 @@ const ModuleDetails = () => {
   };
 
   const showAssginMembers = (id) => {
-    console.log("assign id", id);
     fetch(`http://localhost:4000/userTask/userTask/${id}`, {
       method: "GET",
       headers: {
@@ -210,7 +200,6 @@ const ModuleDetails = () => {
       .then((res) => res.json())
       .then((res) => {
         const obj = res.data;
-        console.log("devs", obj);
         setAssigndevs(obj);
       })
 
@@ -220,9 +209,7 @@ const ModuleDetails = () => {
 
   const handleOnChange = (e, id) => {
     e.preventDefault();
-    console.log("task id", id);
     gettaskById(id);
-    console.log("assign member1", JSON.parse(e.target.value));
     setCurrentMember(JSON.parse(e.target.value));
   };
 
@@ -235,12 +222,9 @@ const ModuleDetails = () => {
   }
 
   const deleteUserfromtask = (id) => {
-    console.log("delete user", id);
     axios
       .delete(`http://localhost:4000/userTask/userTask/${id}`)
       .then((response) => {
-        // handle success
-        console.log("Data deleted successfully");
         setAssigndevs(module.filter((item) => item._id !== id)); // remove deleted item from state
       })
       .catch((error) => {
@@ -347,7 +331,6 @@ const ModuleDetails = () => {
                       <tbody>
                         {tasks.map?.((task) => (
                           <tr key={task._id}>
-                            {/* {console.log("module name", module)} */}
                             <td>
                               <div className="d-flex px-1">
                                 <div className="my-auto">

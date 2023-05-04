@@ -10,7 +10,6 @@ function ProjectDetails() {
   const [teamMembers, setTeamMembers] = useState([]);
   const getProjectData = async () => {
     let id = localStorage.getItem("project_id");
-    console.log("Project is", id);
     await fetch(`http://localhost:4000/project/project/${id}`, {
       method: "GET",
       headers: {
@@ -19,10 +18,8 @@ function ProjectDetails() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        console.log("Project is resp", resp.data);
         let tempid = resp.data;
         setSelectedProject(tempid);
-        console.log("Project is project", selectedProject);
       })
       .catch((error) => console.log(error));
   };
@@ -34,10 +31,7 @@ function ProjectDetails() {
     axios
       .get(`http://localhost:4000/projectteam/getbyuserproject/${id}`)
       .then((res) => {
-        console.log("Get Data Devs", res);
-        // localStorage.setItem("_id",res.data.data[0]?._id)
         newData = res.data.data;
-        console.log("senor hola ", newData);
 
         setTeamMembers(newData);
       })
@@ -51,7 +45,6 @@ function ProjectDetails() {
     axios
       .get("http://localhost:4000/user/user/" + id)
       .then((res) => {
-        // console.log(res.data.data);
         setuser(res.data.data);
       })
       .catch((err) => {
@@ -61,7 +54,6 @@ function ProjectDetails() {
 
   useEffect(() => {
     getProjectData();
-    console.log("Project is data", selectedProject);
     getTeamMembers();
   }, );
 
@@ -117,10 +109,7 @@ function ProjectDetails() {
                         </tr>
                       </thead>
                       <tbody>
-                        {console.log(
-                          "Project is selected xyz",
-                          selectedProject
-                        )}
+                      
                         {selectedProject?.length !== 0 ? (
                           <tr key={selectedProject._id}>
                             <div className="my-auto">

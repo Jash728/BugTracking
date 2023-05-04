@@ -32,12 +32,10 @@ function ProjectData(props) {
   const submit = (data) => {
     var id = localStorage.getItem("_id");
     data.userid = id;
-    // console.log(data);
     axios
       .post("http://localhost:4000/project/project", data)
       .then((res) => {
         console.log(res.data);
-        // localStorage.setItem("_id",res.data.data[0]?._id)
       })
       .catch((err) => {
         console.log(err);
@@ -48,9 +46,7 @@ function ProjectData(props) {
   };
 
   const pushTeamMember = async () => {
-    console.log(currProjectID);
     let data = [currProjectID, JSON.parse(currentMember)._id];
-    console.log("Dhruvil", data);
     axios
       .post("http://localhost:4000/projectteam/add", data)
       .then((res) => {
@@ -64,7 +60,6 @@ function ProjectData(props) {
       });
   };
   const getTeamMembers = async (id) => {
-    console.log("Inside getTeamMembers: ", id);
     // eslint-disable-next-line
     let data = [id];
     let newData = [];
@@ -72,10 +67,7 @@ function ProjectData(props) {
     axios
       .get(`http://localhost:4000/projectteam/getbyuserproject/${id}`)
       .then((res) => {
-        console.log("Get Data Devs", res);
-        // localStorage.setItem("_id",res.data.data[0]?._id)
         newData = res.data.data;
-        console.log("senor hola ", newData);
 
         setTeamMembers(newData);
       })
@@ -85,14 +77,12 @@ function ProjectData(props) {
   };
   const addTeamMember = async (e) => {
     e.preventDefault();
-    console.log("XYZ : ", currentMember);
     if (currentMember.length === 0 || currentMember === "Developer") {
       alert("Please assign developer name");
       return;
     }
 
     let currArr = teamMembers;
-    console.log("Currrrr mem", currArr);
 
     let currSet = mySet;
 
@@ -107,7 +97,6 @@ function ProjectData(props) {
     await pushTeamMember();
 
     setMySet(currSet);
-    // setTeamMembers(currArr);
     setCurrentMember("");
   };
   const getData = () => {
@@ -125,7 +114,6 @@ function ProjectData(props) {
 
   const getCurrentTeamMember = (e) => {
     e.preventDefault();
-    console.log("curr member1", e.target.value);
     setCurrentMember(e.target.value);
   };
 
@@ -178,7 +166,6 @@ function ProjectData(props) {
   };
   useEffect(() => {
     props.getData();
-    console.log("data is", data);
     getDeveloperData();
     // eslint-disable-next-line
   }, [data, modal, teamMembers]);
@@ -193,7 +180,6 @@ function ProjectData(props) {
   };
 
   const openModal1 = (project) => {
-    console.log("Modal ", project);
     setDesc(project.description);
     setCurrProjectID(project._id);
     getTeamMembers(project._id);
@@ -201,7 +187,7 @@ function ProjectData(props) {
   };
 
   const handleDeleteMember = (id) => {
-    console.log("New id ", id);
+    
     axios
       .delete(`http://localhost:4000/projectteam/deleteProjectTeam/${id._id}`)
       .then((res) => {
@@ -213,7 +199,7 @@ function ProjectData(props) {
       .then(() => {
         let newSet = mySet.filter((item) => item !== id.userId._id); // filter the mySet array to remove the deleted member ID
         setMySet(newSet); // update the state with the new filtered array
-        console.log("New Set is ", newSet);
+        
       })
       .catch((err) => {
         console.log(err);
@@ -271,14 +257,6 @@ function ProjectData(props) {
         `}
                   </style>
                 </div>
-                {/* <input
-                  type="text"
-                  placeholder="Search Project"
-                  name=""
-                  id=""
-                  onChange={searchHandle}
-                  style={{ marginLeft: "850px" }}
-                /> */}
               </div>
             </div>
             <div className="card-body px-0 pb-2">
@@ -397,7 +375,6 @@ function ProjectData(props) {
                             <div>
                               <span
                                 className="me-2 text-xs font-weight-bold"
-                                // style={{ marginRight: "50px" }}
                               >
                                 {project.completiondate.substr(0, 10)}
                               </span>

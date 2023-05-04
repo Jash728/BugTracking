@@ -31,7 +31,6 @@ const ShowStatus = () => {
 
   const getTasks = async () => {
     let id = localStorage.getItem("_id");
-    console.log("Developer's ", id);
     await fetch(`http://localhost:4000/developer/developerTask/${id}`, {
       method: "GET",
       headers: {
@@ -40,30 +39,26 @@ const ShowStatus = () => {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        console.log("Developer's task ", resp.data);
         setTasks(resp.data);
       })
       .catch((error) => console.log(error));
   };
 
   const handleDelete = async (task) => {
-    console.log("Task id", task._id);
     try {
+      // eslint-disable-next-line
       const resp = await axios.put(
         `http://localhost:4000/developer/tasks/${task._id}`,
         {
           status: statusId,
         }
       );
-      console.log(resp);
 
       const createdAt = new Date(task.createdAt);
       const updatedAt = new Date(task.updatedAt);
-      // console.log("updated At", createdAt, updatedAt)
       const diffMillis = updatedAt - createdAt;
       const diffMinutes = Math.round(diffMillis / 1000 / 60);
       const newTotalMinutes = task.totalMinutes - diffMinutes;
-      console.log("updated At", createdAt, updatedAt, Math.abs(newTotalMinutes), typeof(newTotalMinutes))
 
       const updatedTask = {
         ...task,
@@ -97,7 +92,6 @@ const ShowStatus = () => {
 
   const logout = (e) => {
     e.preventDefault();
-    console.log("Jash");
     localStorage.clear();
     setuser("");
     navigate("/login");

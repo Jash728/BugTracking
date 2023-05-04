@@ -28,7 +28,6 @@ const ShowDevTasks = () => {
   
   const getTasks = async() => {
     let id = localStorage.getItem('_id');
-    console.log("Developer's ", id)
     await fetch(`http://localhost:4000/developer/developerTask/${id}`, {
       method: "GET",
       headers: {
@@ -37,7 +36,6 @@ const ShowDevTasks = () => {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        console.log("Developer's resp ", resp.data);
         setDevTasks(resp.data)
         
       })
@@ -58,7 +56,6 @@ const ShowDevTasks = () => {
 
   const logout = (e) => {
     e.preventDefault();
-    console.log("Jash");
     localStorage.clear();
     setuser("");
     navigate("/login");

@@ -11,11 +11,10 @@ const NotifcationModal = (props) => {
   const setNotifications = props.setNotifications;
   const handleDeleteNotifications = () => {
     const userid = localStorage.getItem("_id");
-    console.log("helllloe");
+   
     axios
       .delete(`http://localhost:4000/notifications/notifications/${userid}`)
       .then((res) => {
-        console.log("deleted ");
         setNotifications([]);
       })
       .catch((err) => {
@@ -30,17 +29,6 @@ const NotifcationModal = (props) => {
           Notifications <i className="fa fa-bell text-muted" />
         </ModalHeader>
         <ModalBody>
-          {console.log("expo ", notifications)}
-          {/* <ol>
-            {notifications.length > 0
-              ? notifications.map((item) => (
-                  <li>
-                    You have been assigned {item.taskId.title} in the project{" "}
-                    {item.projectId.title}
-                  </li>
-                ))
-              : "No Notifications"}
-          </ol> */}
           <section className="section-50">
             <div className="container">
               <div className="notification-ui_dd-content">

@@ -12,14 +12,8 @@ export const UserLogin = () => {
     
     axios.post('http://localhost:4000/user/user/login',data).then((res)=>{
         if(res.data.data){
-            console.log("user found....")
-            //console.log(res.data.data[0].role.name)
-            console.log(res.data.data?._id)
             localStorage.setItem("_id",res.data.data?._id)
-            // localStorage.setItem("token", res.data.token);
             localStorage.setItem("rolename", res.data.data.role.rolename)
-            console.log(res.data.data?.role.rolename)
-            // axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
             if(res.data.data?.role.rolename ==="manager"){
                 navigate("/manager")
             }
@@ -29,12 +23,10 @@ export const UserLogin = () => {
             else{
               navigate("/developer")
             }
-            //role...
             
         }
         
     }).catch((err)=>{
-        console.log("user not found....")
         alert("user not found....")
     })
     reset();

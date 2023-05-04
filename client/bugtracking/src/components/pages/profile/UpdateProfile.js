@@ -15,9 +15,7 @@ const UpdateProfile = () => {
     axios
       .get("http://localhost:4000/user/user/" + id)
       .then((res) => {
-        // console.log(res.data.data);
         setuser(res.data.data);
-        console.log("------", user)
       })
       .catch((err) => {
         console.log(err);
@@ -38,7 +36,6 @@ const UpdateProfile = () => {
 
   const logout = (e) => {
     e.preventDefault();
-    console.log("Jash");
     localStorage.clear();
     setuser("");
     navigate("/login");

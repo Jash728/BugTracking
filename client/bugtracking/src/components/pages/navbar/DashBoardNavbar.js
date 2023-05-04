@@ -23,7 +23,6 @@ const DashBoardNavbar = (props) => {
       axios
         .get(`http://localhost:4000/notifications/notifications/${userid}`)
         .then((res) => {
-          console.log("not is ", res.data);
           setNotifications(res.data.data);
         })
         .catch((err) => {

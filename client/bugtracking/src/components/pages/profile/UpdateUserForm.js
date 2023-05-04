@@ -10,7 +10,7 @@ function UpdateUserForm() {
 
   const getRoles = () => {
     axios.get("http://localhost:4000/role/get").then((res) => {
-      //console.log(res.data.data)
+      
       setroles(res.data.data);
     });
   };
@@ -53,7 +53,6 @@ function UpdateUserForm() {
         role: user.role,
       });
     }
-    console.log("user profile", user)
   }, [user]);
 
   const handleChange = (event) => {
@@ -82,11 +81,7 @@ function UpdateUserForm() {
 
 
     const id = localStorage.getItem("_id");
-    console.log("---id---", id);
     const { firstname, email, password, profile, role } = formData;
-    console.log("form data", formData);
-    // const imageBuffer = Buffer.from(image, 'base64');
-    // const imageString = imageBuffer.toString('utf-8');
 
     const data = {
       firstname,
@@ -95,13 +90,6 @@ function UpdateUserForm() {
       profile:image.length>0?image:profile,
       role,
     };
-    // data.append("firstname", firstname);
-    // data.append("email", email);
-    // data.append("password", password);
-    // data.append("profile", profile);
-    // data.append("role", role);
-    console.log("Updated Data is", data);
-
     axios
       .put(`http://localhost:4000/user/user/${id}`, data, {
         headers: {

@@ -20,13 +20,11 @@ export const UserReg = () => {
 
   const submit = (data) => {
     const formData = new FormData();
-    console.log('==', inputField.profilePic, inputField.profilePic.name)
     formData.append("firstname", data.firstname);
     formData.append("email", data.email);
     formData.append("password", data.password);
     formData.append("myFile", inputField.profilePic, inputField.profilePic.name);
     formData.append("role", data.role);
-    console.log("==", formData);
     axios
       .post("http://localhost:4000/user/user", formData,{
         headers: {
@@ -69,7 +67,7 @@ export const UserReg = () => {
 
   const getRoles = () => {
     axios.get("http://localhost:4000/role/get").then((res) => {
-      //console.log(res.data.data)
+      
       setroles(res.data.data);
     });
   };

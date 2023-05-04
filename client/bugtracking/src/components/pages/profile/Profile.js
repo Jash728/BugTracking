@@ -11,7 +11,6 @@ const Profile = () => {
     axios
       .get("http://localhost:4000/user/user/" + id)
       .then((res) => {
-        console.log("----", res.data.data);
         setuser(res.data.data);
       })
       .catch((err) => {

@@ -36,8 +36,7 @@ const ProjectModule = () => {
     axios
       .delete(`http://localhost:4000/projectmodule/deleteprojectmodule/${id}`)
       .then((response) => {
-        // handle success
-        console.log("Data deleted successfully");
+        
         setModule(module.filter((item) => item._id !== id)); // remove deleted item from state
       })
       .catch((error) => {
@@ -65,12 +64,11 @@ const ProjectModule = () => {
   const submit = (data) => {
     var id = localStorage.getItem("project_id");
     data.projectId = id;
-    // console.log(data);
     axios
       .post("http://localhost:4000/projectmodule/add", data)
       .then((res) => {
         console.log("Project module is ", res.data);
-        // localStorage.setItem("_id",res.data.data[0]?._id)
+      
       })
       .catch((err) => {
         console.log(err);
@@ -223,7 +221,6 @@ const ProjectModule = () => {
                   <tbody>
                     {module.map?.((m) => (
                       <tr>
-                        {/* {console.log("module name", module)} */}
                         <td>
                           <div className="d-flex px-1">
                             <div className="my-auto">

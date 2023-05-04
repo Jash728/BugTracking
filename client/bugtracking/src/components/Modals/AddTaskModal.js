@@ -85,9 +85,9 @@ const ProjectDetailsModal = (props) => {
                             color: "#495057",
                           }}
                           onChange={(e) => getCurrentTeamMember(e)}
-                          // placeholder="Add Developers "
+                          
                         >
-                          {console.log("dev is there : ", devs)}
+                         
                           <option selected>Developer</option>
 
                           {devs?.map((dev) => {
@@ -128,9 +128,7 @@ const ProjectDetailsModal = (props) => {
                           </thead>
                           <tbody>
                             {teamMembers?.map((member) => {
-                              {
-                                /* {console.log("Dani: ", member)} */
-                              }
+                             
                               return (
                                 <tr>
                                   <td>
