@@ -32,7 +32,7 @@ const UpdateProfile = () => {
     
     getLoggedinUserData();
     
-   
+   // eslint-disable-next-line
   }, []);
 
 

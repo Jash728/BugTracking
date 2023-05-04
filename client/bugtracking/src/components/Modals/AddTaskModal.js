@@ -1,10 +1,9 @@
 import React from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { Form, Row, Col } from "react-bootstrap";
-import { get, set, useForm } from "react-hook-form";
+import {useForm } from "react-hook-form";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import RemoveIcon from "@mui/icons-material/Remove";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 const ProjectDetailsModal = (props) => {

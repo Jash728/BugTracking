@@ -1,16 +1,14 @@
 import React from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { Form, Row, Col } from "react-bootstrap";
-import { get, set, useForm } from "react-hook-form";
+import {  Col } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import RemoveIcon from "@mui/icons-material/Remove";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 const ProjectDetailsModal = (props) => {
-    const { register, handleSubmit, reset, setValue } = useForm();
+    const { register, handleSubmit} = useForm();
     const submit = props.submit;
-    const modal1 = props.modal1;
     const showModal1 = props.showModal1;
     const closeModal1 = props.closeModal1;
     const desc = props.desc;
@@ -44,7 +42,7 @@ const ProjectDetailsModal = (props) => {
                 padding: "10px",
               }}
             >
-              <h5>{teamMembers.length == 0 ? " " : "Team Member Name"}</h5>
+              <h5>{teamMembers.length === 0 ? " " : "Team Member Name"}</h5>
 
               <button
                 className="btn btn-link text-secondary mb-0"
@@ -54,7 +52,7 @@ const ProjectDetailsModal = (props) => {
                 }}
                 style={{ marginLeft: "100px" }}
               >
-                {teamMembers.length == 0 ? (
+                {teamMembers.length === 0 ? (
                   <AddCircleRoundedIcon />
                 ) : (
                   <EditIcon />
@@ -67,7 +65,7 @@ const ProjectDetailsModal = (props) => {
           <div>
             <Modal size="lg" isOpen={modal} toggle={() => setModal(!modal)}>
               <ModalHeader toggle={() => setModal(!modal)}>
-                {teamMembers.length == 0
+                {teamMembers.length === 0
                   ? "Add Team Member"
                   : "Edit Team Members"}
               </ModalHeader>
@@ -129,9 +127,6 @@ const ProjectDetailsModal = (props) => {
                           </thead>
                           <tbody>
                             {teamMembers?.map((member) => {
-                              {
-                                /* {console.log("Dani: ", member)} */
-                              }
                               return (
                                 <tr>
                                   <td>
@@ -159,8 +154,6 @@ const ProjectDetailsModal = (props) => {
             </Modal>
           </div>
         </ModalBody>
-
-        {/* <button on?Click={closeModal1}>Close Modal 1</button> */}
       </Modal>
     </div>
   );

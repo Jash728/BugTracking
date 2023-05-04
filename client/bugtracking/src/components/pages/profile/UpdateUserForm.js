@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const Buffer = require('buffer/').Buffer;
 
 function UpdateUserForm() {
   const [user, setUser] = useState(null);

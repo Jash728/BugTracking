@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { Form, Row, Col } from "react-bootstrap";
-import { get, set, useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import axios from "axios";
 
 const CreateTaskModal = (props) => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit} = useForm();
   const submit = props.submit;
   const getTaskData = props.getTaskData;
   const modal = props.modal;
@@ -15,7 +14,6 @@ const CreateTaskModal = (props) => {
 
   const getStatus = () => {
     axios.get("http://localhost:4000/status/get").then((res) => {
-      //console.log(res.data.data)
       setStatus(res.data.data);
     });
   };

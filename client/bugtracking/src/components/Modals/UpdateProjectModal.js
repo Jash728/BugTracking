@@ -1,10 +1,10 @@
 import React from "react";
 import { Form, Row, Col } from "react-bootstrap";
-import { get, set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 
 const UpdateProjectModal = (props) => {
-    const { register, handleSubmit, reset, setValue } = useForm();
+    const {  handleSubmit } = useForm();
     const data = props.data;
     const handleInputChange = props.handleInputChange
     const modal1 = props.modal1;

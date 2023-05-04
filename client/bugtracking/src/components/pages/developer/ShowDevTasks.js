@@ -17,7 +17,6 @@ const ShowDevTasks = () => {
     axios
       .get("http://localhost:4000/user/user/" + id)
       .then((res) => {
-        // console.log(res.data.data);
         setuser(res.data.data);
       })
       .catch((err) => {
@@ -54,8 +53,8 @@ const ShowDevTasks = () => {
     getTasks();
     getLoggedinUserData();
     
-   
-  }, []);
+   // eslint-disable-next-line
+  },[]);
 
   const logout = (e) => {
     e.preventDefault();

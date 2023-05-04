@@ -1,7 +1,6 @@
 import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
-import Footer from "../pages/Footer";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -63,16 +62,19 @@ export const UserLogin = () => {
                       </h4>
                       <div className="row mt-3">
                         <div className="col-2 text-center ms-auto">
+                         {/* eslint-disable-next-line */}
                           <a className="btn btn-link px-3" href="javascript:;">
                             <i className="fa fa-facebook text-white text-lg" />
                           </a>
                         </div>
                         <div className="col-2 text-center px-1">
+                         {/* eslint-disable-next-line */}
                           <a className="btn btn-link px-3" href="javascript:;">
                             <i className="fa fa-github text-white text-lg" />
                           </a>
                         </div>
                         <div className="col-2 text-center me-auto">
+                         {/* eslint-disable-next-line */}
                           <a className="btn btn-link px-3" href="javascript:;">
                             <i className="fa fa-google text-white text-lg" />
                           </a>

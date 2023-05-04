@@ -20,9 +20,11 @@ const ModuleDetails = () => {
   const [data, setData] = useState({});
   const [modal1, setModal1] = useState(false);
   const [assigndevs, setAssigndevs] = useState([]);
+   // eslint-disable-next-line 
   const [currTask, setCurrTask] = useState("");
   const [teamMembers, setTeamMembers] = useState([]);
   const [currentMember, setCurrentMember] = useState("");
+  // eslint-disable-next-line
   const [showModal1, setShowModal1] = useState(false);
 
 
@@ -192,7 +194,7 @@ const ModuleDetails = () => {
 
       .catch((error) => console.log(error));
   };
-
+// eslint-disable-next-line
   const closeModal1 = () => {
     setShowModal1(false);
   };

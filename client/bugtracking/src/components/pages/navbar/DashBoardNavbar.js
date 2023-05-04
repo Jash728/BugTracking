@@ -6,9 +6,8 @@ import axios from "axios";
 
 const DashBoardNavbar = (props) => {
   const user = props.user;
-  const urlPath = window.location.pathname; // "/developer"
-  const pname = urlPath.substring(1); // "developer"
-  const SERVER_URL = "http://localhost:4000";
+  const urlPath = window.location.pathname; 
+  const pname = urlPath.substring(1); 
   const navigate = useNavigate();
   const [modal2, setModal2] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -44,7 +43,6 @@ const DashBoardNavbar = (props) => {
 
   useEffect(() => {}, [user, notifications]);
 
-  const imagePath = `${SERVER_URL}/uploads/`;
   return (
     <nav
       className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl "
@@ -55,6 +53,7 @@ const DashBoardNavbar = (props) => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li className="breadcrumb-item text-sm">
+               {/* eslint-disable-next-line */}
               <a className="opacity-5 text-dark" href="javascript:;">
                 Pages
               </a>

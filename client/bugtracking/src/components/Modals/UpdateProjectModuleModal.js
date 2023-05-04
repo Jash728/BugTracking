@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
-import { get, set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import axios from "axios";
 
 const UpdateProjectModuleModal = (props) => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { handleSubmit } = useForm();
   const data = props.data;
   const handleInputChange = props.handleInputChange;
   const modal1 = props.modal1;
@@ -18,7 +18,6 @@ const UpdateProjectModuleModal = (props) => {
 
   const getStatus = () => {
     axios.get("http://localhost:4000/status/get").then((res) => {
-      //console.log(res.data.data)
       setStatus(res.data.data);
     });
   };
@@ -28,7 +27,6 @@ const UpdateProjectModuleModal = (props) => {
   }, []);
   return (
     <div>
-      {/* {console.log("status data ", data != null ? data : "not found")} */}
       <Modal size="lg" isOpen={modal1} toggle={() => setModal(!modal1)}>
         <ModalHeader toggle={() => setModal1(!modal1)}>
           Update Module

@@ -13,6 +13,7 @@ const statusId = new ObjectId("6431cc48af10c92d6dcf96fb");
 const ShowStatus = () => {
   const [tasks, setTasks] = useState();
   const [user, setuser] = useState("");
+  // eslint-disable-next-line
   const [totalMinutes, setTotalMinutes] = useState(0);
   var navigate = useNavigate();
 
@@ -21,7 +22,6 @@ const ShowStatus = () => {
     axios
       .get("http://localhost:4000/user/user/" + id)
       .then((res) => {
-        // console.log(res.data.data);
         setuser(res.data.data);
       })
       .catch((err) => {
@@ -92,7 +92,8 @@ const ShowStatus = () => {
     }
     getTasks();
     getLoggedinUserData();
-  }, []);
+    // eslint-disable-next-line
+  },[]);
 
   const logout = (e) => {
     e.preventDefault();

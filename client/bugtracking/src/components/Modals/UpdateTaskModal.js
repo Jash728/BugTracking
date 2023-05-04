@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Form, Row, Col } from "react-bootstrap";
-import { get, set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import axios from "axios";
 
 const UpdateTaskModal = (props) => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {handleSubmit } = useForm();
   const data = props.data;
   const handleInputChange = props.handleInputChange;
   const modal1 = props.modal1;
@@ -18,7 +17,6 @@ const UpdateTaskModal = (props) => {
 
   const getStatus = () => {
     axios.get("http://localhost:4000/status/get").then((res) => {
-      //console.log(res.data.data)
       setStatus(res.data.data);
     });
   };
@@ -28,7 +26,7 @@ const UpdateTaskModal = (props) => {
   }, []);
   return (
     <div>
-      {/* {console.log("status data ", data != null ? data : "not found")} */}
+     
       <Modal size="lg" isOpen={modal1} toggle={() => setModal(!modal1)}>
         <ModalHeader toggle={() => setModal1(!modal1)}>
           Update Task
@@ -76,7 +74,6 @@ const UpdateTaskModal = (props) => {
               <select
                 class="form-select"
                 aria-label="Default select example"
-                // placeholder="role"
                 name="status"
                 value={data && data.status ? data.status.statusname : ""}
                 onChange={handleInputChange}
@@ -87,14 +84,6 @@ const UpdateTaskModal = (props) => {
                   return <option value={s._id}>{s.statusname}</option>;
                 })}
               </select>
-              {/* <input
-                type="text"
-                className="form-control"
-                placeholder="status"
-                name="status"
-                value={data && data.status ? data.status.statusname : ""}
-                onChange={handleInputChange}
-              /> */}
             </div>
             <div className="input-group input-group-outline mb-3">
               <input

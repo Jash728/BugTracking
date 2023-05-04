@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { Form, Row, Col } from "react-bootstrap";
-import { get, set, useForm } from "react-hook-form";
+import {useForm } from "react-hook-form";
 import axios from "axios";
 
 const CreateProjectModuleModal = (props) => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit} = useForm();
   const submit = props.submit;
   const getModuleData = props.getModuleData;
   const modal = props.modal;
@@ -15,7 +15,6 @@ const CreateProjectModuleModal = (props) => {
 
   const getStatus = () => {
     axios.get("http://localhost:4000/status/get").then((res) => {
-      //console.log(res.data.data)
       setStatus(res.data.data);
     });
   };
@@ -54,18 +53,10 @@ const CreateProjectModuleModal = (props) => {
                 {...register("estimatedhours")}
               />
             </div>
-            {/* <div className="input-group input-group-outline mb-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="status"
-                {...register("status")}
-              />
-            </div> */}
+           
             <select
               class="form-select"
               aria-label="Default select example"
-              // placeholder="role"
               {...register("status")}
               style={{ padding: "12px", color: "#495057" }}
             >

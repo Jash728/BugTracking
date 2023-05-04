@@ -4,9 +4,6 @@ import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [user, setuser] = useState("");
-  const SERVER_URL = "http://localhost:4000";
-
-  const imagePath = `${SERVER_URL}/uploads/`;
   const defaultPath = "../assets/img/";
 
   const getLoggedinUserData = () => {
@@ -54,7 +51,6 @@ const Profile = () => {
             <div className="h-100">
               <h5 className="mb-1">{user.firstname}</h5>
               <p className="mb-0 font-weight-normal text-sm">
-                {/* {user.role} */}
                 {user.role && user.role.rolename}
               </p>
             </div>

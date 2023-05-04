@@ -76,7 +76,7 @@ const ShowDevProjects = (props) => {
                           <div>
                             <span
                               className="me-2 text-xs font-weight-bold"
-                              // style={{ marginRight: "50px" }}
+                              
                             >
                               {project.projectId.completiondate.substr(0, 10)}
                             </span>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { get, set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ProjectDetailsModal from "./Modals/ProjectDetailsModal";
 import UpdateProjectModal from "./Modals/UpdateProjectModal";
 import { useNavigate } from "react-router-dom";
@@ -12,17 +12,19 @@ function ProjectData(props) {
   var navigate = useNavigate();
   const { projects } = props;
   const searchHandle = props.searchHandle;
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { reset } = useForm();
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
 
   const [data, setData] = useState({});
   const [desc, setDesc] = useState("jash");
+  // eslint-disable-next-line
   const [projects1, setProjects1] = useState([]);
   const [devs, setDevs] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [currentMember, setCurrentMember] = useState("");
   const [mySet, setMySet] = useState([]);
+  // eslint-disable-next-line
   const [currProject, setCurrProject] = useState("");
   const [currProjectID, setCurrProjectID] = useState("");
   const [showModal1, setShowModal1] = useState(false);
@@ -63,6 +65,7 @@ function ProjectData(props) {
   };
   const getTeamMembers = async (id) => {
     console.log("Inside getTeamMembers: ", id);
+    // eslint-disable-next-line
     let data = [id];
     let newData = [];
 
@@ -83,7 +86,7 @@ function ProjectData(props) {
   const addTeamMember = async (e) => {
     e.preventDefault();
     console.log("XYZ : ", currentMember);
-    if (currentMember.length == 0 || currentMember === "Developer") {
+    if (currentMember.length === 0 || currentMember === "Developer") {
       alert("Please assign developer name");
       return;
     }
@@ -127,6 +130,7 @@ function ProjectData(props) {
   };
 
   const getproductById = (id) => {
+    // eslint-disable-next-line
     const projeData = fetch(`http://localhost:4000/project/project/${id}`, {
       method: "GET",
       headers: {
@@ -176,6 +180,7 @@ function ProjectData(props) {
     props.getData();
     console.log("data is", data);
     getDeveloperData();
+    // eslint-disable-next-line
   }, [data, modal, teamMembers]);
 
   const handleInputChange = (event) => {
@@ -231,11 +236,7 @@ function ProjectData(props) {
     localStorage.setItem("project_id", id);
     navigate("/projectdetails");
   };
-  const styles = {
-    placeholder: {
-      color: "#fff",
-    },
-  };
+ 
   return (
     <div className="container-fluid py-4">
       <div className="row">

@@ -12,10 +12,10 @@ const ProjectModule = () => {
   var navigate = useNavigate();
   const [module, setModule] = useState([]);
   const [modal, setModal] = useState(false);
-  const [status, setStatus] = useState();
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {  reset} = useForm();
   const [data, setData] = useState({});
   const [modal1, setModal1] = useState(false);
+  // eslint-disable-next-line
   const [currModule, setCurrModule] = useState("");
 
   const getModuleData = () => {
@@ -123,6 +123,7 @@ const ProjectModule = () => {
   };
 
   const getmoduleById = (id) => {
+    // eslint-disable-next-line
     const moduleData = fetch(
       `http://localhost:4000/projectmodule/getmodulebyid/${id}`,
       {

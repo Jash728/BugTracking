@@ -36,7 +36,7 @@ app.use('/developer', developerProjectRoutes)
 app.use("/notifications", notificationRoutes)
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/bugtracker", {}, (err) => {
+mongoose.connect(process.env.MONGO_URL, {}, (err) => {
     if (err) {
         console.log("error in db connections....")
     } else {
