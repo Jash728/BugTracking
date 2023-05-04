@@ -1,5 +1,4 @@
 const userSchema = require('../schema/UserSchema');
-// const bcrypt = require("bcryptjs")
 const mongoose = require("mongoose");
 const encrypt = require('../utils/encrypt');
 const jwt = require('jsonwebtoken')
